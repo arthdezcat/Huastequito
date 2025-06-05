@@ -115,6 +115,63 @@
     .sidebar-social a:hover {
       color: #b48e5c;
     }
+
+    /* RESPONSIVE UNIVERSAL PARA TODAS LAS VISTAS */
+    @media (max-width: 900px) {
+      .hero-content, .slider-container, .section, .info-section {
+        max-width: 99vw;
+        padding-left: 8px;
+        padding-right: 8px;
+        box-sizing: border-box;
+      }
+      .slide, .slide img {
+        width: 180px;
+        min-width: 120px;
+        max-width: 220px;
+        height: 120px;
+      }
+      .slider-btn.prev { left: -16px; }
+      .slider-btn.next { right: -16px; }
+    }
+    @media (max-width: 700px) {
+      .hero-content h1, .section-title { font-size: 2rem; }
+      .hero-content h2 { font-size: 1.1rem; }
+      .slider-container { max-width: 99vw; }
+      .slide, .slide img { height: 100px; width: 120px; min-width: 100px; max-width: 140px; }
+      .slide.next { transform: translateX(60%) scale(0.96); }
+      .slide.prev { transform: translateX(-120%) scale(0.96); }
+      .slide.active { transform: translateX(-50%) scale(1.04); }
+      .slider-btn.prev { left: -10px; }
+      .slider-btn.next { right: -10px; }
+    }
+    @media (max-width: 500px) {
+      .hero-content h1, .section-title { font-size: 1.2rem; }
+      .hero-content h2 { font-size: 1rem; }
+      .hero-content p, .section-desc { font-size: 1rem; }
+      .slide, .slide img { height: 80px; width: 90vw; min-width: 0; max-width: 98vw; }
+      .slider-container { padding: 0 2px; }
+    }
+    @media (max-width: 400px) {
+      .slide img { height: 60px; border-radius: 6px; }
+      .slider-btn { width: 28px; height: 28px; font-size: 1.2rem; }
+      .slider-btn.prev { left: 0; }
+      .slider-btn.next { right: 0; }
+      .hero-content, .section, .info-section { padding: 8px 2px; }
+    }
+
+    /* Ajuste para textos largos y desbordes */
+    .hero-content, .section, .info-section {
+      word-break: break-word;
+      overflow-wrap: break-word;
+    }
+
+    /* Ajuste universal para imágenes */
+    img, .slide img {
+      max-width: 100%;
+      height: auto;
+      display: block;
+      object-fit: cover;
+    }
   </style>
 </head>
 <body>
@@ -130,9 +187,6 @@
           <img src="<%= contact.iconUrl %>" alt="Icono" class="icono-circular">
         <% } else { %>
           <% var color = contact.iconColor ? contact.iconColor : '#b48e5c'; %>
-          <span class="icono-circular" style="background-color:<%= color %>;display:flex;align-items:center;justify-content:center;">
-            <i class="fas fa-user-circle" style="font-size:70px;color:#fff;"></i>
-          </span>
         <% } %>
         <div class="nombre" style="margin-bottom: 12px;">
         <% if (contact.facebookUrl) { %>
