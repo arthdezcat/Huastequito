@@ -179,6 +179,52 @@ form {
   .nav-list {
     gap: 12px;
   }
+  .sidebar-admin {
+    width: 70px !important;
+    padding: 16px 0 0 0;
+    position: fixed;
+    left: 0;
+    top: 0;
+    z-index: 1001;
+    transition: width 0.3s;
+  }
+  .sidebar-admin .admin-name {
+    display: none;
+  }
+  .sidebar-admin ul li a {
+    padding: 16px 10px;
+    font-size: 0.9rem;
+    justify-content: center;
+  }
+  .main-admin-content {
+    margin-left: 70px;
+    width: calc(100% - 70px);
+    padding: 24px 6px 24px 6px;
+  }
+  .table-responsive, .table {
+    width: 100%;
+    overflow-x: auto;
+    display: block;
+  }
+  .table th, .table td {
+    font-size: 0.95rem;
+    padding: 8px 6px;
+    white-space: nowrap;
+  }
+  .admin-container, .admin-container-servi, .admin-container-galeris, .admin-container-contact {
+    flex-direction: column;
+    gap: 18px;
+    padding: 0 4px;
+  }
+  .dashboard-cards {
+    flex-direction: column;
+    gap: 18px;
+  }
+  .add-service, .manage-services, .add-gallery, .manage-gallery, .add-contact, .manage-contact {
+    min-width: 0;
+    width: 100%;
+    margin: 0 0 12px 0;
+  }
 }
 @media (max-width: 600px) {
   .card-producto img {
@@ -192,6 +238,67 @@ form {
   form {
     padding: 18px 8px;
   }
+  .sidebar-admin {
+    width: 0 !important;
+    min-width: 0;
+    padding: 0;
+    overflow: hidden;
+    transition: width 0.3s;
+  }
+  .sidebar-admin.active {
+    width: 220px !important;
+    min-width: 220px;
+    padding: 32px 0 0 0;
+    overflow: visible;
+  }
+  .main-admin-content {
+    margin-left: 0 !important;
+    width: 100% !important;
+    padding: 12px 2px 12px 2px;
+  }
+  .sidebar-toggle {
+    display: block;
+    position: fixed;
+    top: 18px;
+    left: 18px;
+    z-index: 1100;
+    background: #232946;
+    color: #fff;
+    border: none;
+    border-radius: 50%;
+    width: 44px;
+    height: 44px;
+    font-size: 2rem;
+    cursor: pointer;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  }
+  .table th, .table td {
+    font-size: 0.85rem;
+    padding: 6px 2px;
+  }
+  .table-responsive, .table {
+    width: 100vw;
+    min-width: 320px;
+    overflow-x: auto;
+    display: block;
+  }
+  .dashboard-cards {
+    flex-direction: column;
+    gap: 12px;
+  }
+  .admin-container, .admin-container-servi, .admin-container-galeris, .admin-container-contact {
+    flex-direction: column;
+    gap: 10px;
+    padding: 0 2px;
+  }
+  .add-service, .manage-services, .add-gallery, .manage-gallery, .add-contact, .manage-contact {
+    min-width: 0;
+    width: 100%;
+    margin: 0 0 8px 0;
+  }
+}
+.sidebar-toggle {
+  display: none;
 }
 
 /* Ajustes para que las imágenes de fondo sean responsivas */
@@ -1039,6 +1146,123 @@ footer p {
     height: 100px;
     max-height: 100px;
     border-radius: 8px;
+  }
+}
+
+/* --- RESPONSIVIDAD ADMIN --- */
+@media (max-width: 900px) {
+  .table-responsive, .table {
+    width: 100%;
+    overflow-x: auto;
+    display: block;
+  }
+  .table th, .table td {
+    font-size: 0.95rem;
+    padding: 8px 6px;
+    white-space: nowrap;
+  }
+  .admin-container, .admin-container-servi, .admin-container-galeris, .admin-container-contact {
+    flex-direction: column;
+    gap: 18px;
+    padding: 0 4px;
+  }
+  .dashboard-cards {
+    flex-direction: column;
+    gap: 18px;
+  }
+  .add-service, .manage-services, .add-gallery, .manage-gallery, .add-contact, .manage-contact {
+    min-width: 0;
+    width: 100%;
+    margin: 0 0 12px 0;
+  }
+}
+@media (max-width: 600px) {
+  .table th, .table td {
+    font-size: 0.85rem;
+    padding: 6px 2px;
+  }
+  .table-responsive, .table {
+    width: 100vw;
+    min-width: 320px;
+    overflow-x: auto;
+    display: block;
+  }
+  .dashboard-cards {
+    flex-direction: column;
+    gap: 12px;
+  }
+  .admin-container, .admin-container-servi, .admin-container-galeris, .admin-container-contact {
+    flex-direction: column;
+    gap: 10px;
+    padding: 0 2px;
+  }
+  .add-service, .manage-services, .add-gallery, .manage-gallery, .add-contact, .manage-contact {
+    min-width: 0;
+    width: 100%;
+    margin: 0 0 8px 0;
+  }
+}
+/* Menú hamburguesa admin siempre visible en móvil */
+@media (max-width: 600px) {
+  .sidebar-toggle {
+    display: block !important;
+  }
+  .sidebar-admin {
+    position: absolute;
+    width: 250px;
+    left: -250px;
+    transition: left 0.3s;
+    z-index: 1002;
+  }
+  .sidebar-admin.active {
+    left: 0;
+  }
+}
+
+/* --- ACCESIBILIDAD DE BOTONES EN TABLAS RESPONSIVAS --- */
+@media (max-width: 900px) {
+  .table-responsive {
+    overflow-x: auto;
+  }
+  .table th, .table td {
+    min-width: 110px;
+    white-space: nowrap;
+    text-align: center;
+  }
+  .table td:last-child, .table th:last-child {
+    position: sticky;
+    right: 0;
+    background: #fff;
+    z-index: 2;
+    box-shadow: -2px 0 8px -4px #ccc;
+  }
+  .table .btn, .table button, .table form {
+    min-width: 70px;
+    margin: 2px 0;
+    font-size: 15px;
+    padding: 6px 10px;
+    display: inline-block;
+  }
+}
+@media (max-width: 600px) {
+  .table th, .table td {
+    min-width: 90px;
+    font-size: 0.85rem;
+    padding: 6px 2px;
+  }
+  .table td:last-child, .table th:last-child {
+    min-width: 120px;
+    background: #fff;
+    position: sticky;
+    right: 0;
+    z-index: 2;
+    box-shadow: -2px 0 8px -4px #ccc;
+  }
+  .table .btn, .table button, .table form {
+    min-width: 60px;
+    font-size: 14px;
+    padding: 5px 6px;
+    margin: 2px 0;
   }
 }
 

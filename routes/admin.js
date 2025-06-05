@@ -4,11 +4,13 @@ const serviceController = require('../controllers/serviceControllers');
 const contactController = require('../controllers/contactControllers');
 const galeriaController = require('../controllers/galeriControllers');
 const homeInfoController = require('../controllers/homeInfoController');
+const homeInfoPublic = require('../controllers/homeInfoPublic');
 const authMiddleware = require('../middlewares/authMiddleware');
 const upload = require('../middlewares/uploadImage');
+const userAdminController = require('../controllers/userAdminController');
 
 // Proteger rutas del panel de administración
-router.use(authMiddleware.isAuthenticated);
+router.use(authMiddleware.isAuthenticated, homeInfoPublic.getHomeInfoPublic);
 // Panel de administración para servicios
 router.get('/services', async (req, res) => {
   const services = await require('../models/Service').find();
@@ -43,5 +45,10 @@ router.post('/homeinfo', upload.fields([
   { name: 'logoFile', maxCount: 1 },
   { name: 'iconFile', maxCount: 1 }
 ]), homeInfoController.updateHomeInfo);
+
+// Rutas para gestión de usuarios administradores
+router.get('/users', userAdminController.getUsers);
+router.post('/users/add', userAdminController.createUser);
+router.post('/users/delete/:id', userAdminController.deleteUser);
 
 module.exports = router;

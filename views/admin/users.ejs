@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gestión de Usuarios Administradores</title>
+  <link rel="stylesheet" href="/css/styles.css">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+  <link rel="icon" href="/img/administracion.png" type="image/png">
+  <style>
+    body.admin-page {
+      display: flex;
+      min-height: 100vh;
+      margin: 0;
+      background: linear-gradient(120deg, #8ec5fc 0%, #e0c3fc 100%);
+    }
+    
+    .sidebar-admin { width: 250px; background: #232946; color: #fff; display: flex; flex-direction: column; align-items: center; padding: 32px 0 0 0; min-height: 100vh; position: fixed; left: 0; top: 0; z-index: 10; box-shadow: 2px 0 12px rgba(0,0,0,0.08); }
+    .sidebar-admin .admin-avatar { width: 90px; height: 90px; border-radius: 50%; background: #fff; margin-bottom: 18px; display: flex; align-items: center; justify-content: center; overflow: hidden; }
+    .sidebar-admin .admin-avatar img { width: 80px; height: 80px; border-radius: 50%; object-fit: cover; }
+    .sidebar-admin .admin-name { font-size: 1.2rem; font-weight: 700; margin-bottom: 32px; color: #eebf63; }
+    .sidebar-admin ul { list-style: none; padding: 0; width: 100%; }
+    .sidebar-admin ul li { width: 100%; }
+    .sidebar-admin ul li a { display: flex; align-items: center; gap: 12px; color: #fff; text-decoration: none; padding: 16px 32px; font-size: 1.1rem; transition: background 0.2s, color 0.2s; border-left: 4px solid transparent; }
+    .sidebar-admin ul li a:hover, .sidebar-admin ul li a.active { background: #eebf63; color: #232946; border-left: 4px solid #232946; }
+    .main-admin-content { margin-left: 250px; width: calc(100% - 250px); padding: 40px 32px 32px 32px; min-height: 100vh; background: transparent; }
+    .dashboard-cards { display: flex; flex-wrap: wrap; gap: 32px; justify-content: center; margin-top: 32px; }
+    .dashboard-card { background: #fff; border-radius: 18px; box-shadow: 0 4px 16px rgba(0,0,0,0.08); padding: 24px 18px; min-width: 260px; max-width: 320px; display: flex; flex-direction: column; align-items: center; transition: box-shadow 0.3s, transform 0.3s; }
+    .dashboard-card .nombre { font-size: 20px; font-weight: 700; margin-bottom: 8px; color: #232946; }
+    .dashboard-card .descripcion { font-size: 15px; color: #555; margin-bottom: 12px; text-align: center; }
+    .dashboard-card .btn { margin-top: 10px; background: #eebf63; color: #232946; font-weight: 700; border-radius: 22px; padding: 8px 24px; border: none; transition: background 0.2s, color 0.2s; }
+    .dashboard-card .btn:hover { background: #232946; color: #fff; }
+    .form-group { margin-bottom: 16px; }
+    .form-group label { display: block; margin-bottom: 4px; }
+    .form-group input, .form-group select { width: 100%; padding: 6px; }
+    .table.user-table {
+      width: 100%;
+      background: #fff;
+      border-radius: 10px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+      overflow: hidden;
+      margin-bottom: 40px;
+    }
+    .table.user-table th, .table.user-table td {
+      vertical-align: middle;
+      text-align: center;
+    }
+    .table.user-table th {
+      background: #f5f5f5;
+      font-weight: 700;
+      color: #232946;
+    }
+    .btn-sm { padding: 4px 16px; font-size: 15px; border-radius: 6px; font-weight: 600; }
+    .btn-success { background: #27ae60; color: #fff; border: none; }
+    .btn-primary { background: #2980b9; color: #fff; border: none; }
+    .btn-danger { background: #e74c3c; color: #fff; border: none; }
+    .btn-secondary { background: #888; color: #fff; border: none; }
+    .btn-success:hover { background: #219150; }
+    .btn-primary:hover { background: #206090; }
+    .btn-danger:hover { background: #c0392b; }
+    .btn-secondary:hover { background: #555; }
+    .update-form-row td { padding: 0 !important; }
+    @media (max-width: 900px) { .sidebar-admin { width: 70px; padding: 16px 0 0 0; } .sidebar-admin .admin-name { display: none; } .sidebar-admin ul li a { padding: 16px 10px; font-size: 0.9rem; justify-content: center; } .main-admin-content { margin-left: 70px; width: calc(100% - 70px); padding: 24px 6px 24px 6px; } }
+    @media (max-width: 600px) { .dashboard-cards { flex-direction: column; gap: 18px; } .main-admin-content { padding: 12px 2px 12px 2px; } }
+    .modal-custom {
+      display: none;
+      position: fixed;
+      z-index: 9999;
+      left: 0;
+      top: 0;
+      width: 100vw;
+      height: 100vh;
+      background: rgba(0,0,0,0.4);
+      justify-content: center;
+      align-items: center;
+    }
+    .modal-custom.active { display: flex; }
+    .modal-content-custom {
+      background: #fff;
+      padding: 32px 24px;
+      border-radius: 16px;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.18);
+      min-width: 320px;
+      max-width: 420px;
+      width: 95vw;
+      max-height: 90vh;
+      overflow-y: auto;
+      position: relative;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      align-items: stretch;
+    }
+    .close-modal {
+      position: absolute;
+      top: 12px;
+      right: 18px;
+      font-size: 2rem;
+      color: #888;
+      cursor: pointer;
+    }
+    @media (max-width: 600px) {
+      .dashboard-cards {
+        flex-direction: column;
+        gap: 18px;
+      }
+      .main-admin-content {
+        padding: 12px 2px 12px 2px;
+      }
+      .sidebar-admin {
+        position: absolute;
+        width: 250px;
+        height: 100vh;
+        top: 0;
+        left: -250px;
+        transition: left 0.3s;
+      }
+      .sidebar-admin.active {
+        left: 0;
+      }
+      .sidebar-toggle {
+        display: block;
+        position: absolute;
+        top: 16px;
+        left: 16px;
+        background: #2980b9;
+        color: #fff;
+        border: none;
+        border-radius: 6px;
+        padding: 10px;
+        cursor: pointer;
+        z-index: 11;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+      }
+    }
+  </style>
+</head>
+<body class="admin-page">
+  <button class="sidebar-toggle" id="sidebarToggle" style="display:none;"><i class="fas fa-bars"></i></button>
+  <aside class="sidebar-admin" id="sidebarAdmin">
+    <div class="admin-avatar">
+      <img src="<%= homeInfo && homeInfo.logoUrl ? homeInfo.logoUrl : '/img/LogoOfic.png' %>" alt="Admin Avatar">
+    </div>
+    <div class="admin-name">Panel Admin</div>
+    <ul id="sidebar-menu">
+      <li><a href="/admin"><i class="fas fa-tachometer-alt"></i> Inicio</a></li>
+      <li><a href="/admin/services"><i class="fas fa-tags"></i>Productos</a></li>
+      <li><a href="/admin/contact"><i class="fas fa-address-book"></i> Contactos</a></li>
+      <li><a href="/admin/galeria"><i class="fas fa-percent"></i>Ofertas</a></li>
+      <li><a href="/admin/users"><i class="fas fa-users-cog"></i> Usuarios</a></li>
+      <li><a href="/logout"><i class="fas fa-sign-out-alt"></i> Cerrar Sesión</a></li>
+    </ul>
+  </aside>
+  <main class="main-admin-content">
+    <section style="max-width:900px;margin:40px auto 0 auto;">
+      <h2 style="text-align:center;margin-bottom:32px;">Gestión de Usuarios Administradores</h2>
+      <div id="userModal" class="modal-custom" style="display:none;">
+        <div class="modal-content-custom">
+          <span class="close-modal" onclick="closeUserModal()">&times;</span>
+          <h3>Registrar Nuevo Usuario</h3>
+          <form action="/admin/users/add" method="post">
+            <div class="form-group">
+              <label for="username">Usuario</label>
+              <input type="text" id="username" name="username" required>
+            </div>
+            <div class="form-group">
+              <label for="password">Contraseña</label>
+              <input type="password" id="password" name="password" required>
+            </div>
+            <div class="form-group">
+              <label for="role">Rol</label>
+              <select id="role" name="role" required>
+                <option value="admin">Administrador</option>
+                <option value="editor">Editor</option>
+                <option value="lector">Solo Lectura</option>
+                <option value="superadmin">Super Admin</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="permissions">Permisos</label>
+              <select id="permissions" name="permissions" multiple size="4" style="height:80px;">
+                <option value="read">Lectura</option>
+                <option value="write">Agregar</option>
+                <option value="edit">Editar</option>
+                <option value="delete">Eliminar</option>
+              </select>
+              <small>Puedes seleccionar varios permisos haciendo clic en cada uno.</small>
+            </div>
+            <style>
+              /* Estilo visual para opciones seleccionadas */
+              #permissions option:checked {
+                background: linear-gradient(90deg, #eebf63 0%, #2980b9 100%);
+                color: #232946;
+                font-weight: bold;
+              }
+            </style>
+            <script>
+              // Permitir selección múltiple con clic (sin Ctrl/Shift)
+              document.addEventListener('DOMContentLoaded', function() {
+                const permSelect = document.getElementById('permissions');
+                if (permSelect) {
+                  permSelect.addEventListener('mousedown', function(e) {
+                    e.preventDefault();
+                    const option = e.target;
+                    if (option.tagName.toLowerCase() === 'option') {
+                      option.selected = !option.selected;
+                      // Forzar repaint para algunos navegadores
+                      permSelect.blur();
+                      permSelect.focus();
+                    }
+                  });
+                }
+              });
+            </script>
+            <button type="submit" class="btn btn-primary">Registrar</button>
+            <button type="button" class="btn btn-secondary" onclick="closeUserModal()">Cancelar</button>
+          </form>
+        </div>
+      </div>
+      <!-- Modal de edición de usuario -->
+      <div id="editUserModal" class="modal-custom" style="display:none;">
+        <div class="modal-content-custom">
+          <span class="close-modal" onclick="closeEditUserModal()">&times;</span>
+          <h3>Editar Usuario</h3>
+          <form id="editUserForm" method="post">
+            <div class="form-group">
+              <label for="edit_username">Usuario</label>
+              <input type="text" id="edit_username" name="username" required>
+            </div>
+            <div class="form-group">
+              <label for="edit_password">Contraseña (dejar en blanco para no cambiar)</label>
+              <input type="password" id="edit_password" name="password">
+            </div>
+            <div class="form-group">
+              <label for="edit_role">Rol</label>
+              <select id="edit_role" name="role" required>
+                <option value="admin">Administrador</option>
+                <option value="editor">Editor</option>
+                <option value="lector">Solo Lectura</option>
+                <option value="superadmin">Super Admin</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="edit_permissions">Permisos</label>
+              <select id="edit_permissions" name="permissions" multiple size="4" style="height:80px;">
+                <option value="read">Lectura</option>
+                <option value="write">Agregar</option>
+                <option value="edit">Editar</option>
+                <option value="delete">Eliminar</option>
+              </select>
+              <small>Puedes seleccionar varios permisos haciendo clic en cada uno.</small>
+              <style>
+                /* Estilo visual profesional y llamativo para opciones seleccionadas */
+                #edit_permissions option:checked {
+                  background: linear-gradient(90deg, #43cea2 0%, #185a9d 100%);
+                  color: #fff;
+                  font-weight: bold;
+                  border-left: 4px solid #eebf63;
+                }
+              </style>
+            </div>
+            <script>
+              // Permitir selección múltiple con clic (sin Ctrl/Shift) en edición
+              document.addEventListener('DOMContentLoaded', function() {
+                const permSelect = document.getElementById('edit_permissions');
+                if (permSelect) {
+                  permSelect.addEventListener('mousedown', function(e) {
+                    e.preventDefault();
+                    const option = e.target;
+                    if (option.tagName.toLowerCase() === 'option') {
+                      option.selected = !option.selected;
+                      // Forzar repaint para algunos navegadores
+                      permSelect.blur();
+                      permSelect.focus();
+                    }
+                  });
+                }
+              });
+            </script>
+            <button type="submit" class="btn btn-primary">Actualizar</button>
+            <button type="button" class="btn btn-secondary" onclick="closeEditUserModal()">Cancelar</button>
+          </form>
+        </div>
+      </div>
+      <button class="btn btn-primary" style="margin-bottom:18px;" onclick="openUserModal()">Registrar Usuario</button>
+      <div class="table-responsive">
+        <table class="table table-striped table-hover user-table">
+          <thead>
+            <tr>
+              <th>Usuario</th>
+              <th>Rol</th>
+              <th>Permisos</th>
+              <th style="min-width:180px;">Acciones</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% users.forEach(function(user) { %>
+              <tr>
+                <td><i class="fas fa-user"></i> <%= user.username %></td>
+                <td><%= user.role %></td>
+                <td><%= user.permissions ? user.permissions.join(', ') : '' %></td>
+                <td>
+                  <a href="/admin/users/view/<%= user._id %>" class="btn btn-success btn-sm" style="margin-right:4px;">Ver</a>
+                  <% if (user.role !== 'superadmin') { %>
+                    <button class="btn btn-primary btn-sm btn-edit-user" data-user='<%= JSON.stringify(user) %>' style="margin-right:4px;">Editar</button>
+                    <form action="/admin/users/delete/<%= user._id %>" method="post" style="display:inline;" onsubmit="return confirmDeleteUser(event)">
+                      <button type="submit" class="btn btn-danger btn-sm">Eliminar</button>
+                    </form>
+                  <% } else { %>
+                    <span style="color:#aaa;"><i class="fas fa-lock"></i> Protegido</span>
+                  <% } %>
+                </td>
+              </tr>
+            <% }); %>
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+  <div id="deleteModal" class="modal-custom" style="display:none;">
+    <div class="modal-content-custom">
+      <span class="close-modal" onclick="closeDeleteModal()">&times;</span>
+      <h3>¿Estás seguro que deseas eliminar este usuario?</h3>
+      <div style="display:flex;gap:16px;justify-content:center;margin-top:24px;">
+        <button class="btn btn-danger" onclick="confirmDeleteAction()">Sí, eliminar</button>
+        <button class="btn btn-secondary" onclick="closeDeleteModal()">No, cancelar</button>
+      </div>
+    </div>
+  </div>
+  <script>
+    // Script para marcar solo la pestaña activa
+    document.addEventListener('DOMContentLoaded', function() {
+      const menu = document.getElementById('sidebar-menu');
+      if(menu) {
+        const links = menu.querySelectorAll('a');
+        const current = window.location.pathname;
+        links.forEach(link => {
+          if(link.getAttribute('href') && current.startsWith(link.getAttribute('href')) && link.getAttribute('href') !== '/logout') {
+            links.forEach(l => l.classList.remove('active'));
+            link.classList.add('active');
+          }
+        });
+      }
+    });
+
+    function confirmDeleteUser(e) {
+      if (!confirm('¿Seguro que deseas eliminar este usuario?')) {
+        e.preventDefault();
+        return false;
+      }
+      return true;
+    }
+
+    function openUserModal() {
+      document.getElementById('userModal').style.display = 'flex';
+      document.getElementById('userModal').classList.add('active');
+    }
+
+    function closeUserModal() {
+      document.getElementById('userModal').style.display = 'none';
+      document.getElementById('userModal').classList.remove('active');
+    }
+
+    function openEditUserModal(user) {
+      document.getElementById('editUserForm').action = '/admin/users/update/' + user._id;
+      document.getElementById('edit_username').value = user.username;
+      document.getElementById('edit_password').value = '';
+      document.getElementById('edit_role').value = user.role || 'admin';
+      // Permisos
+      const select = document.getElementById('edit_permissions');
+      Array.from(select.options).forEach(opt => opt.selected = false);
+      (user.permissions || []).forEach(p => {
+        const opt = Array.from(select.options).find(o => o.value === p);
+        if(opt) opt.selected = true;
+      });
+      document.getElementById('editUserModal').style.display = 'flex';
+      document.getElementById('editUserModal').classList.add('active');
+    }
+
+    function closeEditUserModal() {
+      document.getElementById('editUserModal').style.display = 'none';
+      document.getElementById('editUserModal').classList.remove('active');
+    }
+
+    let deleteFormRef = null;
+    function openDeleteModal(form) {
+      deleteFormRef = form;
+      document.getElementById('deleteModal').style.display = 'flex';
+      document.getElementById('deleteModal').classList.add('active');
+    }
+    function closeDeleteModal() {
+      document.getElementById('deleteModal').style.display = 'none';
+      document.getElementById('deleteModal').classList.remove('active');
+      deleteFormRef = null;
+    }
+    function confirmDeleteAction() {
+      if(deleteFormRef) deleteFormRef.submit();
+      closeDeleteModal();
+    }
+    window.addEventListener('DOMContentLoaded',()=>{
+      document.querySelectorAll('form[action^="/admin/users/delete/"]').forEach(form => {
+        form.onsubmit = function(e) {
+          e.preventDefault();
+          openDeleteModal(form);
+          return false;
+        };
+      });
+    });
+    document.addEventListener('DOMContentLoaded', function() {
+      const sidebar = document.getElementById('sidebarAdmin');
+      const toggle = document.getElementById('sidebarToggle');
+      function checkSidebar() {
+        if(window.innerWidth <= 600) {
+          toggle.style.display = 'block';
+          sidebar.classList.remove('active');
+        } else {
+          toggle.style.display = 'none';
+          sidebar.classList.remove('active');
+        }
+      }
+      toggle.onclick = function() {
+        sidebar.classList.toggle('active');
+      };
+      window.addEventListener('resize', checkSidebar);
+      checkSidebar();
+    });
+    document.addEventListener('DOMContentLoaded', function() {
+      document.querySelectorAll('.btn-edit-user').forEach(btn => {
+        btn.onclick = function() {
+          const user = JSON.parse(this.dataset.user);
+          openEditUserModal(user);
+        };
+      });
+    });
+  </script>
+</body>
+</html>

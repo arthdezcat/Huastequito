@@ -29,6 +29,10 @@
       top: 0;
       z-index: 10;
       box-shadow: 2px 0 12px rgba(0,0,0,0.08);
+      transition: transform 0.3s;
+    }
+    .sidebar-admin.active {
+      transform: translateX(0);
     }
     .sidebar-admin .admin-avatar {
       width: 90px;
@@ -164,58 +168,266 @@
       .main-admin-content {
         padding: 12px 2px 12px 2px;
       }
+      .sidebar-admin {
+        position: absolute;
+        width: 250px;
+        height: 100vh;
+        top: 0;
+        left: -250px;
+        transition: left 0.3s;
+      }
+      .sidebar-admin.active {
+        left: 0;
+      }
+      .sidebar-toggle {
+        display: block;
+        position: absolute;
+        top: 16px;
+        left: 16px;
+        background: #2980b9;
+        color: #fff;
+        border: none;
+        border-radius: 6px;
+        padding: 10px;
+        cursor: pointer;
+        z-index: 11;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+      }
+    }
+    .modal-custom {
+      display: none;
+      position: fixed;
+      z-index: 9999;
+      left: 0;
+      top: 0;
+      width: 100vw;
+      height: 100vh;
+      background: rgba(0,0,0,0.4);
+      justify-content: center;
+      align-items: center;
+    }
+    .modal-custom.active { display: flex; }
+    .modal-content-custom {
+      background: #fff;
+      padding: 32px 24px;
+      border-radius: 16px;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.18);
+      min-width: 320px;
+      max-width: 420px;
+      width: 95vw;
+      max-height: 90vh;
+      overflow-y: auto;
+      position: relative;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      align-items: stretch;
+    }
+    .close-modal {
+      position: absolute;
+      top: 12px;
+      right: 18px;
+      font-size: 2rem;
+      color: #888;
+      cursor: pointer;
+    }
+    @media (max-width: 600px) {
+      .modal-content-custom {
+        padding: 18px 6px;
+        min-width: 0;
+        max-width: 98vw;
+      }
+    }
+    .table-responsive {
+      width: 100%;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+    }
+    .table {
+      width: 100%;
+      margin-bottom: 1rem;
+      color: #212529;
+    }
+    .table th, .table td {
+      padding: 0.75rem;
+      vertical-align: top;
+      border-top: 1px solid #dee2e6;
+    }
+    .table thead th {
+      vertical-align: bottom;
+      border-bottom: 2px solid #dee2e6;
+    }
+    .table tbody + tbody {
+      border-top: 2px solid #dee2e6;
+    }
+    .table-responsive {
+      display: block;
+      width: 100%;
+      overflow-x: auto;
+    }
+    .table-responsive > .table {
+      margin-bottom: 0;
     }
   </style>
 </head>
 <body class="admin-page">
-  <aside class="sidebar-admin">
+  <button class="sidebar-toggle" id="sidebarToggle" style="display:none;"><i class="fas fa-bars"></i></button>
+  <aside class="sidebar-admin" id="sidebarAdmin">
     <div class="admin-avatar">
-      <img src="/img/LogoOfic.png" alt="Admin Avatar">
+      <img src="<%= homeInfo && homeInfo.logoUrl ? homeInfo.logoUrl : '/img/LogoOfic.png' %>" alt="Admin Avatar">
     </div>
     <div class="admin-name">Panel Admin</div>
-    <ul>
-      <li><a href="/admin" class="active"><i class="fas fa-tachometer-alt"></i> Inicio</a></li>
-      <li><a href="/admin/services"><i class="fas fa-tags"></i> Productos</a></li>
+    <ul id="sidebar-menu">
+      <li><a href="/admin"><i class="fas fa-tachometer-alt"></i> Inicio</a></li>
+      <li><a href="/admin/services"><i class="fas fa-tags"></i>Productos</a></li>
       <li><a href="/admin/contact"><i class="fas fa-address-book"></i> Contactos</a></li>
-      <li><a href="/admin/galeria"><i class="fas fa-images"></i> Galería</a></li>
-      <li><a href="/admin/homeinfo"><i class="fas fa-home"></i> Inicio Web</a></li>
+      <li><a href="/admin/galeria"><i class="fas fa-percent"></i>Ofertas</a></li>
+      <li><a href="/admin/users"><i class="fas fa-users-cog"></i> Usuarios</a></li>
       <li><a href="/logout"><i class="fas fa-sign-out-alt"></i> Cerrar Sesión</a></li>
     </ul>
   </aside>
   <main class="main-admin-content">
     <h2 style="text-align:center;margin-bottom:32px;">Panel de Administración</h2>
     <div class="dashboard-cards">
-      <div class="dashboard-card">
-        <img src="/img/serviciotecnico.png" alt="Gestión de Productos">
-        <div class="nombre">Gestión de Productos</div>
+      <div class="dashboard-card" style="border-top: 6px solid #eebf63; box-shadow: 0 4px 16px rgba(238,191,99,0.15);">
+        <div class="nombre" style="color:#eebf63;">
+          <i class="fas fa-tags" style="color:#eebf63;margin-right:8px;font-size:2rem;"></i>
+          Gestión de Productos
+        </div>
         <div class="descripcion">Administra los productos de la tienda de ropa.</div>
-        <a href="/admin/services" class="btn">Ir a Productos</a>
+        <a href="/admin/services" class="btn" style="background:#eebf63;color:#232946;">
+          <i class="fas fa-boxes" style="margin-right:6px;"></i>
+          Ir a Productos
+        </a>
       </div>
-      <div class="dashboard-card">
-        <img src="/img/contactos.png" alt="Gestión de Contactos">
-        <div class="nombre">Gestión de Contactos</div>
+      <div class="dashboard-card" style="border-top: 6px solid #5cb85c; box-shadow: 0 4px 16px rgba(92,184,92,0.13);">
+        <div class="nombre" style="color:#5cb85c;">
+          <i class="fas fa-address-book" style="color:#5cb85c;margin-right:8px;font-size:2rem;"></i>
+          Gestión de Contactos
+        </div>
         <div class="descripcion">Administra los datos de los contactos.</div>
-        <a href="/admin/contact" class="btn">Ir a Contactos</a>
+        <a href="/admin/contact" class="btn" style="background:#5cb85c;color:#fff;">
+          <i class="fas fa-user-friends" style="margin-right:6px;"></i>
+          Ir a Contactos
+        </a>
       </div>
-      <div class="dashboard-card">
-        <img src="/img/galeriControllers.png" alt="Gestión de Galería">
-        <div class="nombre">Gestión de Galería</div>
-        <div class="descripcion">Administra la galería de imágenes de la tienda.</div>
-        <a href="/admin/galeria" class="btn">Ir a Galería</a>
+      <div class="dashboard-card" style="border-top: 6px solid #f76c6c; box-shadow: 0 4px 16px rgba(247,108,108,0.13);">
+        <div class="nombre" style="color:#f76c6c;">
+        <i class="fas fa-percent" style="color:#f76c6c;margin-right:8px;font-size:2rem;"></i>
+          Gestión de Ofertas
+        </div>
+        <div class="descripcion">Administra las ofertas de la tienda.</div>
+        <a href="/admin/galeria" class="btn" style="background:#f76c6c;color:#fff;">
+          <i class="fas fa-percent" style="margin-right:6px;"></i>
+          Ir a Ofertas
+        </a>
       </div>
-      <div class="dashboard-card">
-        <img src="/img/IconHome.png" alt="Gestión de Inicio">
-        <div class="nombre">Gestión de Inicio</div>
+      <div class="dashboard-card" style="border-top: 6px solid #3a86ff; box-shadow: 0 4px 16px rgba(58,134,255,0.13);">
+        <div class="nombre" style="color:#3a86ff;">
+          <i class="fas fa-home" style="color:#3a86ff;margin-right:8px;font-size:2rem;"></i>
+          Información de Inicio
+        </div>
         <div class="descripcion">Administra la información que se muestra en la página de inicio pública.</div>
-        <a href="/admin/homeinfo" class="btn">Ir a Inicio</a>
+        <button class="btn btn-primary" id="openHomeInfoModal" style="margin-top:12px;">Editar Info de Inicio</button>
       </div>
       <div class="dashboard-card">
-        <img src="/img/LogoOfic.png" alt="Ver tienda pública">
+        <img src="<%= homeInfo && homeInfo.logoUrl ? homeInfo.logoUrl : '/img/LogoOfic.png' %>" alt="Ver tienda pública">
         <div class="nombre">Ver Tienda Pública</div>
         <div class="descripcion">Ir a la página pública de la tienda de ropa.</div>
         <a href="/" class="btn">Ir a la Web Pública</a>
       </div>
     </div>
+    <div class="table-responsive">
+      <!-- Si hay tablas, asegúrate de que estén dentro de este div -->
+    </div>
+    <div id="homeInfoModal" class="modal-custom" style="display:none;">
+      <div class="modal-content-custom">
+      <span class="close-modal" onclick="closeHomeInfoModal()">&times;</span>
+      <h3>Registrar/Editar Información de Inicio</h3>
+      <form action="/admin/homeinfo" method="POST" enctype="multipart/form-data" id="homeinfo-form">
+        <div class="form-group">
+        <label for="nombreLocal">Nombre del Local</label>
+        <input type="text" class="form-control" id="nombreLocal" name="nombreLocal" value="<%= homeInfo && homeInfo.nombreLocal ? homeInfo.nombreLocal : '' %>" required>
+        </div>
+        <div class="form-group">
+        <label for="slogan">Slogan</label>
+        <input type="text" class="form-control" id="slogan" name="slogan" value="<%= homeInfo && homeInfo.slogan ? homeInfo.slogan : '' %>" required>
+        </div>
+        <div class="form-group">
+        <label for="descripcion">Descripción</label>
+        <textarea class="form-control" id="descripcion" name="descripcion"><%= homeInfo && homeInfo.descripcion ? homeInfo.descripcion : '' %></textarea>
+        </div>
+        <div class="form-group">
+        <label for="telefono">Teléfono</label>
+        <input type="text" class="form-control" id="telefono" name="telefono" value="<%= homeInfo && homeInfo.telefono ? homeInfo.telefono : '' %>">
+        </div>
+        <div class="form-group">
+        <label for="direccion">Dirección</label>
+        <input type="text" class="form-control" id="direccion" name="direccion" value="<%= homeInfo && homeInfo.direccion ? homeInfo.direccion : '' %>">
+        </div>
+        <div class="form-group">
+        <label for="email">Email</label>
+        <input type="email" class="form-control" id="email" name="email" value="<%= homeInfo && homeInfo.email ? homeInfo.email : '' %>">
+        </div>
+        <div class="form-group">
+        <label for="logoUrl">Logo (URL o subir archivo)</label>
+        <input type="text" class="form-control" id="logoUrl" name="logoUrl" value="<%= homeInfo && homeInfo.logoUrl ? homeInfo.logoUrl : '' %>" placeholder="URL del logo">
+        <input type="file" class="form-control" id="logoFile" name="logoFile" accept="image/png,image/jpeg,image/jpg">
+        </div>
+        <div class="form-group">
+        <label for="iconUrl">Icono/Favicon (URL o subir archivo)</label>
+        <input type="text" class="form-control" id="iconUrl" name="iconUrl" value="<%= homeInfo && homeInfo.iconUrl ? homeInfo.iconUrl : '' %>" placeholder="URL del icono">
+        <input type="file" class="form-control" id="iconFile" name="iconFile" accept="image/png,image/jpeg,image/jpg">
+        </div>
+        <div style="display: flex; gap: 18px; margin-top: 24px; justify-content: flex-end;">
+        <button type="submit" class="btn" style="background:#3a86ff; color:#fff;">Guardar Cambios</button>
+        <button type="button" class="btn" style="background:#f76c6c; color:#fff;" onclick="closeHomeInfoModal()">Cancelar</button>
+        </div>
+      </form>
+      </div>
+    </div>
   </main>
+  <script>
+    // Script para marcar solo la pestaña activa
+    document.addEventListener('DOMContentLoaded', function() {
+      const menu = document.getElementById('sidebar-menu');
+      if(menu) {
+        const links = menu.querySelectorAll('a');
+        const current = window.location.pathname;
+        links.forEach(link => {
+          if(link.getAttribute('href') && current.startsWith(link.getAttribute('href')) && link.getAttribute('href') !== '/logout') {
+            links.forEach(l => l.classList.remove('active'));
+            link.classList.add('active');
+          }
+        });
+      }
+    });
+    document.getElementById('openHomeInfoModal').onclick = function() {
+      document.getElementById('homeInfoModal').style.display = 'flex';
+      document.getElementById('homeInfoModal').classList.add('active');
+    };
+    function closeHomeInfoModal() {
+      document.getElementById('homeInfoModal').style.display = 'none';
+      document.getElementById('homeInfoModal').classList.remove('active');
+    }
+    document.addEventListener('DOMContentLoaded', function() {
+      const sidebar = document.getElementById('sidebarAdmin');
+      const toggle = document.getElementById('sidebarToggle');
+      function checkSidebar() {
+        if(window.innerWidth <= 600) {
+          toggle.style.display = 'block';
+          sidebar.classList.remove('active');
+        } else {
+          toggle.style.display = 'none';
+          sidebar.classList.remove('active');
+        }
+      }
+      toggle.onclick = function() {
+        sidebar.classList.toggle('active');
+      };
+      window.addEventListener('resize', checkSidebar);
+      checkSidebar();
+    });
+  </script>
 </body>
 </html>

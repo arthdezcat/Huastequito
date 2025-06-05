@@ -163,29 +163,131 @@
       .main-admin-content {
         padding: 12px 2px 12px 2px;
       }
+      .sidebar-admin {
+        position: absolute;
+        width: 250px;
+        height: 100vh;
+        top: 0;
+        left: -250px;
+        transition: left 0.3s;
+      }
+      .sidebar-admin.active {
+        left: 0;
+      }
+      .sidebar-toggle {
+        display: block;
+        position: absolute;
+        top: 16px;
+        left: 16px;
+        background: #2980b9;
+        color: #fff;
+        border: none;
+        border-radius: 6px;
+        padding: 10px;
+        cursor: pointer;
+        z-index: 11;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+      }
     }
+    .table.contact-table {
+  width: 100%;
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+  overflow: hidden;
+  margin-bottom: 40px;
+}
+.table.contact-table th, .table.contact-table td {
+  vertical-align: middle;
+  text-align: center;
+}
+.table.contact-table th {
+  background: #f5f5f5;
+  font-weight: 700;
+  color: #232946;
+}
+.btn-sm { padding: 4px 16px; font-size: 15px; border-radius: 6px; font-weight: 600; }
+.btn-success { background: #27ae60; color: #fff; border: none; }
+.btn-primary { background: #2980b9; color: #fff; border: none; }
+.btn-danger { background: #e74c3c; color: #fff; border: none; }
+.btn-secondary { background: #888; color: #fff; border: none; }
+.btn-success:hover { background: #219150; }
+.btn-primary:hover { background: #206090; }
+.btn-danger:hover { background: #c0392b; }
+.btn-secondary:hover { background: #555; }
+.update-form-row td { padding: 0 !important; }
+.modal-custom {
+  display: none;
+  position: fixed;
+  z-index: 9999;
+  left: 0;
+  top: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0,0,0,0.4);
+  justify-content: center;
+  align-items: center;
+}
+.modal-custom.active { display: flex; }
+.modal-content-custom {
+  background: #fff;
+  padding: 32px 24px;
+  border-radius: 16px;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.18);
+  min-width: 320px;
+  max-width: 420px;
+  width: 95vw;
+  max-height: 90vh;
+  overflow-y: auto;
+  position: relative;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+}
+.close-modal {
+  position: absolute;
+  top: 12px;
+  right: 18px;
+  font-size: 2rem;
+  color: #888;
+  cursor: pointer;
+}
+@media (max-width: 600px) {
+  .modal-content-custom {
+    padding: 18px 6px;
+    min-width: 0;
+    max-width: 98vw;
+  }
+}
   </style>
 </head>
 <body class="admin-page">
-  <aside class="sidebar-admin">
+  <button class="sidebar-toggle" id="sidebarToggle" style="display:none;"><i class="fas fa-bars"></i></button>
+  <aside class="sidebar-admin" id="sidebarAdmin">
     <div class="admin-avatar">
-      <img src="/img/LogoOfic.png" alt="Admin Avatar">
+      <img src="<%= homeInfo && homeInfo.logoUrl ? homeInfo.logoUrl : '/img/LogoOfic.png' %>" alt="Admin Avatar">
     </div>
     <div class="admin-name">Panel Admin</div>
-    <ul>
+    <ul id="sidebar-menu">
       <li><a href="/admin"><i class="fas fa-tachometer-alt"></i> Inicio</a></li>
-      <li><a href="/admin/services"><i class="fas fa-tags"></i> Productos</a></li>
-      <li><a href="/admin/contact" class="active"><i class="fas fa-address-book"></i> Contactos</a></li>
-      <li><a href="/admin/galeria"><i class="fas fa-images"></i> Galería</a></li>
-      <li><a href="/admin/homeinfo"><i class="fas fa-home"></i> Inicio Web</a></li>
+      <li><a href="/admin/services"><i class="fas fa-tags"></i>Productos</a></li>
+      <li><a href="/admin/contact"><i class="fas fa-address-book"></i> Contactos</a></li>
+      <li><a href="/admin/galeria"><i class="fas fa-percent"></i>Ofertas</a></li>
+      <li><a href="/admin/users"><i class="fas fa-users-cog"></i> Usuarios</a></li>
       <li><a href="/logout"><i class="fas fa-sign-out-alt"></i> Cerrar Sesión</a></li>
     </ul>
   </aside>
   <main class="main-admin-content">
     <section style="max-width:900px;margin:40px auto 0 auto;">
-      <h2 style="text-align:center;margin-bottom:32px;">Agregar Contacto</h2>
-      <form action="/admin/contact/add" method="post" class="contact-form" enctype="multipart/form-data">
-        <div class="form-group">
+      <h2 style="text-align:center;margin-bottom:32px;">Contactos Actuales</h2>
+      <button class="btn btn-primary" style="margin-bottom:24px;" onclick="openContactModal()">Registrar Contacto</button>
+      <div id="contactModal" class="modal-custom" style="display:none;">
+  <div class="modal-content-custom">
+    <span class="close-modal" onclick="closeContactModal()">&times;</span>
+    <h3>Registrar Nuevo Contacto</h3>
+    <form action="/admin/contact/add" method="post" class="contact-form" enctype="multipart/form-data">
+      <div class="form-group">
           <label for="name">Nombre:</label>
           <input type="text" id="name" name="name" required>
         </div>
@@ -258,111 +360,225 @@
           <label for="iconFile">Subir Icono (imagen):</label>
           <input type="file" id="iconFile" name="iconFile" accept="image/*">
         </div>
-        <button type="submit" class="btn">Añadir Contacto</button>
-      </form>
-      <h2 style="text-align:center;margin:48px 0 24px 0;">Contactos Actuales</h2>
-      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:32px;">
-        <% contact.forEach(contact => { %>
-          <div class="card-producto">
-            <img src="/img/contactos.png" alt="Contacto">
-            <div class="nombre"><%= contact.name %></div>
-            <div class="descripcion">Email: <%= contact.email %><br>Teléfono: <%= contact.telefono %></div>
-            <form action="/admin/contact/delete/<%= contact._id %>" method="post" style="display:inline;">
-              <button type="submit" class="btn" style="background:#f44336;color:#fff;">Eliminar</button>
+        <button type="submit" class="btn btn-primary">Registrar</button>
+        <button type="button" class="btn btn-secondary" onclick="closeContactModal()">Cancelar</button>
+    </form>
+  </div>
+</div>
+      <div class="table-responsive">
+  <table class="table table-striped table-hover contact-table">
+    <thead>
+      <tr>
+        <th>Nombre</th>
+        <th>Email</th>
+        <th>Teléfono</th>
+        <th>Facebook</th>
+        <th>Icono</th>
+        <th style="min-width:180px;">Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% contact.forEach(contact => { %>
+        <tr>
+          <td><%= contact.name %></td>
+          <td><%= contact.email %></td>
+          <td><%= contact.telefono %></td>
+          <td>
+            <% if (contact.facebookUrl) { %>
+              <a href="<%= contact.facebookUrl %>" target="_blank">Ver</a>
+            <% } %>
+          </td>
+          <td>
+            <% if (contact.iconUrl) { %>
+              <img src="<%= contact.iconUrl %>" alt="icono" style="width:32px;height:32px;object-fit:cover;border-radius:6px;">
+            <% } else { %>
+              <img src="/img/contactos.png" alt="icono" style="width:32px;height:32px;object-fit:cover;border-radius:6px;">
+            <% } %>
+          </td>
+          <td>
+            <a href="/admin/contact/view/<%= contact._id %>" class="btn btn-success btn-sm" style="margin-right:4px;">Ver</a>
+            <button class="btn btn-primary btn-sm btn-edit-contact" data-contact='<%= JSON.stringify(contact) %>' style="margin-right:4px;">Editar</button>
+            <form action="/admin/contact/delete/<%= contact._id %>" method="post" style="display:inline;" onsubmit="return confirmDelete(event)">
+              <button type="submit" class="btn btn-danger btn-sm">Eliminar</button>
             </form>
-            <button class="btn" style="background:#b48e5c;color:#fff;margin-top:8px;" onclick="toggleUpdateForm('<%= contact._id %>')">Actualizar</button>
-            <div id="update-form-<%= contact._id %>" class="update-form-container" style="display:none;margin-top:12px;">
-              <form action="/admin/contact/update/<%= contact._id %>" method="post" class="update-form" enctype="multipart/form-data">
-                <fieldset>
-                  <legend>Actualizar Contacto</legend>
-                  <div class="form-group">
-                    <label for="name">Nombre:</label>
-                    <input type="text" id="name" name="name" value="<%= contact.name %>" required>
-                  </div>
-                  <div class="form-group">
-                    <label for="email">Email:</label>
-                    <input 
-                      type="email" 
-                      id="email-<%= contact._id %>" 
-                      name="email" 
-                      value="<%= contact.email %>" 
-                      pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,}$" 
-                      title="Por favor, introduce un correo electrónico válido (ejemplo: usuario@dominio.com)" 
-                      required>
-                  </div>
-                    <div class="form-group">
-                    <label for="telefono">Teléfono:</label>
-                    <input 
-                      type="text" 
-                      id="telefono-<%= contact._id %>" 
-                      name="telefono" 
-                      value="<%= contact.telefono %>" 
-                      pattern="^\d{10}$" 
-                      title="El número debe tener exactamente 10 dígitos" 
-                      maxlength="10"
-                      required>
-                    </div>
-                  <div class="form-group">
-                    <label for="emailUrl">URL de Email:</label>
-                    <input type="url" id="emailUrl-<%= contact._id %>" name="emailUrl" value="<%= contact.emailUrl %>" readonly>
-                  </div>
-                  <script>
-                    const emailInput = document.getElementById('email-<%= contact._id %>');
-                    const emailUrlInput = document.getElementById('emailUrl-<%= contact._id %>');
-                    emailInput.addEventListener('input', () => {
-                      const emailValue = emailInput.value.trim();
-                      emailUrlInput.value = emailValue ? `mailto:${emailValue}` : '';
-                    });
-                  </script>
-                  <div class="form-group">
-                    <label for="whatsappUrl">Número de WhatsApp:</label>
-                    <input type="text" id="whatsappUrl-<%= contact._id %>" name="whatsappUrl" value="<%= contact.whatsappUrl %>" readonly>
-                  </div>
-                  <script>
-                    const telefonoInputUpdate = document.getElementById('telefono-<%= contact._id %>');
-                    const whatsappUrlInputUpdate = document.getElementById('whatsappUrl-<%= contact._id %>');
-                    telefonoInputUpdate.addEventListener('input', () => {
-                      const telefonoValue = telefonoInputUpdate.value.replace(/\D/g, '');
-                      whatsappUrlInputUpdate.value = telefonoValue ? `https://wa.me/${telefonoValue}` : '';
-                    });
-                  </script>
-                  <div class="form-group">
-                    <label for="facebookUrl">URL de Facebook:</label>
-                    <input type="url" id="facebookUrl" name="facebookUrl" value="<%= contact.facebookUrl %>">
-                  </div>
-                  <div class="form-group">
-                    <label for="extraUrl">URL Extra:</label>
-                    <input type="url" id="extraUrl" name="extraUrl" value="<%= contact.extraUrl %>">
-                  </div>
-                  <div class="form-group">
-                    <label for="footer">Footer:</label>
-                    <input type="text" id="footer" name="footer" value="<%= contact.footer %>">
-                  </div>
-                  <div class="form-group">
-                    <label for="iconColor">Color del Icono:</label>
-                    <input type="color" id="iconColor-<%= contact._id %>" name="iconColor" value="<%= contact.iconColor %>">
-                  </div>
-                  <div class="form-group">
-                    <label for="iconUrl">URL de Imagen de Icono:</label>
-                    <input type="url" id="iconUrl-<%= contact._id %>" name="iconUrl" value="<%= contact.iconUrl %>" placeholder="https://ejemplo.com/icono.png">
-                  </div>
-                  <div class="form-group">
-                    <label for="iconFile">Subir Icono (imagen):</label>
-                    <input type="file" id="iconFile-<%= contact._id %>" name="iconFile" accept="image/*">
-                  </div>
-                  <button type="submit" class="btn">Actualizar</button>
-                </fieldset>
-              </form>
-            </div>
-          </div>
-        <% }); %>
-      </div>
+          </td>
+        </tr>
+      <% }); %>
+    </tbody>
+  </table>
+</div>
     </section>
+    <div id="deleteModal" class="modal-custom" style="display:none;">
+  <div class="modal-content-custom">
+    <span class="close-modal" onclick="closeDeleteModal()">&times;</span>
+    <h3>¿Estás seguro que deseas eliminar este contacto?</h3>
+    <div style="display:flex;gap:16px;justify-content:center;margin-top:24px;">
+      <button class="btn btn-danger" onclick="confirmDeleteAction()">Sí, eliminar</button>
+      <button class="btn btn-secondary" onclick="closeDeleteModal()">No, cancelar</button>
+    </div>
+  </div>
+</div>
+    <!-- Modal de edición de contacto -->
+<div id="editContactModal" class="modal-custom" style="display:none;">
+  <div class="modal-content-custom">
+    <span class="close-modal" onclick="closeEditContactModal()">&times;</span>
+    <h3>Editar Contacto</h3>
+    <form id="editContactForm" method="post" enctype="multipart/form-data">
+      <div class="form-group">
+        <label for="edit_name">Nombre:</label>
+        <input type="text" id="edit_name" name="name" required>
+      </div>
+      <div class="form-group">
+        <label for="edit_email">Email:</label>
+        <input type="email" id="edit_email" name="email">
+      </div>
+      <div class="form-group">
+        <label for="edit_telefono">Teléfono:</label>
+        <input type="text" id="edit_telefono" name="telefono">
+      </div>
+      <div class="form-group">
+        <label for="edit_facebookUrl">Facebook:</label>
+        <input type="text" id="edit_facebookUrl" name="facebookUrl">
+      </div>
+      <div class="form-group">
+        <label for="edit_extraUrl">URL Extra:</label>
+        <input type="text" id="edit_extraUrl" name="extraUrl">
+      </div>
+      <div class="form-group">
+        <label for="edit_footer">Texto Footer:</label>
+        <input type="text" id="edit_footer" name="footer">
+      </div>
+      <div class="form-group">
+        <label for="edit_iconColor">Color del Icono:</label>
+        <input type="color" id="edit_iconColor" name="iconColor">
+      </div>
+      <div class="form-group">
+        <label for="edit_iconUrl">URL de Imagen de Icono:</label>
+        <input type="url" id="edit_iconUrl" name="iconUrl">
+      </div>
+      <div class="form-group">
+        <label for="edit_iconFile">Subir Icono (imagen):</label>
+        <input type="file" id="edit_iconFile" name="iconFile" accept="image/*">
+      </div>
+      <button type="submit" class="btn btn-primary">Actualizar</button>
+      <button type="button" class="btn btn-secondary" onclick="closeEditContactModal()">Cancelar</button>
+    </form>
+  </div>
+</div>
     <script>
       function toggleUpdateForm(id) {
-        const form = document.getElementById(`update-form-${id}`);
-        form.style.display = form.style.display === 'none' ? 'block' : 'none';
+        const row = document.getElementById(`update-form-${id}`);
+        if(row) row.style.display = row.style.display === 'none' ? '' : 'none';
       }
+    </script>
+    <script>
+      function confirmDelete(e) {
+  if (!confirm('¿Estás seguro de que deseas eliminar este contacto?')) {
+    e.preventDefault();
+    return false;
+  }
+  return true;
+}
+    </script>
+    <script>
+      // Script para marcar solo la pestaña activa
+      document.addEventListener('DOMContentLoaded', function() {
+        const menu = document.getElementById('sidebar-menu');
+        if(menu) {
+          const links = menu.querySelectorAll('a');
+          const current = window.location.pathname;
+          links.forEach(link => {
+            if(link.getAttribute('href') && current.startsWith(link.getAttribute('href')) && link.getAttribute('href') !== '/logout') {
+              links.forEach(l => l.classList.remove('active'));
+              link.classList.add('active');
+            }
+          });
+        }
+      });
+    </script>
+    <script>
+function openContactModal() {
+  document.getElementById('contactModal').style.display = 'flex';
+  document.getElementById('contactModal').classList.add('active');
+}
+function closeContactModal() {
+  document.getElementById('contactModal').style.display = 'none';
+  document.getElementById('contactModal').classList.remove('active');
+}
+    </script>
+    <script>
+let deleteFormRef = null;
+function openDeleteModal(form) {
+  deleteFormRef = form;
+  document.getElementById('deleteModal').style.display = 'flex';
+  document.getElementById('deleteModal').classList.add('active');
+}
+function closeDeleteModal() {
+  document.getElementById('deleteModal').style.display = 'none';
+  document.getElementById('deleteModal').classList.remove('active');
+  deleteFormRef = null;
+}
+function confirmDeleteAction() {
+  if(deleteFormRef) deleteFormRef.submit();
+  closeDeleteModal();
+}
+window.addEventListener('DOMContentLoaded',()=>{
+  document.querySelectorAll('form[action^="/admin/contact/delete/"]').forEach(form => {
+    form.onsubmit = function(e) {
+      e.preventDefault();
+      openDeleteModal(form);
+      return false;
+    };
+  });
+});
+    </script>
+    <script>
+document.addEventListener('DOMContentLoaded', function() {
+  const sidebar = document.getElementById('sidebarAdmin');
+  const toggle = document.getElementById('sidebarToggle');
+  function checkSidebar() {
+    if(window.innerWidth <= 600) {
+      toggle.style.display = 'block';
+      sidebar.classList.remove('active');
+    } else {
+      toggle.style.display = 'none';
+      sidebar.classList.remove('active');
+    }
+  }
+  toggle.onclick = function() {
+    sidebar.classList.toggle('active');
+  };
+  window.addEventListener('resize', checkSidebar);
+  checkSidebar();
+});
+    </script>
+    <script>
+function openEditContactModal(contact) {
+  document.getElementById('editContactForm').action = '/admin/contact/update/' + contact._id;
+  document.getElementById('edit_name').value = contact.name;
+  document.getElementById('edit_email').value = contact.email || '';
+  document.getElementById('edit_telefono').value = contact.telefono || '';
+  document.getElementById('edit_facebookUrl').value = contact.facebookUrl || '';
+  document.getElementById('edit_extraUrl').value = contact.extraUrl || '';
+  document.getElementById('edit_footer').value = contact.footer || '';
+  document.getElementById('edit_iconColor').value = contact.iconColor || '#000000';
+  document.getElementById('edit_iconUrl').value = contact.iconUrl || '';
+  document.getElementById('edit_iconFile').value = '';
+  document.getElementById('editContactModal').style.display = 'flex';
+  document.getElementById('editContactModal').classList.add('active');
+}
+function closeEditContactModal() {
+  document.getElementById('editContactModal').style.display = 'none';
+  document.getElementById('editContactModal').classList.remove('active');
+}
+window.addEventListener('DOMContentLoaded',()=>{
+  document.querySelectorAll('.btn-edit-contact').forEach(btn => {
+    btn.onclick = function() {
+      const contact = JSON.parse(this.dataset.contact);
+      openEditContactModal(contact);
+    };
+  });
+});
     </script>
   </main>
 </body>

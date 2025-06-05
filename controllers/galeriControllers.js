@@ -12,6 +12,19 @@ exports.getGaleria = async (req, res) => {
   }
 };
 
+// Obtener solo las imágenes de galería para el slider de ofertas en home
+exports.getGaleriaImages = async (req, res, next) => {
+  try {
+    const galeriaImages = await Oferta.find({}, 'image title');
+    res.locals.galeriaImages = galeriaImages;
+    next();
+  } catch (error) {
+    console.error('Error al obtener imágenes de galería:', error);
+    res.locals.galeriaImages = [];
+    next();
+  }
+};
+
 // Añadir una nueva oferta
 exports.addGaleria = async (req, res) => {
   try {

@@ -163,157 +163,373 @@
       .main-admin-content {
         padding: 12px 2px 12px 2px;
       }
+      .modal-content-custom {
+        padding: 18px 6px;
+        min-width: 0;
+        max-width: 98vw;
+      }
+      .sidebar-admin {
+        position: absolute;
+        width: 250px;
+        height: 100vh;
+        top: 0;
+        left: -250px;
+        transition: left 0.3s;
+      }
+      .sidebar-admin.active {
+        left: 0;
+      }
+      .sidebar-toggle {
+        display: block;
+        position: absolute;
+        top: 16px;
+        left: 16px;
+        background: #2980b9;
+        color: #fff;
+        border: none;
+        border-radius: 6px;
+        padding: 10px;
+        cursor: pointer;
+        z-index: 11;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+      }
+    }
+    .table.offer-table {
+      width: 100%;
+      background: #fff;
+      border-radius: 10px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+      overflow: hidden;
+      margin-bottom: 40px;
+    }
+    .table.offer-table th, .table.offer-table td {
+      vertical-align: middle;
+      text-align: center;
+    }
+    .table.offer-table th {
+      background: #f5f5f5;
+      font-weight: 700;
+      color: #232946;
+    }
+    .btn-sm { padding: 4px 16px; font-size: 15px; border-radius: 6px; font-weight: 600; }
+    .btn-success { background: #27ae60; color: #fff; border: none; }
+    .btn-primary { background: #2980b9; color: #fff; border: none; }
+    .btn-danger { background: #e74c3c; color: #fff; border: none; }
+    .btn-secondary { background: #888; color: #fff; border: none; }
+    .btn-success:hover { background: #219150; }
+    .btn-primary:hover { background: #206090; }
+    .btn-danger:hover { background: #c0392b; }
+    .btn-secondary:hover { background: #555; }
+    .update-form-row td { padding: 0 !important; }
+    .modal-custom {
+      display: none;
+      position: fixed;
+      z-index: 9999;
+      left: 0;
+      top: 0;
+      width: 100vw;
+      height: 100vh;
+      background: rgba(0,0,0,0.4);
+      justify-content: center;
+      align-items: center;
+    }
+    .modal-custom.active { display: flex; }
+    .modal-content-custom {
+      background: #fff;
+      padding: 32px 24px;
+      border-radius: 16px;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.18);
+      min-width: 320px;
+      max-width: 420px;
+      width: 95vw;
+      max-height: 90vh;
+      overflow-y: auto;
+      position: relative;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      align-items: stretch;
+    }
+    .close-modal {
+      position: absolute;
+      top: 12px;
+      right: 18px;
+      font-size: 2rem;
+      color: #888;
+      cursor: pointer;
     }
   </style>
 </head>
 <body class="admin-page">
-  <aside class="sidebar-admin">
+  <button class="sidebar-toggle" id="sidebarToggle" style="display:none;"><i class="fas fa-bars"></i></button>
+  <aside class="sidebar-admin" id="sidebarAdmin">
     <div class="admin-avatar">
-      <img src="/img/LogoOfic.png" alt="Admin Avatar">
+      <img src="<%= homeInfo && homeInfo.logoUrl ? homeInfo.logoUrl : '/img/LogoOfic.png' %>" alt="Admin Avatar">
     </div>
     <div class="admin-name">Panel Admin</div>
-    <ul>
+    <ul id="sidebar-menu">
       <li><a href="/admin"><i class="fas fa-tachometer-alt"></i> Inicio</a></li>
-      <li><a href="/admin/services"><i class="fas fa-tags"></i> Productos</a></li>
+      <li><a href="/admin/services"><i class="fas fa-tags"></i>Productos</a></li>
       <li><a href="/admin/contact"><i class="fas fa-address-book"></i> Contactos</a></li>
-      <li><a href="/admin/galeria" class="active"><i class="fas fa-images"></i> Galería</a></li>
-      <li><a href="/admin/homeinfo"><i class="fas fa-home"></i> Inicio Web</a></li>
+      <li><a href="/admin/galeria"><i class="fas fa-percent"></i>Ofertas</a></li>
+      <li><a href="/admin/users"><i class="fas fa-users-cog"></i> Usuarios</a></li>
       <li><a href="/logout"><i class="fas fa-sign-out-alt"></i> Cerrar Sesión</a></li>
     </ul>
   </aside>
   <main class="main-admin-content">
     <section style="max-width:900px;margin:40px auto 0 auto;">
-      <h2 style="text-align:center;margin-bottom:32px;">Agregar Oferta</h2>
-      <form action="/admin/galeria/add" method="post" class="gallery-form" enctype="multipart/form-data">
-        <div class="form-group">
-          <label for="title">Título de la Oferta:</label>
-          <input type="text" id="title" name="title" required>
-        </div>
-        <div class="form-group">
-          <label for="description">Descripción:</label>
-          <textarea id="description" name="description" required></textarea>
-        </div>
-        <div class="form-group">
-          <label for="tipo">Tipo de Oferta:</label>
-          <select id="tipo" name="tipo" required>
-            <option value="semanal">Semanal</option>
-            <option value="mensual">Mensual</option>
-            <option value="descuento">Descuento</option>
-            <option value="2x1">2x1</option>
-            <option value="3x2">3x2</option>
-            <option value="especial">Especial</option>
-          </select>
-        </div>
-        <div class="form-group">
-          <label for="especial">Oferta Especial (ej: 2x1, 3x2, etc):</label>
-          <input type="text" id="especial" name="especial" placeholder="Ejemplo: 2x1">
-        </div>
-        <div class="form-group">
-          <label for="fechaInicio">Fecha de Inicio:</label>
-          <input type="date" id="fechaInicio" name="fechaInicio">
-        </div>
-        <div class="form-group">
-          <label for="fechaFin">Fecha de Fin:</label>
-          <input type="date" id="fechaFin" name="fechaFin">
-        </div>
-        <div class="form-group">
-          <label for="porcentaje">Porcentaje de Descuento (%):</label>
-          <input type="number" id="porcentaje" name="porcentaje" min="0" max="100">
-        </div>
-        <div class="form-group">
-          <label for="image">URL de la Imagen:</label>
-          <input type="text" id="image" name="image" placeholder="http://...">
-        </div>
-        <div class="form-group">
-          <label for="imageFile">O subir imagen:</label>
-          <input type="file" id="imageFile" name="imageFile" accept="image/*">
-        </div>
-        <button type="submit" class="btn">Añadir Oferta</button>
-      </form>
-      <h2 style="text-align:center;margin:48px 0 24px 0;">Ofertas Actuales</h2>
-      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:32px;">
-        <% galeria.forEach(oferta => { %>
-          <div class="card-producto">
-            <img src="<%= oferta.image %>" alt="<%= oferta.title %>">
-            <div class="nombre"><%= oferta.title %></div>
-            <div class="descripcion"><%= oferta.description %></div>
-            <div class="descripcion">Tipo: <%= oferta.tipo %></div>
-            <% if (oferta.porcentaje) { %>
-              <div class="descripcion">Descuento: <%= oferta.porcentaje %>%</div>
-            <% } %>
-            <% if (oferta.especial) { %>
-              <div class="descripcion">Oferta Especial: <%= oferta.especial %></div>
-            <% } %>
-            <% if (oferta.fechaInicio) { %>
-              <div class="descripcion">Desde: <%= oferta.fechaInicio.toLocaleDateString() %></div>
-            <% } %>
-            <% if (oferta.fechaFin) { %>
-              <div class="descripcion">Hasta: <%= oferta.fechaFin.toLocaleDateString() %></div>
-            <% } %>
-            <form action="/admin/galeria/delete/<%= oferta._id %>" method="post" style="display:inline;">
-              <button type="submit" class="btn" style="background:#f44336;color:#fff;">Eliminar</button>
-            </form>
-            <button class="btn" style="background:#b48e5c;color:#fff;margin-top:8px;" onclick="toggleUpdateForm('<%= oferta._id %>')">Actualizar</button>
-            <div id="update-form-<%= oferta._id %>" class="update-form-container" style="display:none;margin-top:12px;">
-              <form action="/admin/galeria/update/<%= oferta._id %>" method="post" class="update-form" enctype="multipart/form-data">
-                <fieldset>
-                  <legend>Actualizar Oferta</legend>
-                  <div class="form-group">
-                    <label for="title">Título de la Oferta:</label>
-                    <input type="text" id="title" name="title" value="<%= oferta.title %>" required>
-                  </div>
-                  <div class="form-group">
-                    <label for="description">Descripción:</label>
-                    <textarea id="description" name="description" required><%= oferta.description %></textarea>
-                  </div>
-                  <div class="form-group">
-                    <label for="tipo">Tipo de Oferta:</label>
-                    <select id="tipo" name="tipo" required>
-                      <option value="semanal" <%= oferta.tipo === 'semanal' ? 'selected' : '' %>>Semanal</option>
-                      <option value="mensual" <%= oferta.tipo === 'mensual' ? 'selected' : '' %>>Mensual</option>
-                      <option value="descuento" <%= oferta.tipo === 'descuento' ? 'selected' : '' %>>Descuento</option>
-                      <option value="2x1" <%= oferta.tipo === '2x1' ? 'selected' : '' %>>2x1</option>
-                      <option value="3x2" <%= oferta.tipo === '3x2' ? 'selected' : '' %>>3x2</option>
-                      <option value="especial" <%= oferta.tipo === 'especial' ? 'selected' : '' %>>Especial</option>
-                    </select>
-                  </div>
-                  <div class="form-group">
-                    <label for="especial">Oferta Especial (ej: 2x1, 3x2, etc):</label>
-                    <input type="text" id="especial" name="especial" value="<%= oferta.especial %>" placeholder="Ejemplo: 2x1">
-                  </div>
-                  <div class="form-group">
-                    <label for="fechaInicio">Fecha de Inicio:</label>
-                    <input type="date" id="fechaInicio" name="fechaInicio" value="<%= oferta.fechaInicio ? oferta.fechaInicio.toISOString().split('T')[0] : '' %>">
-                  </div>
-                  <div class="form-group">
-                    <label for="fechaFin">Fecha de Fin:</label>
-                    <input type="date" id="fechaFin" name="fechaFin" value="<%= oferta.fechaFin ? oferta.fechaFin.toISOString().split('T')[0] : '' %>">
-                  </div>
-                  <div class="form-group">
-                    <label for="porcentaje">Porcentaje de Descuento (%):</label>
-                    <input type="number" id="porcentaje" name="porcentaje" min="0" max="100" value="<%= oferta.porcentaje %>">
-                  </div>
-                  <div class="form-group">
-                    <label for="image">URL de la Imagen:</label>
-                    <input type="text" id="image" name="image" value="<%= oferta.image %>" placeholder="http://...">
-                  </div>
-                  <div class="form-group">
-                    <label for="imageFile">O subir imagen:</label>
-                    <input type="file" id="imageFile" name="imageFile" accept="image/*">
-                  </div>
-                  <button type="submit" class="btn">Actualizar</button>
-                </fieldset>
-              </form>
+      <h2 style="text-align:center;margin-bottom:32px;">Ofertas Actuales</h2>
+      <button class="btn btn-primary" style="margin-bottom:24px;" onclick="openOfferModal()">Registrar Oferta</button>
+      <div id="offerModal" class="modal-custom" style="display:none;">
+        <div class="modal-content-custom">
+          <span class="close-modal" onclick="closeOfferModal()">&times;</span>
+          <h3>Registrar Nueva Oferta</h3>
+          <form action="/admin/galeria/add" method="post" class="offer-form" enctype="multipart/form-data">
+            <div class="form-group">
+              <label for="title">Título de la Oferta:</label>
+              <input type="text" id="title" name="title" required>
             </div>
-          </div>
-        <% }); %>
+            <div class="form-group">
+              <label for="description">Descripción:</label>
+              <textarea id="description" name="description" required></textarea>
+            </div>
+            <div class="form-group">
+              <label for="tipo">Tipo de Oferta:</label>
+              <select id="tipo" name="tipo" required>
+                <option value="semanal">Semanal</option>
+                <option value="mensual">Mensual</option>
+                <option value="descuento">Descuento</option>
+                <option value="2x1">2x1</option>
+                <option value="3x2">3x2</option>
+                <option value="especial">Especial</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="especial">Oferta Especial (ej: 2x1, 3x2, etc):</label>
+              <input type="text" id="especial" name="especial" placeholder="Ejemplo: 2x1">
+            </div>
+            <div class="form-group">
+              <label for="fechaInicio">Fecha de Inicio:</label>
+              <input type="date" id="fechaInicio" name="fechaInicio">
+            </div>
+            <div class="form-group">
+              <label for="fechaFin">Fecha de Fin:</label>
+              <input type="date" id="fechaFin" name="fechaFin">
+            </div>
+            <div class="form-group">
+              <label for="porcentaje">Porcentaje de Descuento (%):</label>
+              <input type="number" id="porcentaje" name="porcentaje" min="0" max="100">
+            </div>
+            <div class="form-group">
+              <label for="image">URL de la Imagen:</label>
+              <input type="text" id="image" name="image" placeholder="http://...">
+            </div>
+            <div class="form-group">
+              <label for="imageFile">O subir imagen:</label>
+              <input type="file" id="imageFile" name="imageFile" accept="image/*">
+            </div>
+            <button type="submit" class="btn btn-primary">Registrar</button>
+            <button type="button" class="btn btn-secondary" onclick="closeOfferModal()">Cancelar</button>
+          </form>
+        </div>
+      </div>
+      <!-- Modal de edición de oferta -->
+      <div id="editOfferModal" class="modal-custom" style="display:none;">
+        <div class="modal-content-custom">
+          <span class="close-modal" onclick="closeEditOfferModal()">&times;</span>
+          <h3>Editar Oferta</h3>
+          <form id="editOfferForm" method="post" enctype="multipart/form-data">
+            <div class="form-group">
+              <label for="edit_title">Título:</label>
+              <input type="text" id="edit_title" name="title" required>
+            </div>
+            <div class="form-group">
+              <label for="edit_description">Descripción:</label>
+              <textarea id="edit_description" name="description" required></textarea>
+            </div>
+            <div class="form-group">
+              <label for="edit_tipo">Tipo:</label>
+              <input type="text" id="edit_tipo" name="tipo">
+            </div>
+            <div class="form-group">
+              <label for="edit_fechaInicio">Fecha Inicio:</label>
+              <input type="date" id="edit_fechaInicio" name="fechaInicio">
+            </div>
+            <div class="form-group">
+              <label for="edit_fechaFin">Fecha Fin:</label>
+              <input type="date" id="edit_fechaFin" name="fechaFin">
+            </div>
+            <div class="form-group">
+              <label for="edit_porcentaje">Porcentaje de Descuento (%):</label>
+              <input type="number" id="edit_porcentaje" name="porcentaje" min="0" max="100">
+            </div>
+            <div class="form-group">
+              <label for="edit_image">URL de la Imagen:</label>
+              <input type="text" id="edit_image" name="image">
+            </div>
+            <div class="form-group">
+              <label for="edit_imageFile">O subir imagen:</label>
+              <input type="file" id="edit_imageFile" name="imageFile" accept="image/*">
+            </div>
+            <button type="submit" class="btn btn-primary">Actualizar</button>
+            <button type="button" class="btn btn-secondary" onclick="closeEditOfferModal()">Cancelar</button>
+          </form>
+        </div>
+      </div>
+      <div class="table-responsive">
+        <table class="table table-striped table-hover offer-table">
+          <thead>
+            <tr>
+              <th>Título</th>
+              <th>Descripción</th>
+              <th>Tipo</th>
+              <th>Descuento</th>
+              <th>Especial</th>
+              <th>Desde</th>
+              <th>Hasta</th>
+              <th>Imagen</th>
+              <th style="min-width:180px;">Acciones</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% galeria.forEach(oferta => { %>
+              <tr>
+                <td><%= oferta.title %></td>
+                <td><%= oferta.description %></td>
+                <td><%= oferta.tipo %></td>
+                <td><%= oferta.porcentaje ? oferta.porcentaje + '%' : '' %></td>
+                <td><%= oferta.especial %></td>
+                <td><%= oferta.fechaInicio ? oferta.fechaInicio.toLocaleDateString() : '' %></td>
+                <td><%= oferta.fechaFin ? oferta.fechaFin.toLocaleDateString() : '' %></td>
+                <td>
+                  <% if (oferta.image) { %>
+                    <img src="<%= oferta.image %>" alt="<%= oferta.title %>" style="width:40px;height:40px;object-fit:cover;border-radius:6px;">
+                  <% } %>
+                </td>
+                <td>
+                  <a href="/admin/galeria/view/<%= oferta._id %>" class="btn btn-success btn-sm" style="margin-right:4px;">Ver</a>
+                  <button class="btn btn-primary btn-sm btn-edit-offer" data-offer='<%= JSON.stringify(oferta) %>' style="margin-right:4px;">Editar</button>
+                  <form action="/admin/galeria/delete/<%= oferta._id %>" method="post" style="display:inline;" onsubmit="return confirmDelete(event)">
+                    <button type="submit" class="btn btn-danger btn-sm">Eliminar</button>
+                  </form>
+                </td>
+              </tr>
+            <% }); %>
+          </tbody>
+        </table>
       </div>
     </section>
+    <div id="deleteModal" class="modal-custom" style="display:none;">
+      <div class="modal-content-custom">
+        <span class="close-modal" onclick="closeDeleteModal()">&times;</span>
+        <h3>¿Estás seguro que deseas eliminar esta oferta?</h3>
+        <div style="display:flex;gap:16px;justify-content:center;margin-top:24px;">
+          <button class="btn btn-danger" onclick="confirmDeleteAction()">Sí, eliminar</button>
+          <button class="btn btn-secondary" onclick="closeDeleteModal()">No, cancelar</button>
+        </div>
+      </div>
+    </div>
     <script>
-      function toggleUpdateForm(id) {
-        const form = document.getElementById(`update-form-${id}`);
-        form.style.display = form.style.display === 'none' ? 'block' : 'none';
+      let deleteFormRef = null;
+      function openDeleteModal(form) {
+        deleteFormRef = form;
+        document.getElementById('deleteModal').style.display = 'flex';
+        document.getElementById('deleteModal').classList.add('active');
       }
+      function closeDeleteModal() {
+        document.getElementById('deleteModal').style.display = 'none';
+        document.getElementById('deleteModal').classList.remove('active');
+        deleteFormRef = null;
+      }
+      function confirmDeleteAction() {
+        if(deleteFormRef) deleteFormRef.submit();
+        closeDeleteModal();
+      }
+      window.addEventListener('DOMContentLoaded',()=>{
+        document.querySelectorAll('form[action^="/admin/galeria/delete/"]').forEach(form => {
+          form.onsubmit = function(e) {
+            e.preventDefault();
+            openDeleteModal(form);
+            return false;
+          };
+        });
+      });
+      function openEditOfferModal(offer) {
+        document.getElementById('editOfferForm').action = '/admin/galeria/update/' + offer._id;
+        document.getElementById('edit_title').value = offer.title;
+        document.getElementById('edit_description').value = offer.description || '';
+        document.getElementById('edit_tipo').value = offer.tipo || '';
+        document.getElementById('edit_fechaInicio').value = offer.fechaInicio ? offer.fechaInicio.substring(0,10) : '';
+        document.getElementById('edit_fechaFin').value = offer.fechaFin ? offer.fechaFin.substring(0,10) : '';
+        document.getElementById('edit_porcentaje').value = offer.porcentaje || '';
+        document.getElementById('edit_image').value = offer.image || '';
+        document.getElementById('edit_imageFile').value = '';
+        document.getElementById('editOfferModal').style.display = 'flex';
+        document.getElementById('editOfferModal').classList.add('active');
+      }
+      function closeEditOfferModal() {
+        document.getElementById('editOfferModal').style.display = 'none';
+        document.getElementById('editOfferModal').classList.remove('active');
+      }
+      window.addEventListener('DOMContentLoaded',()=>{
+        document.querySelectorAll('.btn-edit-offer').forEach(btn => {
+          btn.onclick = function() {
+            const offer = JSON.parse(this.dataset.offer);
+            openEditOfferModal(offer);
+          };
+        });
+      });
+      function toggleUpdateForm(id) {
+        const row = document.getElementById(`update-form-${id}`);
+        if(row) row.style.display = row.style.display === 'none' ? '' : 'none';
+      }
+      function confirmDelete(e) {
+        if (!confirm('¿Estás seguro de que deseas eliminar esta oferta?')) {
+          e.preventDefault();
+          return false;
+        }
+        return true;
+      }
+      function openOfferModal() {
+        document.getElementById('offerModal').style.display = 'flex';
+        document.getElementById('offerModal').classList.add('active');
+      }
+      function closeOfferModal() {
+        document.getElementById('offerModal').style.display = 'none';
+        document.getElementById('offerModal').classList.remove('active');
+      }
+      // Script para marcar solo la pestaña activa
+      document.addEventListener('DOMContentLoaded', function() {
+        const menu = document.getElementById('sidebar-menu');
+        if(menu) {
+          const links = menu.querySelectorAll('a');
+          const current = window.location.pathname;
+          links.forEach(link => {
+            if(link.getAttribute('href') && current.startsWith(link.getAttribute('href')) && link.getAttribute('href') !== '/logout') {
+              links.forEach(l => l.classList.remove('active'));
+              link.classList.add('active');
+            }
+          });
+        }
+      });
+      document.addEventListener('DOMContentLoaded', function() {
+      const sidebar = document.getElementById('sidebarAdmin');
+      const toggle = document.getElementById('sidebarToggle');
+      function checkSidebar() {
+        if(window.innerWidth <= 600) {
+          toggle.style.display = 'block';
+          sidebar.classList.remove('active');
+        } else {
+          toggle.style.display = 'none';
+          sidebar.classList.remove('active');
+        }
+      }
+      toggle.onclick = function() {
+        sidebar.classList.toggle('active');
+      };
+      window.addEventListener('resize', checkSidebar);
+      checkSidebar();
+    });
     </script>
   </main>
 </body>
