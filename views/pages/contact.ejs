@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Contacto - <%= homeInfo && homeInfo.nombreLocal ? homeInfo.nombreLocal : "Moda Hombre D'Angelo" %></title>
+  <link rel="stylesheet" href="/css/styles.css">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+  <link rel="icon" href="<%= homeInfo && homeInfo.iconUrl ? homeInfo.iconUrl : '/img/LogoOfic.png' %>" type="image/png">
+  <style>
+    body {
+      background: #fff;
+    }
+
+    .contact-section {
+      max-width: 1100px;
+      margin: 48px auto 0 auto;
+      padding: 0 16px;
+    }
+
+    .contact-title {
+      font-size: 2.2rem;
+      font-weight: 800;
+      text-align: center;
+      margin-bottom: 32px;
+      color: #222;
+    }
+
+    .contacts-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 32px;
+    }
+
+    .card-producto {
+      background: #fff;
+      border-radius: 12px;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.1);
+      padding: 16px;
+      text-align: center;
+    }
+
+    .card-producto img {
+      width: 100%;
+      height: 180px;
+      object-fit: cover;
+      border-radius: 12px;
+      margin-bottom: 16px;
+      background: #f3f3f3;
+    }
+
+    .card-producto .icono-circular {
+      width: 80px;
+      height: 80px;
+      object-fit: cover;
+      border-radius: 50%;
+      margin-bottom: 16px;
+      background: #f3f3f3;
+      display: block;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .nombre {
+      font-size: 1.6rem;
+      font-weight: 700;
+      margin-bottom: 8px;
+      color: #222;
+    }
+
+    .descripcion {
+      font-size: 1rem;
+      color: #555;
+      margin-bottom: 16px;
+    }
+
+    .contact-links {
+      margin-top: 10px;
+      display: flex;
+      justify-content: center;
+      gap: 16px;
+    }
+
+    .contact-links a {
+      color: #b48e5c;
+      font-size: 1.4rem;
+      transition: color 0.2s;
+    }
+
+    .contact-links a:hover {
+      color: #222;
+    }
+
+    .btn {
+      width: 100%;
+      margin-top: 12px;
+    }
+
+    .sidebar-social {
+      position: fixed;
+      top: 50%;
+      right: 10px;
+      transform: translateY(-50%);
+      display: flex;
+      flex-direction: column;
+    }
+
+    .sidebar-social a {
+      margin: 5px 0;
+      color: #222;
+      font-size: 20px;
+      transition: color 0.2s;
+    }
+
+    .sidebar-social a:hover {
+      color: #b48e5c;
+    }
+  </style>
+</head>
+<body>
+  <%- include('../partials/header') %>
+  <section class="contact-section">
+    <h2 class="contact-title">Contactos</h2>
+    <div class="contacts-container">
+      <% contact.forEach(contact => { %>
+      <div class="card-producto">
+        <% if (contact.iconFile) { %>
+          <img src="/uploads/<%= contact.iconFile %>" alt="Icono" class="icono-circular">
+        <% } else if (contact.iconUrl) { %>
+          <img src="<%= contact.iconUrl %>" alt="Icono" class="icono-circular">
+        <% } else { %>
+          <% var color = contact.iconColor ? contact.iconColor : '#b48e5c'; %>
+          <span class="icono-circular" style="background-color:<%= color %>;display:flex;align-items:center;justify-content:center;">
+            <i class="fas fa-user-circle" style="font-size:70px;color:#fff;"></i>
+          </span>
+        <% } %>
+        <div class="nombre" style="margin-bottom: 12px;">
+        <% if (contact.facebookUrl) { %>
+          <a href="<%= contact.facebookUrl %>" target="_blank" style="color:inherit;text-decoration:none;cursor:pointer;"><%= contact.name %></a>
+        <% } else { %>
+          <%= contact.name %>
+        <% } %>
+        </div>
+        <div class="descripcion">
+        <p>
+          <strong>Correo electrónico:</strong>
+          <% if (contact.emailUrl) { %>
+          <a href="<%= contact.emailUrl %>" style="color:inherit;text-decoration:underline;cursor:pointer;"><%= contact.email %></a>
+          <% } else { %>
+          <%= contact.email %>
+          <% } %>
+        </p>
+        <br>
+        <p>
+          <strong>Teléfono:</strong>
+          <% if (contact.whatsappUrl) { %>
+          <a href="<%= contact.whatsappUrl %>" target="_blank" style="color:inherit;text-decoration:underline;cursor:pointer;"><%= contact.telefono %></a>
+          <% } else { %>
+          <%= contact.telefono %>
+          <% } %>
+        </p>
+        <% if (contact.extraUrl) { %>
+          <p>
+          <strong>Información adicional:</strong>
+          <a href="<%= contact.extraUrl %>" target="_blank"><%= contact.extraUrl %></a>
+          </p>
+        <% } %>
+        </div>
+        <div class="contact-links">
+        <% if (contact.emailUrl) { %>
+          <a href="<%= contact.emailUrl %>" title="Enviar correo"><i class="fas fa-envelope"></i></a>
+        <% } %>
+        <% if (contact.facebookUrl) { %>
+          <a href="<%= contact.facebookUrl %>" target="_blank" title="Facebook"><i class="fab fa-facebook"></i></a>
+        <% } %>
+        <% if (contact.whatsappUrl) { %>
+          <a href="<%= contact.whatsappUrl %>" target="_blank" title="WhatsApp"><i class="fab fa-whatsapp"></i></a>
+        <% } %>
+        </div>
+      </div>
+      <% }); %>
+    </div>
+  </section>
+  <!--
+  <div class="sidebar-social">
+    <a href="#"><i class="fab fa-facebook-f"></i></a>
+    <a href="#"><i class="fab fa-twitter"></i></a>
+    <a href="#"><i class="fab fa-instagram"></i></a>
+  </div>-->
+  <%- include('../partials/footer') %>
+</body>
+</html>

@@ -1,0 +1,132 @@
+<header>
+    <nav class="navbar" style="background:#fff;box-shadow:0 2px 8px rgba(0,0,0,0.04);padding:0;">
+        <div class="logo">
+            <a href="/" style="font-size:22px;font-weight:900;color:#222;letter-spacing:1px;text-decoration:none;display:flex;align-items:center;gap:8px;">
+                <img src="<%= homeInfo && homeInfo.logoUrl ? homeInfo.logoUrl : '/img/LogoOfic.png' %>" alt="Logo" style="height:40px;width:40px;border-radius:50%;object-fit:cover;box-shadow:0 2px 8px rgba(0,0,0,0.12);background:#fff;padding:2px;">
+                <%= typeof homeInfo !== 'undefined' && homeInfo && homeInfo.nombreLocal ? homeInfo.nombreLocal : "Tienda" %>
+            </a>
+        </div>
+        <div class="menu-toggle" id="mobile-menu">
+            <i class="fas fa-bars"></i>
+        </div>
+        <ul class="nav-list">
+            <li><a href="/">Inicio</a></li>
+            <li><a href="/services">Tienda</a></li>
+            <li><a href="/galeria">Ofertas</a></li>
+            <li><a href="/contact">Contactos</a></li>
+        </ul>
+    </nav>
+</header>
+
+<style>
+/* Estilos para el header */
+header {
+    background-color: #fff;
+    padding: 10px 10px;
+    position: relative;
+    z-index: 1000;
+}
+
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1200px;
+    margin: 0 auto;
+    width: 100%;
+}
+
+.logo a {
+    color: #222;
+    text-decoration: none;
+    font-size: 24px;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+}
+
+.menu-toggle {
+    display: none;
+    cursor: pointer;
+    color: #222;
+    font-size: 28px;
+    margin-left: 16px;
+}
+
+.nav-list {
+    list-style: none;
+    display: flex;
+    gap: 24px;
+    margin: 0;
+    padding: 0;
+    align-items: center;
+}
+
+.nav-list li a {
+    color: #222;
+    text-decoration: none;
+    font-size: 17px;
+    font-weight: 600;
+    padding: 8px 18px;
+    border-radius: 22px;
+    transition: background 0.2s, color 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.nav-list li a:hover {
+    background: #f5f5f5;
+    color: #b48e5c !important;
+}
+
+/* Estilos para dispositivos móviles */
+@media (max-width: 768px) {
+    .menu-toggle {
+        display: block;
+    }
+
+    .nav-list {
+        display: none;
+        flex-direction: column;
+        background-color: #fff;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        width: 100%;
+        padding: 10px 0;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+    }
+
+    .nav-list.active {
+        display: flex;
+    }
+
+    .nav-list li {
+        text-align: center;
+        margin: 10px 0;
+    }
+}
+
+@media (max-width: 900px) {
+  .navbar {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 12px 8px;
+  }
+  .nav-list {
+    gap: 12px !important;
+    flex-wrap: wrap;
+  }
+}
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const mobileMenu = document.getElementById('mobile-menu');
+    const navList = document.querySelector('.nav-list');
+    mobileMenu.addEventListener('click', () => {
+        navList.classList.toggle('active');
+    });
+});
+</script>

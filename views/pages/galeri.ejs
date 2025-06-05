@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ofertas - <%= homeInfo && homeInfo.nombreLocal ? homeInfo.nombreLocal : "Moda Hombre D'Angelo" %></title>
+  <link rel="stylesheet" href="/css/styles.css">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+  <link rel="icon" href="<%= homeInfo && homeInfo.iconUrl ? homeInfo.iconUrl : '/img/LogoOfic.png' %>" type="image/png">
+  <style>
+    .otros-section {
+      max-width: 1100px;
+      margin: 48px auto 0 auto;
+      padding: 0 16px;
+    }
+    .otros-title {
+      font-size: 2.2rem;
+      font-weight: 800;
+      text-align: center;
+      margin-bottom: 32px;
+      color: #222;
+    }
+    .otros-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 32px;
+    }
+    .card-producto img {
+      width: 100%;
+      height: 260px;
+      object-fit: cover;
+      border-radius: 12px;
+      margin-bottom: 16px;
+      background: #f3f3f3;
+    }
+    /* Estilos para el modal de imagen */
+    .img-modal {
+      display: none;
+      position: fixed;
+      z-index: 1000;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      background-color: rgba(0, 0, 0, 0.8);
+    }
+    .img-modal.active {
+      display: block;
+    }
+    .img-modal-close {
+      position: absolute;
+      top: 20px;
+      right: 30px;
+      color: white;
+      font-size: 2rem;
+      background: none;
+      border: none;
+      cursor: pointer;
+    }
+    #imgModalImg {
+      display: block;
+      max-width: 90%;
+      max-height: 80%;
+      margin: 60px auto;
+      border: 4px solid white;
+      border-radius: 8px;
+    }
+  </style>
+</head>
+<body>
+  <%- include('../partials/header') %>
+  <section class="otros-section">
+    <h2 class="otros-title">Ofertas</h2>
+    <div class="otros-grid">
+      <% galeria.forEach(oferta => { %>
+        <div class="card-producto">
+          <img src="<%= oferta.image %>" alt="<%= oferta.title %>" class="oferta-img card-img-modal" onclick="openImgModal(this)">
+          <div class="nombre"><%= oferta.title %></div>
+          <div class="descripcion"><%= oferta.description %></div>
+          <div class="descripcion">Tipo: <%= oferta.tipo %></div>
+          <% if (oferta.porcentaje) { %>
+            <div class="descripcion">Descuento: <%= oferta.porcentaje %>%</div>
+          <% } %>
+          <% if (oferta.especial) { %>
+            <div class="descripcion">Oferta Especial: <%= oferta.especial %></div>
+          <% } %>
+          <% if (oferta.fechaInicio) { %>
+            <div class="descripcion">Desde: <%= new Date(oferta.fechaInicio).toLocaleDateString() %></div>
+          <% } %>
+          <% if (oferta.fechaFin) { %>
+            <div class="descripcion">Hasta: <%= new Date(oferta.fechaFin).toLocaleDateString() %></div>
+          <% } %>
+        </div>
+      <% }); %>
+    </div>
+  </section>
+  <!-- Modal para imagen -->
+  <div class="img-modal" id="imgModal" onclick="closeImgModal(event)">
+    <button class="img-modal-close" onclick="closeImgModal(event)">&times;</button>
+    <img id="imgModalImg" src="" alt="Imagen ampliada">
+  </div>
+  <script>
+    function openImgModal(img) {
+      var modal = document.getElementById('imgModal');
+      var modalImg = document.getElementById('imgModalImg');
+      modalImg.src = img.src;
+      modal.classList.add('active');
+    }
+    function closeImgModal(e) {
+      if (e.target.classList.contains('img-modal') || e.target.classList.contains('img-modal-close')) {
+        document.getElementById('imgModal').classList.remove('active');
+        document.getElementById('imgModalImg').src = '';
+      }
+    }
+  </script>
+  <!--<div class="sidebar-social">
+    <a href="#"><i class="fab fa-facebook-f"></i></a>
+    <a href="#"><i class="fab fa-twitter"></i></a>
+    <a href="#"><i class="fab fa-instagram"></i></a>
+  </div>-->
+  <%- include('../partials/footer') %>
+</body>
+</html>

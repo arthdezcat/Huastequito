@@ -1,0 +1,18 @@
+<footer>
+  <ul class="footer-icons">
+    <% if (contact && contact[0]) { %>
+      <li>
+        <a href="<%= contact[0].emailUrl %>"><i class="fas fa-envelope"></i></a>
+      </li>
+      <li>
+        <a href="<%= contact[0].facebookUrl %>" target="_blank"><i class="fab fa-facebook"></i></a>
+      </li>
+      <li>
+        <a href="<%= contact[0].whatsappUrl %>" target="_blank"><i class="fab fa-whatsapp"></i></a>
+      </li>
+    <% } else { %>
+      <li>No contact information available</li>
+    <% } %>
+  </ul>
+  <p style="margin-top:12px;font-size:15px;color:#b48e5c;">&copy; <%= contact && contact[0] ? contact[0].footer : 'Moda Hombre D\'Angelo' %></p>
+</footer>

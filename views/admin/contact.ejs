@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Administrar Contactos - Tienda de Ropa</title>
+  <link rel="stylesheet" href="/css/styles.css">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+  <link rel="icon" href="/img/administracion.png" type="image/png">
+  <style>
+    body.admin-page {
+      display: flex;
+      min-height: 100vh;
+      margin: 0;
+      background: linear-gradient(120deg, #8ec5fc 0%, #e0c3fc 100%);
+    }
+    .sidebar-admin {
+      width: 250px;
+      background: #232946;
+      color: #fff;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 32px 0 0 0;
+      min-height: 100vh;
+      position: fixed;
+      left: 0;
+      top: 0;
+      z-index: 10;
+      box-shadow: 2px 0 12px rgba(0,0,0,0.08);
+    }
+    .sidebar-admin .admin-avatar {
+      width: 90px;
+      height: 90px;
+      border-radius: 50%;
+      background: #fff;
+      margin-bottom: 18px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+    .sidebar-admin .admin-avatar img {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+    .sidebar-admin .admin-name {
+      font-size: 1.2rem;
+      font-weight: 700;
+      margin-bottom: 32px;
+      color: #eebf63;
+    }
+    .sidebar-admin ul {
+      list-style: none;
+      padding: 0;
+      width: 100%;
+    }
+    .sidebar-admin ul li {
+      width: 100%;
+    }
+    .sidebar-admin ul li a {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      color: #fff;
+      text-decoration: none;
+      padding: 16px 32px;
+      font-size: 1.1rem;
+      transition: background 0.2s, color 0.2s;
+      border-left: 4px solid transparent;
+    }
+    .sidebar-admin ul li a:hover, .sidebar-admin ul li a.active {
+      background: #eebf63;
+      color: #232946;
+      border-left: 4px solid #232946;
+    }
+    .main-admin-content {
+      margin-left: 250px;
+      width: calc(100% - 250px);
+      padding: 40px 32px 32px 32px;
+      min-height: 100vh;
+      background: transparent;
+    }
+    .dashboard-cards {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 32px;
+      justify-content: center;
+      margin-top: 32px;
+    }
+    .dashboard-card {
+      background: #fff;
+      border-radius: 18px;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+      padding: 24px 18px;
+      min-width: 260px;
+      max-width: 320px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      transition: box-shadow 0.3s, transform 0.3s;
+    }
+    .dashboard-card img {
+      width: 80px;
+      height: 80px;
+      object-fit: contain;
+      border-radius: 12px;
+      margin-bottom: 16px;
+      background: #f3f3f3;
+    }
+    .dashboard-card .nombre {
+      font-size: 20px;
+      font-weight: 700;
+      margin-bottom: 8px;
+      color: #232946;
+    }
+    .dashboard-card .descripcion {
+      font-size: 15px;
+      color: #555;
+      margin-bottom: 12px;
+      text-align: center;
+    }
+    .dashboard-card .btn {
+      margin-top: 10px;
+      background: #eebf63;
+      color: #232946;
+      font-weight: 700;
+      border-radius: 22px;
+      padding: 8px 24px;
+      border: none;
+      transition: background 0.2s, color 0.2s;
+    }
+    .dashboard-card .btn:hover {
+      background: #232946;
+      color: #fff;
+    }
+    @media (max-width: 900px) {
+      .sidebar-admin {
+        width: 70px;
+        padding: 16px 0 0 0;
+      }
+      .sidebar-admin .admin-name {
+        display: none;
+      }
+      .sidebar-admin ul li a {
+        padding: 16px 10px;
+        font-size: 0.9rem;
+        justify-content: center;
+      }
+      .main-admin-content {
+        margin-left: 70px;
+        width: calc(100% - 70px);
+        padding: 24px 6px 24px 6px;
+      }
+    }
+    @media (max-width: 600px) {
+      .dashboard-cards {
+        flex-direction: column;
+        gap: 18px;
+      }
+      .main-admin-content {
+        padding: 12px 2px 12px 2px;
+      }
+    }
+  </style>
+</head>
+<body class="admin-page">
+  <aside class="sidebar-admin">
+    <div class="admin-avatar">
+      <img src="/img/LogoOfic.png" alt="Admin Avatar">
+    </div>
+    <div class="admin-name">Panel Admin</div>
+    <ul>
+      <li><a href="/admin"><i class="fas fa-tachometer-alt"></i> Inicio</a></li>
+      <li><a href="/admin/services"><i class="fas fa-tags"></i> Productos</a></li>
+      <li><a href="/admin/contact" class="active"><i class="fas fa-address-book"></i> Contactos</a></li>
+      <li><a href="/admin/galeria"><i class="fas fa-images"></i> Galería</a></li>
+      <li><a href="/admin/homeinfo"><i class="fas fa-home"></i> Inicio Web</a></li>
+      <li><a href="/logout"><i class="fas fa-sign-out-alt"></i> Cerrar Sesión</a></li>
+    </ul>
+  </aside>
+  <main class="main-admin-content">
+    <section style="max-width:900px;margin:40px auto 0 auto;">
+      <h2 style="text-align:center;margin-bottom:32px;">Agregar Contacto</h2>
+      <form action="/admin/contact/add" method="post" class="contact-form" enctype="multipart/form-data">
+        <div class="form-group">
+          <label for="name">Nombre:</label>
+          <input type="text" id="name" name="name" required>
+        </div>
+        <div class="form-group">
+          <label for="email">Email:</label>
+          <input 
+            type="email" 
+            id="email" 
+            name="email" 
+            pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,}$" 
+            title="Por favor, introduce un correo electrónico válido (ejemplo: usuario@dominio.com)" 
+            required>
+        </div>
+        <div class="form-group">
+          <label for="telefono">Teléfono:</label>
+          <input 
+            type="text" 
+            id="telefono" 
+            name="telefono" 
+            pattern="^\d{10}$" 
+            title="El número debe tener exactamente 10 dígitos" 
+            maxlength="10"
+            required>
+        </div>
+        <div class="form-group">
+          <label for="emailUrl">URL de Email:</label>
+          <input type="url" id="emailUrl" name="emailUrl" readonly>
+        </div>
+        <script>
+          const emailInputAdd = document.getElementById('email');
+          const emailUrlInputAdd = document.getElementById('emailUrl');
+          emailInputAdd.addEventListener('input', () => {
+            const emailValue = emailInputAdd.value.trim();
+            emailUrlInputAdd.value = emailValue ? `mailto:${emailValue}` : '';
+          });
+        </script>
+        <div class="form-group">
+          <label for="whatsappUrl">Número de WhatsApp:</label>
+          <input type="text" id="whatsappUrl" name="whatsappUrl" readonly>
+        </div>
+        <script>
+          const telefonoInput = document.getElementById('telefono');
+          const whatsappUrlInput = document.getElementById('whatsappUrl');
+          telefonoInput.addEventListener('input', () => {
+            const telefonoValue = telefonoInput.value.replace(/\D/g, '');
+            whatsappUrlInput.value = telefonoValue ? `https://wa.me/${telefonoValue}` : '';
+          });
+        </script>
+        <div class="form-group">
+          <label for="facebookUrl">URL de Facebook:</label>
+          <input type="url" id="facebookUrl" name="facebookUrl">
+        </div>
+        <div class="form-group">
+          <label for="extraUrl">URL Extra:</label>
+          <input type="url" id="extraUrl" name="extraUrl">
+        </div>
+        <div class="form-group">
+          <label for="footer">Footer:</label>
+          <input type="text" id="footer" name="footer">
+        </div>
+        <div class="form-group">
+          <label for="iconColor">Color del Icono:</label>
+          <input type="color" id="iconColor" name="iconColor">
+        </div>
+        <div class="form-group">
+          <label for="iconUrl">URL de Imagen de Icono:</label>
+          <input type="url" id="iconUrl" name="iconUrl" placeholder="https://ejemplo.com/icono.png">
+        </div>
+        <div class="form-group">
+          <label for="iconFile">Subir Icono (imagen):</label>
+          <input type="file" id="iconFile" name="iconFile" accept="image/*">
+        </div>
+        <button type="submit" class="btn">Añadir Contacto</button>
+      </form>
+      <h2 style="text-align:center;margin:48px 0 24px 0;">Contactos Actuales</h2>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:32px;">
+        <% contact.forEach(contact => { %>
+          <div class="card-producto">
+            <img src="/img/contactos.png" alt="Contacto">
+            <div class="nombre"><%= contact.name %></div>
+            <div class="descripcion">Email: <%= contact.email %><br>Teléfono: <%= contact.telefono %></div>
+            <form action="/admin/contact/delete/<%= contact._id %>" method="post" style="display:inline;">
+              <button type="submit" class="btn" style="background:#f44336;color:#fff;">Eliminar</button>
+            </form>
+            <button class="btn" style="background:#b48e5c;color:#fff;margin-top:8px;" onclick="toggleUpdateForm('<%= contact._id %>')">Actualizar</button>
+            <div id="update-form-<%= contact._id %>" class="update-form-container" style="display:none;margin-top:12px;">
+              <form action="/admin/contact/update/<%= contact._id %>" method="post" class="update-form" enctype="multipart/form-data">
+                <fieldset>
+                  <legend>Actualizar Contacto</legend>
+                  <div class="form-group">
+                    <label for="name">Nombre:</label>
+                    <input type="text" id="name" name="name" value="<%= contact.name %>" required>
+                  </div>
+                  <div class="form-group">
+                    <label for="email">Email:</label>
+                    <input 
+                      type="email" 
+                      id="email-<%= contact._id %>" 
+                      name="email" 
+                      value="<%= contact.email %>" 
+                      pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,}$" 
+                      title="Por favor, introduce un correo electrónico válido (ejemplo: usuario@dominio.com)" 
+                      required>
+                  </div>
+                    <div class="form-group">
+                    <label for="telefono">Teléfono:</label>
+                    <input 
+                      type="text" 
+                      id="telefono-<%= contact._id %>" 
+                      name="telefono" 
+                      value="<%= contact.telefono %>" 
+                      pattern="^\d{10}$" 
+                      title="El número debe tener exactamente 10 dígitos" 
+                      maxlength="10"
+                      required>
+                    </div>
+                  <div class="form-group">
+                    <label for="emailUrl">URL de Email:</label>
+                    <input type="url" id="emailUrl-<%= contact._id %>" name="emailUrl" value="<%= contact.emailUrl %>" readonly>
+                  </div>
+                  <script>
+                    const emailInput = document.getElementById('email-<%= contact._id %>');
+                    const emailUrlInput = document.getElementById('emailUrl-<%= contact._id %>');
+                    emailInput.addEventListener('input', () => {
+                      const emailValue = emailInput.value.trim();
+                      emailUrlInput.value = emailValue ? `mailto:${emailValue}` : '';
+                    });
+                  </script>
+                  <div class="form-group">
+                    <label for="whatsappUrl">Número de WhatsApp:</label>
+                    <input type="text" id="whatsappUrl-<%= contact._id %>" name="whatsappUrl" value="<%= contact.whatsappUrl %>" readonly>
+                  </div>
+                  <script>
+                    const telefonoInputUpdate = document.getElementById('telefono-<%= contact._id %>');
+                    const whatsappUrlInputUpdate = document.getElementById('whatsappUrl-<%= contact._id %>');
+                    telefonoInputUpdate.addEventListener('input', () => {
+                      const telefonoValue = telefonoInputUpdate.value.replace(/\D/g, '');
+                      whatsappUrlInputUpdate.value = telefonoValue ? `https://wa.me/${telefonoValue}` : '';
+                    });
+                  </script>
+                  <div class="form-group">
+                    <label for="facebookUrl">URL de Facebook:</label>
+                    <input type="url" id="facebookUrl" name="facebookUrl" value="<%= contact.facebookUrl %>">
+                  </div>
+                  <div class="form-group">
+                    <label for="extraUrl">URL Extra:</label>
+                    <input type="url" id="extraUrl" name="extraUrl" value="<%= contact.extraUrl %>">
+                  </div>
+                  <div class="form-group">
+                    <label for="footer">Footer:</label>
+                    <input type="text" id="footer" name="footer" value="<%= contact.footer %>">
+                  </div>
+                  <div class="form-group">
+                    <label for="iconColor">Color del Icono:</label>
+                    <input type="color" id="iconColor-<%= contact._id %>" name="iconColor" value="<%= contact.iconColor %>">
+                  </div>
+                  <div class="form-group">
+                    <label for="iconUrl">URL de Imagen de Icono:</label>
+                    <input type="url" id="iconUrl-<%= contact._id %>" name="iconUrl" value="<%= contact.iconUrl %>" placeholder="https://ejemplo.com/icono.png">
+                  </div>
+                  <div class="form-group">
+                    <label for="iconFile">Subir Icono (imagen):</label>
+                    <input type="file" id="iconFile-<%= contact._id %>" name="iconFile" accept="image/*">
+                  </div>
+                  <button type="submit" class="btn">Actualizar</button>
+                </fieldset>
+              </form>
+            </div>
+          </div>
+        <% }); %>
+      </div>
+    </section>
+    <script>
+      function toggleUpdateForm(id) {
+        const form = document.getElementById(`update-form-${id}`);
+        form.style.display = form.style.display === 'none' ? 'block' : 'none';
+      }
+    </script>
+  </main>
+</body>
+</html>

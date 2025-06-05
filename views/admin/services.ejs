@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Administrar Productos - Tienda de Ropa</title>
+  <link rel="stylesheet" href="/css/styles.css">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+  <link rel="icon" href="/img/administracion.png" type="image/png">
+  <style>
+    body.admin-page {
+      display: flex;
+      min-height: 100vh;
+      margin: 0;
+      background: linear-gradient(120deg, #8ec5fc 0%, #e0c3fc 100%);
+    }
+    .sidebar-admin {
+      width: 250px;
+      background: #232946;
+      color: #fff;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 32px 0 0 0;
+      min-height: 100vh;
+      position: fixed;
+      left: 0;
+      top: 0;
+      z-index: 10;
+      box-shadow: 2px 0 12px rgba(0,0,0,0.08);
+    }
+    .sidebar-admin .admin-avatar {
+      width: 90px;
+      height: 90px;
+      border-radius: 50%;
+      background: #fff;
+      margin-bottom: 18px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+    .sidebar-admin .admin-avatar img {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+    .sidebar-admin .admin-name {
+      font-size: 1.2rem;
+      font-weight: 700;
+      margin-bottom: 32px;
+      color: #eebf63;
+    }
+    .sidebar-admin ul {
+      list-style: none;
+      padding: 0;
+      width: 100%;
+    }
+    .sidebar-admin ul li {
+      width: 100%;
+    }
+    .sidebar-admin ul li a {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      color: #fff;
+      text-decoration: none;
+      padding: 16px 32px;
+      font-size: 1.1rem;
+      transition: background 0.2s, color 0.2s;
+      border-left: 4px solid transparent;
+    }
+    .sidebar-admin ul li a:hover, .sidebar-admin ul li a.active {
+      background: #eebf63;
+      color: #232946;
+      border-left: 4px solid #232946;
+    }
+    .main-admin-content {
+      margin-left: 250px;
+      width: calc(100% - 250px);
+      padding: 40px 32px 32px 32px;
+      min-height: 100vh;
+      background: transparent;
+    }
+    .dashboard-cards {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 32px;
+      justify-content: center;
+      margin-top: 32px;
+    }
+    .dashboard-card {
+      background: #fff;
+      border-radius: 18px;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+      padding: 24px 18px;
+      min-width: 260px;
+      max-width: 320px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      transition: box-shadow 0.3s, transform 0.3s;
+    }
+    .dashboard-card img {
+      width: 80px;
+      height: 80px;
+      object-fit: contain;
+      border-radius: 12px;
+      margin-bottom: 16px;
+      background: #f3f3f3;
+    }
+    .dashboard-card .nombre {
+      font-size: 20px;
+      font-weight: 700;
+      margin-bottom: 8px;
+      color: #232946;
+    }
+    .dashboard-card .descripcion {
+      font-size: 15px;
+      color: #555;
+      margin-bottom: 12px;
+      text-align: center;
+    }
+    .dashboard-card .btn {
+      margin-top: 10px;
+      background: #eebf63;
+      color: #232946;
+      font-weight: 700;
+      border-radius: 22px;
+      padding: 8px 24px;
+      border: none;
+      transition: background 0.2s, color 0.2s;
+    }
+    .dashboard-card .btn:hover {
+      background: #232946;
+      color: #fff;
+    }
+    @media (max-width: 900px) {
+      .sidebar-admin {
+        width: 70px;
+        padding: 16px 0 0 0;
+      }
+      .sidebar-admin .admin-name {
+        display: none;
+      }
+      .sidebar-admin ul li a {
+        padding: 16px 10px;
+        font-size: 0.9rem;
+        justify-content: center;
+      }
+      .main-admin-content {
+        margin-left: 70px;
+        width: calc(100% - 70px);
+        padding: 24px 6px 24px 6px;
+      }
+    }
+    @media (max-width: 600px) {
+      .dashboard-cards {
+        flex-direction: column;
+        gap: 18px;
+      }
+      .main-admin-content {
+        padding: 12px 2px 12px 2px;
+      }
+    }
+  </style>
+</head>
+<body class="admin-page">
+  <aside class="sidebar-admin">
+    <div class="admin-avatar">
+      <img src="/img/LogoOfic.png" alt="Admin Avatar">
+    </div>
+    <div class="admin-name">Panel Admin</div>
+    <ul>
+      <li><a href="/admin"><i class="fas fa-tachometer-alt"></i> Inicio</a></li>
+      <li><a href="/admin/services" class="active"><i class="fas fa-tags"></i> Productos</a></li>
+      <li><a href="/admin/contact"><i class="fas fa-address-book"></i> Contactos</a></li>
+      <li><a href="/admin/galeria"><i class="fas fa-images"></i> Galería</a></li>
+      <li><a href="/admin/homeinfo"><i class="fas fa-home"></i> Inicio Web</a></li>
+      <li><a href="/logout"><i class="fas fa-sign-out-alt"></i> Cerrar Sesión</a></li>
+    </ul>
+  </aside>
+  <main class="main-admin-content">
+    <section style="max-width:900px;margin:40px auto 0 auto;">
+      <h2 style="text-align:center;margin-bottom:32px;">Agregar Producto</h2>
+      <form action="/admin/services/add" method="post" class="service-form-admin" enctype="multipart/form-data">
+        <div class="form-group">
+          <label for="title">Nombre del Producto:</label>
+          <input type="text" id="title" name="title" required>
+        </div>
+        <div class="form-group">
+          <label for="description">Descripción:</label>
+          <textarea id="description" name="description" required></textarea>
+        </div>
+        <div class="form-group">
+          <label for="price">Precio:</label>
+          <input type="number" id="price" name="price" required>
+        </div>
+        <div class="form-group">
+          <label for="cantidad">Cantidad disponible:</label>
+          <input type="number" id="cantidad" name="cantidad" min="0" required>
+        </div>
+        <div class="form-group">
+          <label for="colores">Colores (separados por coma):</label>
+          <input type="text" id="colores" name="colores" placeholder="rojo, azul, verde">
+        </div>
+        <div class="form-group">
+          <label for="tallas">Tallas (separadas por coma):</label>
+          <input type="text" id="tallas" name="tallas" placeholder="S, M, L, XL">
+        </div>
+        <div class="form-group">
+          <label for="image">URL de la Imagen:</label>
+          <input type="text" id="image" name="image" placeholder="http://...">
+        </div>
+        <div class="form-group">
+          <label for="imageFile">O subir imagen:</label>
+          <input type="file" id="imageFile" name="imageFile" accept="image/*">
+        </div>
+        <button type="submit" class="btn">Añadir Producto</button>
+      </form>
+      <h2 style="text-align:center;margin:48px 0 24px 0;">Productos Actuales</h2>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:32px;">
+        <% services.forEach(service => { %>
+          <div class="card-producto">
+            <img src="<%= service.image %>" alt="<%= service.title %>">
+            <div class="nombre"><%= service.title %></div>
+            <div class="precio">$<%= service.price %></div>
+            <div class="descripcion"><%= service.description %></div>
+            <div class="descripcion">Cantidad: <%= service.cantidad %></div>
+            <div class="descripcion">Colores: <%= service.colores ? service.colores.join(', ') : '' %></div>
+            <div class="descripcion">Tallas: <%= service.tallas ? service.tallas.join(', ') : '' %></div>
+            <form action="/admin/services/delete/<%= service._id %>" method="post" style="display:inline;">
+              <button type="submit" class="btn" style="background:#f44336;color:#fff;">Eliminar</button>
+            </form>
+            <button class="btn" style="background:#b48e5c;color:#fff;margin-top:8px;" onclick="toggleUpdateForm('<%= service._id %>')">Actualizar</button>
+            <div id="update-form-<%= service._id %>" class="update-form-container" style="display:none;margin-top:12px;">
+              <form action="/admin/services/update/<%= service._id %>" method="post" class="update-form" enctype="multipart/form-data">
+                <fieldset>
+                  <legend>Actualizar Producto</legend>
+                  <div class="form-group">
+                    <label for="title">Nombre del Producto:</label>
+                    <input type="text" id="title" name="title" value="<%= service.title %>" required>
+                  </div>
+                  <div class="form-group">
+                    <label for="description">Descripción:</label>
+                    <textarea id="description" name="description" required><%= service.description %></textarea>
+                  </div>
+                  <div class="form-group">
+                    <label for="price">Precio:</label>
+                    <input type="number" id="price" name="price" value="<%= service.price %>" required>
+                  </div>
+                  <div class="form-group">
+                    <label for="cantidad">Cantidad disponible:</label>
+                    <input type="number" id="cantidad" name="cantidad" value="<%= service.cantidad %>" min="0" required>
+                  </div>
+                  <div class="form-group">
+                    <label for="colores">Colores (separados por coma):</label>
+                    <input type="text" id="colores" name="colores" value="<%= service.colores ? service.colores.join(', ') : '' %>">
+                  </div>
+                  <div class="form-group">
+                    <label for="tallas">Tallas (separadas por coma):</label>
+                    <input type="text" id="tallas" name="tallas" value="<%= service.tallas ? service.tallas.join(', ') : '' %>">
+                  </div>
+                  <div class="form-group">
+                    <label for="image">URL de la Imagen:</label>
+                    <input type="text" id="image" name="image" value="<%= service.image %>">
+                  </div>
+                  <div class="form-group">
+                    <label for="imageFile">O subir imagen:</label>
+                    <input type="file" id="imageFile" name="imageFile" accept="image/*">
+                  </div>
+                  <button type="submit" class="btn">Actualizar</button>
+                </fieldset>
+              </form>
+            </div>
+          </div>
+        <% }); %>
+      </div>
+    </section>
+  </main>
+  <script>
+    function toggleUpdateForm(id) {
+      const form = document.getElementById(`update-form-${id}`);
+      form.style.display = form.style.display === 'none' ? 'block' : 'none';
+    }
+  </script>
+</body>
+</html>
