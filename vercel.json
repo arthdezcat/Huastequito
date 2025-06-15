@@ -7,13 +7,13 @@
       { "src": "/(.*)", "dest": "server.js" }
     ],
  "env": {
-"MONGO_URI":"mongodb+srv://elhuastequito:UoRjIp6c3AGJu4wX@cluster0.e6gzvyj.mongodb.net/ElHuastequito",
-"JWT_SECRET":"tu_secreto_para_mi",
-"KEY_SECRET":"mi_secreto_esta_con_tigo",
-"CLOUDINARY_CLOUD_NAME":"dqvrkeuv8",
-"CLOUDINARY_API_KEY":"134131938256362",
-"CLOUDINARY_API_SECRET":"Nab5mAmGbLFcoBwaicxFkcCY_vg",
-"PORT":"3000"
+    "MONGO_URI":"mongodb+srv://elhuastequito:UoRjIp6c3AGJu4wX@cluster0.e6gzvyj.mongodb.net/ElHuastequito",
+    "JWT_SECRET":"tu_secreto_para_mi",
+    "KEY_SECRET":"mi_secreto_esta_con_tigo",
+    "CLOUDINARY_CLOUD_NAME":"dqvrkeuv8",
+    "CLOUDINARY_API_KEY":"134131938256362",
+    "CLOUDINARY_API_SECRET":"Nab5mAmGbLFcoBwaicxFkcCY_vg",
+    "PORT":"3000"
 }
 }
   
