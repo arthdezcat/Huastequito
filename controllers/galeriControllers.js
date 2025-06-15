@@ -1,5 +1,6 @@
 const Oferta = require('../models/Galeria'); // Ahora es Oferta
 const path = require('path');
+const { cloudinary } = require('../middlewares/uploadImage');
 
 // Obtener todas las ofertas
 exports.getGaleria = async (req, res) => {
@@ -30,7 +31,8 @@ exports.addGaleria = async (req, res) => {
   try {
     let image = req.body.image;
     if (req.file) {
-      image = '/uploads/' + req.file.filename;
+      const result = await cloudinary.uploader.upload(req.file.path, { folder: 'galeria' });
+      image = result.secure_url;
     }
     const { title, description, tipo, fechaInicio, fechaFin, porcentaje, especial } = req.body;
     const newOferta = new Oferta({ title, description, image, tipo, fechaInicio, fechaFin, porcentaje, especial });
@@ -46,9 +48,15 @@ exports.addGaleria = async (req, res) => {
 exports.updateGaleria = async (req, res) => {
   try {
     const { id } = req.params;
+    const oferta = await Oferta.findById(id);
     let image = req.body.image;
     if (req.file) {
-      image = '/uploads/' + req.file.filename;
+      if (oferta.image) {
+        const publicId = oferta.image.split('/').pop().split('.')[0];
+        await cloudinary.uploader.destroy(publicId);
+      }
+      const result = await cloudinary.uploader.upload(req.file.path, { folder: 'galeria' });
+      image = result.secure_url;
     }
     const { title, description, tipo, fechaInicio, fechaFin, porcentaje, especial } = req.body;
     await Oferta.findByIdAndUpdate(id, { title, description, image, tipo, fechaInicio, fechaFin, porcentaje, especial });
@@ -63,6 +71,11 @@ exports.updateGaleria = async (req, res) => {
 exports.deleteGaleria = async (req, res) => {
   try {
     const { id } = req.params;
+    const oferta = await Oferta.findById(id);
+    if (oferta.image) {
+      const publicId = oferta.image.split('/').pop().split('.')[0];
+      await cloudinary.uploader.destroy(publicId);
+    }
     await Oferta.findByIdAndDelete(id);
     res.redirect('/admin/galeria');
   } catch (error) {

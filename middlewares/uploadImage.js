@@ -1,15 +1,21 @@
+const cloudinary = require('cloudinary').v2;
 const multer = require('multer');
-const path = require('path');
+const { CloudinaryStorage } = require('multer-storage-cloudinary');
 
-// Configuración de almacenamiento para las imágenes de productos
-const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, path.join(__dirname, '../public/uploads'));
+// Configuración de Cloudinary
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET,
+});
+
+// Configuración de almacenamiento para Cloudinary
+const storage = new CloudinaryStorage({
+  cloudinary: cloudinary,
+  params: {
+    folder: 'uploads', // Carpeta en Cloudinary
+    allowed_formats: ['jpg', 'png', 'jpeg'],
   },
-  filename: function (req, file, cb) {
-    const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
-    cb(null, uniqueSuffix + path.extname(file.originalname));
-  }
 });
 
 const fileFilter = (req, file, cb) => {
@@ -23,4 +29,4 @@ const fileFilter = (req, file, cb) => {
 
 const upload = multer({ storage, fileFilter });
 
-module.exports = upload;
+module.exports = { upload, cloudinary };

@@ -6,7 +6,7 @@ const galeriaController = require('../controllers/galeriControllers');
 const homeInfoController = require('../controllers/homeInfoController');
 const homeInfoPublic = require('../controllers/homeInfoPublic');
 const authMiddleware = require('../middlewares/authMiddleware');
-const upload = require('../middlewares/uploadImage');
+const { upload } = require('../middlewares/uploadImage');
 const userAdminController = require('../controllers/userAdminController');
 
 // Proteger rutas del panel de administración

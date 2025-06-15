@@ -1,5 +1,6 @@
 const Service = require('../models/Service');
 const path = require('path');
+const { cloudinary } = require('../middlewares/uploadImage');
 
 // Obtener todos los servicios
 exports.getServices = async (req, res) => {
@@ -17,7 +18,8 @@ exports.addService = async (req, res) => {
   try {
     let image = req.body.image;
     if (req.file) {
-      image = '/uploads/' + req.file.filename;
+      const result = await cloudinary.uploader.upload(req.file.path);
+      image = result.secure_url;
     }
     const { title, description, price, cantidad, colores, tallas } = req.body;
     const coloresArray = colores ? colores.split(',').map(c => c.trim()) : [];
@@ -43,9 +45,15 @@ exports.addService = async (req, res) => {
 exports.updateService = async (req, res) => {
   try {
     const { id } = req.params;
+    const service = await Service.findById(id);
     let image = req.body.image;
     if (req.file) {
-      image = '/uploads/' + req.file.filename;
+      if (service.image) {
+        const publicId = service.image.split('/').pop().split('.')[0];
+        await cloudinary.uploader.destroy(publicId);
+      }
+      const result = await cloudinary.uploader.upload(req.file.path);
+      image = result.secure_url;
     }
     const { title, description, price, cantidad, colores, tallas } = req.body;
     const coloresArray = colores ? colores.split(',').map(c => c.trim()) : [];
@@ -70,6 +78,11 @@ exports.updateService = async (req, res) => {
 exports.deleteService = async (req, res) => {
   try {
     const { id } = req.params;
+    const service = await Service.findById(id);
+    if (service.image) {
+      const publicId = service.image.split('/').pop().split('.')[0];
+      await cloudinary.uploader.destroy(publicId);
+    }
     await Service.findByIdAndDelete(id);
     res.redirect('/admin/services');
   } catch (error) {
