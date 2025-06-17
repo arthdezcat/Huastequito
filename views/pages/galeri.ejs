@@ -109,6 +109,15 @@
       .slider-btn.next { right: 0; }
       .hero-content, .section, .info-section { padding: 8px 2px; }
     }
+    @media (max-width: 768px) {
+      .otros-section {
+        padding: 10px;
+      }
+
+      .otros-title {
+        font-size: 1.8rem;
+      }
+    }
 
     /* Ajuste para textos largos y desbordes */
     .hero-content, .section, .info-section {
@@ -132,7 +141,7 @@
     <div class="otros-grid">
       <% galeria.forEach(oferta => { %>
         <div class="card-producto">
-          <img src="<%= oferta.image %>" alt="<%= oferta.title %>" class="oferta-img card-img-modal" onclick="openImgModal(this)">
+          <img src="<%= oferta.image %>" alt="<%= oferta.title %>" class="oferta-img card-img-modal" onclick="openImgModal(this)" data-id="<%= oferta._id %>">
           <div class="nombre"><%= oferta.title %></div>
           <div class="descripcion"><%= oferta.description %></div>
           <div class="descripcion">Tipo: <%= oferta.tipo %></div>
@@ -168,6 +177,19 @@
       if (e.target.classList.contains('img-modal') || e.target.classList.contains('img-modal-close')) {
         document.getElementById('imgModal').classList.remove('active');
         document.getElementById('imgModalImg').src = '';
+      }
+    }
+
+    // Obtener el parámetro imageId de la URL
+    const urlParams = new URLSearchParams(window.location.search);
+    const imageId = urlParams.get('imageId');
+
+    if (imageId) {
+      // Buscar la imagen correspondiente y hacer scroll hacia ella
+      const targetImage = document.querySelector(`.oferta-img[data-id='${imageId}']`);
+      if (targetImage) {
+        targetImage.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        targetImage.style.border = '2px solid red'; // Resaltar la imagen
       }
     }
   </script>

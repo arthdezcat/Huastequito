@@ -246,6 +246,20 @@
       .slider-btn.next { right: 0; }
       .hero-content, .section, .info-section { padding: 8px 2px; }
     }
+    @media (max-width: 768px) {
+      .hero {
+        flex-direction: column;
+        padding: 10px;
+      }
+
+      .hero-content h1 {
+        font-size: 1.8rem;
+      }
+
+      .hero-content p {
+        font-size: 1rem;
+      }
+    }
 
     /* RESPONSIVE UNIVERSAL PARA TODAS LAS VISTAS */
     @media (max-width: 900px) {
@@ -318,14 +332,15 @@
         <p style="max-width:600px;margin:0 auto 18px auto;font-size:1.1rem;color:#444;"> <%= homeInfo.descripcion %> </p>
       <% } %>
       <h1>Tienda</h1>
+      <div style="height: 34px;"></div>
       <% if (sliderImages && sliderImages.length > 0) { %>
         <div class="slider-container">
           <button class="slider-btn prev" onclick="moveSlide(-1)">&#10094;</button>
           <div class="slider" id="slider">
         <% sliderImages.forEach(function(img, idx) { %>
           <div class="slide<%= idx === 0 ? ' active' : '' %>" data-index="<%= idx %>">
-            <img src="<%= img.image %>" alt="<%= img.title %>" />
-            <div class="slide-title"><%= img.title || '' %></div>
+        <img src="<%= img.image %>" alt="<%= img.title %>" data-id="<%= img.id %>" />
+        <div class="slide-title"><%= img.title || '' %></div>
           </div>
         <% }); %>
           </div>
@@ -378,14 +393,15 @@
       <% } %>
       <div style="height:32px;"></div>
       <h1>Ofertas</h1>
+      <div style="height: 34px;"></div>
       <% if (galeriaImages && galeriaImages.length > 0) { %>
         <div class="slider-container">
           <button class="slider-btn prev" onclick="moveGaleriaSlide(-1)">&#10094;</button>
           <div class="slider" id="slider-ofertas">
         <% galeriaImages.forEach(function(img, idx) { %>
           <div class="slide<%= idx === 0 ? ' active' : '' %>" data-index="<%= idx %>">
-            <img src="<%= img.image %>" alt="<%= img.title %>" />
-            <div class="slide-title"><%= img.title || '' %></div>
+        <img src="<%= img.image %>" alt="<%= img.title %>" />
+        <div class="slide-title"><%= img.title || '' %></div>
           </div>
         <% }); %>
           </div>
@@ -428,7 +444,7 @@
           galeriaDots.innerHTML = '';
           galeriaSlides.forEach((_, i) => {
         const dot = document.createElement('div');
-        dot.className = 'slider-dot' + (i === 0 ? ' active' : '');
+        dot.className = 'slider-dot' + (i === 0 ? ' active' : '' );
         dot.onclick = () => goToGaleriaSlide(i);
         galeriaDots.appendChild(dot);
           });
@@ -445,5 +461,21 @@
     <a href="#"><i class="fab fa-instagram"></i></a>
   </div>-->
   <%- include('../partials/footer') %>
+  <script>
+  // Agregar evento de clic a las imágenes del slider
+  document.querySelectorAll('.slider img').forEach((img, idx) => {
+    img.addEventListener('click', () => {
+      const isOferta = img.closest('#slider-ofertas');
+      const isTienda = img.closest('#slider');
+      const imageId = img.getAttribute('data-id');
+
+      if (isOferta) {
+        window.location.href = `/galeri?imageId=${imageId}`; // Redirige a la vista de ofertas con el ID de la imagen
+      } else if (isTienda) {
+        window.location.href = `/services?imageId=${imageId}`; // Redirige a la vista de tienda con el ID de la imagen
+      }
+    });
+  });
+</script>
 </body>
 </html>
