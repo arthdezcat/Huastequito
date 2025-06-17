@@ -215,7 +215,7 @@
       .slide, .slide img {
         width: 180px;
         min-width: 120px;
-        max-width: 220px;
+        max-width: 260px;
         height: 120px;
       }
       .slider-btn.prev { left: -16px; }
@@ -250,6 +250,7 @@
       .hero {
         flex-direction: column;
         padding: 10px;
+        min-height: auto;
       }
 
       .hero-content h1 {
@@ -258,6 +259,11 @@
 
       .hero-content p {
         font-size: 1rem;
+      }
+
+      .slider-container {
+        max-width: 100%;
+        padding: 0 10px;
       }
     }
 
@@ -400,7 +406,7 @@
           <div class="slider" id="slider-ofertas">
         <% galeriaImages.forEach(function(img, idx) { %>
           <div class="slide<%= idx === 0 ? ' active' : '' %>" data-index="<%= idx %>">
-        <img src="<%= img.image %>" alt="<%= img.title %>" />
+        <img src="<%= img.image %>" alt="<%= img.title %>" data-id="<%= img._id %>" />
         <div class="slide-title"><%= img.title || '' %></div>
           </div>
         <% }); %>
@@ -470,9 +476,9 @@
       const imageId = img.getAttribute('data-id');
 
       if (isOferta) {
-        window.location.href = `/galeri?imageId=${imageId}`; // Redirige a la vista de ofertas con el ID de la imagen
+        window.location.href = `/galeria?imageId=${imageId}`; // Redirige a la ruta correcta
       } else if (isTienda) {
-        window.location.href = `/services?imageId=${imageId}`; // Redirige a la vista de tienda con el ID de la imagen
+        window.location.href = `/services?imageId=${imageId}`; // Redirige a la vista de tienda
       }
     });
   });

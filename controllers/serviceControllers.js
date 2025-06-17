@@ -6,7 +6,14 @@ const { cloudinary } = require('../middlewares/uploadImage');
 exports.getServices = async (req, res) => {
   try {
     const services = await Service.find();
-    res.render('pages/services', { services, homeInfo: res.locals.homeInfo });
+
+    // Asegurar que todas las imágenes tengan un atributo data-id, incluso si son URLs externas
+    const servicesConIds = services.map(service => ({
+      ...service._doc,
+      dataId: service._id.toString(),
+    }));
+
+    res.render('pages/services', { services: servicesConIds, homeInfo: res.locals.homeInfo });
   } catch (error) {
     console.error(error);
     res.status(500).send('Error al obtener los servicios');

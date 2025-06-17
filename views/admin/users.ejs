@@ -300,7 +300,6 @@
                 <td><%= user.role %></td>
                 <td><%= user.permissions ? user.permissions.join(', ') : '' %></td>
                 <td>
-                  <a href="/admin/users/view/<%= user._id %>" class="btn btn-success btn-sm" style="margin-right:4px;">Ver</a>
                   <% if (user.role !== 'superadmin') { %>
                     <button class="btn btn-primary btn-sm btn-edit-user" data-user='<%= JSON.stringify(user) %>' style="margin-right:4px;">Editar</button>
                     <form action="/admin/users/delete/<%= user._id %>" method="post" style="display:inline;" onsubmit="return confirmDeleteUser(event)">

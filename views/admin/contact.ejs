@@ -396,7 +396,6 @@
             <% } %>
           </td>
           <td>
-            <a href="/admin/contact/view/<%= contact._id %>" class="btn btn-success btn-sm" style="margin-right:4px;">Ver</a>
             <button class="btn btn-primary btn-sm btn-edit-contact" data-contact='<%= JSON.stringify(contact) %>' style="margin-right:4px;">Editar</button>
             <form action="/admin/contact/delete/<%= contact._id %>" method="post" style="display:inline;" onsubmit="return confirmDelete(event)">
               <button type="submit" class="btn btn-danger btn-sm">Eliminar</button>

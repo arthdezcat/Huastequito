@@ -141,7 +141,7 @@
     <div class="otros-grid">
       <% galeria.forEach(oferta => { %>
         <div class="card-producto">
-          <img src="<%= oferta.image %>" alt="<%= oferta.title %>" class="oferta-img card-img-modal" onclick="openImgModal(this)" data-id="<%= oferta._id %>">
+          <img src="<%= oferta.image %>" alt="<%= oferta.title %>" class="oferta-img card-img-modal" data-id="<%= oferta.dataId %>" onclick="openImgModal(this)">
           <div class="nombre"><%= oferta.title %></div>
           <div class="descripcion"><%= oferta.description %></div>
           <div class="descripcion">Tipo: <%= oferta.tipo %></div>

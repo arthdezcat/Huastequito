@@ -5,8 +5,21 @@ const { cloudinary } = require('../middlewares/uploadImage');
 // Obtener todas las ofertas
 exports.getGaleria = async (req, res) => {
   try {
+    const { imageId } = req.query; // Obtener el parámetro imageId de la URL
     const galeria = await Oferta.find();
-    res.render('pages/galeri', { galeria, homeInfo: res.locals.homeInfo });
+    let selectedOferta = null;
+
+    if (imageId) {
+      selectedOferta = await Oferta.findById(imageId); // Buscar la oferta específica
+    }
+
+    // Asegurar que todas las imágenes tengan un atributo data-id, incluso si son URLs externas
+    const galeriaConIds = galeria.map(oferta => ({
+      ...oferta._doc,
+      dataId: oferta._id.toString(),
+    }));
+
+    res.render('pages/galeri', { galeria: galeriaConIds, selectedOferta, homeInfo: res.locals.homeInfo });
   } catch (error) {
     console.error(error);
     res.status(500).send('Error al obtener las ofertas');
@@ -16,7 +29,8 @@ exports.getGaleria = async (req, res) => {
 // Obtener solo las imágenes de galería para el slider de ofertas en home
 exports.getGaleriaImages = async (req, res, next) => {
   try {
-    const galeriaImages = await Oferta.find({}, 'image title');
+    // Incluir el campo _id en la consulta para generar correctamente el atributo data-id
+    const galeriaImages = await Oferta.find({}, '_id image title');
     res.locals.galeriaImages = galeriaImages;
     next();
   } catch (error) {

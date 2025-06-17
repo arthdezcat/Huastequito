@@ -407,7 +407,6 @@
                   <% } %>
                 </td>
                 <td>
-                  <a href="/admin/galeria/view/<%= oferta._id %>" class="btn btn-success btn-sm" style="margin-right:4px;">Ver</a>
                   <button class="btn btn-primary btn-sm btn-edit-offer" data-offer='<%= JSON.stringify(oferta) %>' style="margin-right:4px;">Editar</button>
                   <form action="/admin/galeria/delete/<%= oferta._id %>" method="post" style="display:inline;" onsubmit="return confirmDelete(event)">
                     <button type="submit" class="btn btn-danger btn-sm">Eliminar</button>

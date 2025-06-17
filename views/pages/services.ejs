@@ -141,7 +141,7 @@
     <div class="tienda-grid">
       <% services.forEach(service => { %>
         <div class="card-producto">
-          <img src="<%= service.image %>" alt="<%= service.title %>" class="producto-img card-img-modal" onclick="openImgModal(this)" data-id="<%= service.id %>">
+          <img src="<%= service.image %>" alt="<%= service.title %>" class="producto-img card-img-modal" data-id="<%= service._id %>" onclick="openImgModal(this)">
           <div class="nombre"><%= service.title %></div>
           <div class="precio">$<%= service.price %></div>
           <div class="descripcion"><%= service.description %></div>

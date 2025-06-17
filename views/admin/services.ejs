@@ -395,7 +395,6 @@
                   <% } %>
                 </td>
                 <td>
-                  <a href="/admin/services/view/<%= service._id %>" class="btn btn-success btn-sm" style="margin-right:4px;">Ver</a>
                   <button class="btn btn-primary btn-sm btn-edit-product" data-product='<%= JSON.stringify(service) %>' style="margin-right:4px;">Editar</button>
                   <form action="/admin/services/delete/<%= service._id %>" method="post" style="display:inline;" onsubmit="return confirmDelete(event)">
                     <button type="submit" class="btn btn-danger btn-sm">Eliminar</button>

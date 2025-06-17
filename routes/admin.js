@@ -50,5 +50,7 @@ router.post('/homeinfo', upload.fields([
 router.get('/users', userAdminController.getUsers);
 router.post('/users/add', userAdminController.createUser);
 router.post('/users/delete/:id', userAdminController.deleteUser);
+// Ruta para actualizar usuarios administradores
+router.post('/users/update/:id', userAdminController.updateUser);
 
 module.exports = router;
