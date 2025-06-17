@@ -323,6 +323,25 @@
       display: block;
       object-fit: cover;
     }
+
+    /* Ajuste para ocultar imágenes difuminadas en dispositivos móviles */
+    @media (max-width: 768px) {
+      .slide.next, .slide.prev {
+        display: none !important; /* Forzar ocultar imágenes próximas y anteriores */
+      }
+      .slide.active {
+        transform: translateX(-50%) scale(1); /* Mantener solo la imagen activa */
+      }
+    }
+
+    @media (max-width: 500px) {
+      .slide.next, .slide.prev {
+        display: none !important; /* Forzar ocultar imágenes próximas y anteriores */
+      }
+      .slide.active {
+        transform: translateX(-50%) scale(1); /* Mantener solo la imagen activa */
+      }
+    }
   </style>
 </head>
 <body>
