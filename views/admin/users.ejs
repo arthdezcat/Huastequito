@@ -8,14 +8,50 @@
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
   <link rel="icon" href="/img/administracion.png" type="image/png">
   <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      background-attachment: fixed;
+    }
+    
     body.admin-page {
       display: flex;
       min-height: 100vh;
       margin: 0;
-      background: linear-gradient(120deg, #8ec5fc 0%, #e0c3fc 100%);
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      background-attachment: fixed;
+      position: relative;
     }
     
-    .sidebar-admin { width: 250px; background: #232946; color: #fff; display: flex; flex-direction: column; align-items: center; padding: 32px 0 0 0; min-height: 100vh; position: fixed; left: 0; top: 0; z-index: 10; box-shadow: 2px 0 12px rgba(0,0,0,0.08); }
+    body.admin-page::before {
+      content: '';
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(255, 255, 255, 0.05);
+      z-index: -1;
+    }
+    
+    .sidebar-admin { 
+      width: 250px; 
+      background: #232946; 
+      color: #fff; 
+      display: flex; 
+      flex-direction: column; 
+      align-items: center; 
+      padding: 32px 0 0 0; 
+      min-height: 100vh; 
+      position: fixed; 
+      left: 0; 
+      top: 0; 
+      z-index: 10; 
+      box-shadow: 2px 0 12px rgba(0,0,0,0.08);
+      transition: transform 0.3s ease;
+    }
     .sidebar-admin .admin-avatar { width: 90px; height: 90px; border-radius: 50%; background: #fff; margin-bottom: 18px; display: flex; align-items: center; justify-content: center; overflow: hidden; }
     .sidebar-admin .admin-avatar img { width: 80px; height: 80px; border-radius: 50%; object-fit: cover; }
     .sidebar-admin .admin-name { font-size: 1.2rem; font-weight: 700; margin-bottom: 32px; color: #eebf63; }
@@ -23,7 +59,7 @@
     .sidebar-admin ul li { width: 100%; }
     .sidebar-admin ul li a { display: flex; align-items: center; gap: 12px; color: #fff; text-decoration: none; padding: 16px 32px; font-size: 1.1rem; transition: background 0.2s, color 0.2s; border-left: 4px solid transparent; }
     .sidebar-admin ul li a:hover, .sidebar-admin ul li a.active { background: #eebf63; color: #232946; border-left: 4px solid #232946; }
-    .main-admin-content { margin-left: 250px; width: calc(100% - 250px); padding: 40px 32px 32px 32px; min-height: 100vh; background: transparent; }
+    .main-admin-content { margin-left: 250px; width: calc(100% - 250px); padding: 40px 32px 32px 32px; min-height: 100vh; background: inherit; }
     .dashboard-cards { display: flex; flex-wrap: wrap; gap: 32px; justify-content: center; margin-top: 32px; }
     .dashboard-card { background: #fff; border-radius: 18px; box-shadow: 0 4px 16px rgba(0,0,0,0.08); padding: 24px 18px; min-width: 260px; max-width: 320px; display: flex; flex-direction: column; align-items: center; transition: box-shadow 0.3s, transform 0.3s; }
     .dashboard-card .nombre { font-size: 20px; font-weight: 700; margin-bottom: 8px; color: #232946; }
@@ -36,32 +72,471 @@
     .table.user-table {
       width: 100%;
       background: #fff;
-      border-radius: 10px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+      border-radius: 12px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.1);
       overflow: hidden;
       margin-bottom: 40px;
+      border: none;
     }
     .table.user-table th, .table.user-table td {
       vertical-align: middle;
       text-align: center;
+      padding: 16px 12px;
+      border: none;
     }
     .table.user-table th {
-      background: #f5f5f5;
+      background: #f8f9fa;
       font-weight: 700;
-      color: #232946;
+      color: #2d3748;
+      font-size: 14px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      border-bottom: 2px solid #e2e8f0;
     }
-    .btn-sm { padding: 4px 16px; font-size: 15px; border-radius: 6px; font-weight: 600; }
-    .btn-success { background: #27ae60; color: #fff; border: none; }
-    .btn-primary { background: #2980b9; color: #fff; border: none; }
-    .btn-danger { background: #e74c3c; color: #fff; border: none; }
-    .btn-secondary { background: #888; color: #fff; border: none; }
-    .btn-success:hover { background: #219150; }
-    .btn-primary:hover { background: #206090; }
-    .btn-danger:hover { background: #c0392b; }
-    .btn-secondary:hover { background: #555; }
+    .table.user-table td {
+      border-bottom: 1px solid #e2e8f0;
+      font-size: 14px;
+      color: #4a5568;
+    }
+    .table.user-table tbody tr:hover {
+      background-color: #f7fafc;
+    }
+    .btn-sm { 
+      padding: 8px 12px; 
+      font-size: 12px; 
+      border-radius: 6px; 
+      font-weight: 600; 
+      min-width: 75px;
+      white-space: nowrap;
+      margin: 0 2px;
+      display: inline-block;
+      text-align: center;
+      line-height: 1.2;
+      border: none;
+      text-decoration: none;
+      transition: all 0.2s ease;
+    }
+    .btn-success { 
+      background: #10b981; 
+      color: #fff; 
+      border: none; 
+    }
+    .btn-primary { 
+      background: #6366f1; 
+      color: #fff; 
+      border: none; 
+    }
+    .btn-danger { 
+      background: #ef4444; 
+      color: #fff; 
+      border: none; 
+    }
+    .btn-secondary { 
+      background: #6b7280; 
+      color: #fff; 
+      border: none; 
+    }
+    .btn-success:hover { 
+      background: #059669; 
+      transform: translateY(-1px);
+      box-shadow: 0 2px 8px rgba(16, 185, 129, 0.3);
+    }
+    .btn-primary:hover { 
+      background: #4f46e5; 
+      transform: translateY(-1px);
+      box-shadow: 0 2px 8px rgba(99, 102, 241, 0.3);
+    }
+    .btn-danger:hover { 
+      background: #dc2626; 
+      transform: translateY(-1px);
+      box-shadow: 0 2px 8px rgba(239, 68, 68, 0.3);
+    }
+    .btn-secondary:hover { 
+      background: #4b5563; 
+      transform: translateY(-1px);
+      box-shadow: 0 2px 8px rgba(107, 114, 128, 0.3);
+    }
     .update-form-row td { padding: 0 !important; }
-    @media (max-width: 900px) { .sidebar-admin { width: 70px; padding: 16px 0 0 0; } .sidebar-admin .admin-name { display: none; } .sidebar-admin ul li a { padding: 16px 10px; font-size: 0.9rem; justify-content: center; } .main-admin-content { margin-left: 70px; width: calc(100% - 70px); padding: 24px 6px 24px 6px; } }
-    @media (max-width: 600px) { .dashboard-cards { flex-direction: column; gap: 18px; } .main-admin-content { padding: 12px 2px 12px 2px; } }
+    @media (max-width: 900px) { 
+      .sidebar-admin { 
+        width: 70px; 
+        padding: 16px 0 0 0; 
+        transform: translateX(0);
+      } 
+      .sidebar-admin .admin-name { 
+        display: none; 
+      } 
+      .sidebar-admin ul li a { 
+        padding: 16px 10px; 
+        font-size: 0.9rem; 
+        justify-content: center; 
+      }
+      .sidebar-admin ul li a span {
+        display: none;
+      }
+      .main-admin-content { 
+        margin-left: 70px; 
+        width: calc(100% - 70px); 
+        padding: 24px 16px; 
+      } 
+    }
+    
+    @media (max-width: 600px) { 
+      .dashboard-cards { 
+        flex-direction: column; 
+        gap: 18px; 
+      } 
+      .main-admin-content { 
+        margin-left: 0;
+        width: 100%;
+        padding: 60px 12px 12px 12px; 
+      }
+      .sidebar-admin {
+        transform: translateX(-100%);
+        width: 250px;
+        z-index: 1000;
+      }
+      .sidebar-admin.active {
+        transform: translateX(0);
+      }
+      .sidebar-admin ul li a {
+        padding: 16px 32px;
+        font-size: 1.1rem;
+        justify-content: flex-start;
+      }
+      .sidebar-admin ul li a span {
+        display: inline;
+      }
+      .sidebar-admin .admin-name {
+        display: block;
+      }
+      .sidebar-toggle {
+        display: block;
+        position: fixed;
+        top: 16px;
+        left: 16px;
+        background: #232946;
+        color: #fff;
+        border: none;
+        border-radius: 8px;
+        padding: 12px;
+        cursor: pointer;
+        z-index: 1001;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        font-size: 1.1rem;
+        transition: all 0.3s ease;
+      }
+      .sidebar-toggle:hover {
+        background: #eebf63;
+        color: #232946;
+        transform: scale(1.05);
+      }
+      
+      /* Estilos para hacer la tabla responsiva en móvil */
+      .table.user-table {
+        font-size: 0.85rem;
+      }
+      
+      .table.user-table th:not(:first-child):not(:last-child),
+      .table.user-table td:not(:first-child):not(:last-child) {
+        display: none;
+      }
+      
+      .table.user-table th:first-child {
+        width: 55%;
+      }
+      
+      .table.user-table th:last-child {
+        width: 45%;
+        text-align: center;
+      }
+      
+      .table.user-table td:last-child {
+        white-space: nowrap;
+      }
+      
+      .table.user-table .btn-sm {
+        padding: 6px 8px;
+        font-size: 11px;
+        margin: 1px;
+        min-width: 65px;
+        border-radius: 4px;
+        display: inline-block;
+        white-space: nowrap;
+        line-height: 1.1;
+      }
+      
+      .table.user-table td:last-child {
+        white-space: nowrap;
+        padding: 6px 4px !important;
+        min-width: 130px;
+      }
+      
+      .modal-content-custom {
+        width: 95vw;
+        max-width: 400px;
+        margin: 20px;
+        max-height: 85vh;
+      }
+    }
+    /* Estilos modernos para los campos del formulario */
+    .form-group {
+      margin-bottom: 20px;
+      position: relative;
+    }
+    
+    .form-group label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 600;
+      color: #2c3e50;
+      font-size: 0.95rem;
+      transition: color 0.3s ease;
+    }
+    
+    .form-control {
+      width: 100%;
+      padding: 12px 16px;
+      border: 2px solid #e1e8ed;
+      border-radius: 12px;
+      font-size: 1rem;
+      background: #ffffff;
+      transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
+      position: relative;
+      outline: none;
+      font-family: inherit;
+    }
+    
+    .form-control:focus {
+      border-color: #4f46e5;
+      box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1), 0 4px 12px rgba(0, 0, 0, 0.08);
+      transform: translateY(-1px);
+      background: #fefefe;
+    }
+    
+    .form-control:hover:not(:focus) {
+      border-color: #c7d2fe;
+      box-shadow: 0 3px 8px rgba(0, 0, 0, 0.04);
+    }
+    
+    /* Estilos para select */
+    select.form-control {
+      background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6,9 12,15 18,9'%3e%3c/polyline%3e%3c/svg%3e");
+      background-repeat: no-repeat;
+      background-position: right 12px center;
+      background-size: 16px;
+      padding-right: 40px;
+      appearance: none;
+      -webkit-appearance: none;
+      -moz-appearance: none;
+    }
+    
+    /* Estilos para textarea */
+    textarea.form-control {
+      min-height: 100px;
+      resize: vertical;
+      line-height: 1.6;
+    }
+    
+    textarea.form-control:focus {
+      min-height: 120px;
+    }
+    
+    /* Estilos para inputs de archivo */
+    input[type="file"] {
+      padding: 10px 14px;
+      border: 2px dashed #d1d5db;
+      border-radius: 12px;
+      background: #f9fafb;
+      color: #374151;
+      font-size: 0.9rem;
+      transition: all 0.3s ease;
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    input[type="file"]:hover {
+      border-color: #6366f1;
+      background: #f0f4ff;
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(99, 102, 241, 0.1);
+    }
+    
+    input[type="file"]:focus {
+      outline: none;
+      border-color: #4f46e5;
+      box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+    }
+    
+    /* Estilos para campos con placeholder mejorado */
+    .form-control::placeholder {
+      color: #9ca3af;
+      font-style: italic;
+      transition: opacity 0.3s ease;
+    }
+    
+    .form-control:focus::placeholder {
+      opacity: 0.6;
+      transform: translateY(-2px);
+    }
+    
+    /* Estilos para botones del formulario */
+    .btn {
+      padding: 12px 24px;
+      border: none;
+      border-radius: 12px;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+    }
+    
+    .btn:active {
+      transform: translateY(0);
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+    
+    /* Botón primario */
+    .btn-primary {
+      background: linear-gradient(135deg, #4f46e5, #7c3aed);
+      color: white;
+    }
+    
+    .btn-primary:hover {
+      background: linear-gradient(135deg, #4338ca, #6d28d9);
+    }
+    
+    /* Botón secundario */
+    .btn-secondary {
+      background: linear-gradient(135deg, #6b7280, #4b5563);
+      color: white;
+    }
+    
+    .btn-secondary:hover {
+      background: linear-gradient(135deg, #4b5563, #374151);
+    }
+    
+    /* Botón de cancelar */
+    .btn-cancel {
+      background: linear-gradient(135deg, #ef4444, #dc2626);
+      color: white;
+    }
+    
+    .btn-cancel:hover {
+      background: linear-gradient(135deg, #dc2626, #b91c1c);
+    }
+    
+    /* Efecto de ondas en botones */
+    .btn::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 0;
+      height: 0;
+      background: rgba(255, 255, 255, 0.3);
+      border-radius: 50%;
+      transform: translate(-50%, -50%);
+      transition: width 0.6s, height 0.6s;
+    }
+    
+    .btn:active::before {
+      width: 300px;
+      height: 300px;
+    }
+    
+    /* Estados de validación mejorados */
+    .form-control:valid:not(:placeholder-shown) {
+      border-color: #10b981;
+      background: linear-gradient(135deg, #ffffff 0%, #f0fdf4 100%);
+      box-shadow: 0 2px 4px rgba(16, 185, 129, 0.1), 0 0 0 3px rgba(16, 185, 129, 0.1);
+    }
+    
+    .form-control:invalid:not(:placeholder-shown) {
+      border-color: #ef4444;
+      background: linear-gradient(135deg, #ffffff 0%, #fef2f2 100%);
+      box-shadow: 0 2px 4px rgba(239, 68, 68, 0.1), 0 0 0 3px rgba(239, 68, 68, 0.1);
+    }
+    
+    /* Indicador visual para campos requeridos */
+    .form-group:has(input[required]) label::after,
+    .form-group:has(select[required]) label::after,
+    .form-group:has(textarea[required]) label::after {
+      content: ' *';
+      color: #ef4444;
+      font-weight: bold;
+      margin-left: 2px;
+    }
+    
+    /* Mejores estilos para small/hints */
+    small {
+      display: block;
+      margin-top: 6px;
+      color: #6b7280;
+      font-size: 0.85rem;
+      line-height: 1.4;
+      font-style: italic;
+    }
+    
+    small i {
+      margin-right: 4px;
+      opacity: 0.7;
+    }
+    
+    /* Animación sutil en el hover de inputs */
+    .form-control:hover:not(:focus):not(:disabled) {
+      border-color: #c7d2fe;
+      box-shadow: 0 3px 8px rgba(0, 0, 0, 0.04);
+      transform: translateY(-1px);
+    }
+    
+    /* Efecto especial para textarea en focus */
+    textarea.form-control:focus {
+      min-height: 120px;
+      box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1), 0 8px 25px rgba(0, 0, 0, 0.1);
+    }
+    
+    /* Mejor estilo para los títulos de sección */
+    h3 {
+      color: #1f2937;
+      font-weight: 700;
+      margin-bottom: 24px;
+      padding-bottom: 12px;
+      border-bottom: 2px solid #e5e7eb;
+      font-size: 1.4rem;
+    }
+    
+    /* Responsive para formularios */
+    @media (max-width: 768px) {
+      .form-control {
+        padding: 14px 16px;
+        font-size: 16px; /* Evita zoom en iOS */
+      }
+      
+      .btn {
+        padding: 14px 20px;
+        font-size: 1rem;
+        width: 100%;
+        margin-bottom: 10px;
+      }
+    }
+    
+    /* Mejores modales */
     .modal-custom {
       display: none;
       position: fixed;
@@ -73,15 +548,18 @@
       background: rgba(0,0,0,0.4);
       justify-content: center;
       align-items: center;
+      backdrop-filter: blur(5px);
     }
+    
     .modal-custom.active { display: flex; }
+    
     .modal-content-custom {
       background: #fff;
       padding: 32px 24px;
       border-radius: 16px;
       box-shadow: 0 4px 24px rgba(0,0,0,0.18);
       min-width: 320px;
-      max-width: 420px;
+      max-width: 480px;
       width: 95vw;
       max-height: 90vh;
       overflow-y: auto;
@@ -90,7 +568,29 @@
       display: flex;
       flex-direction: column;
       align-items: stretch;
+      /* Mejor scroll personalizado */
+      scrollbar-width: thin;
+      scrollbar-color: #cbd5e1 #f1f5f9;
     }
+    
+    .modal-content-custom::-webkit-scrollbar {
+      width: 8px;
+    }
+    
+    .modal-content-custom::-webkit-scrollbar-track {
+      background: #f1f5f9;
+      border-radius: 4px;
+    }
+    
+    .modal-content-custom::-webkit-scrollbar-thumb {
+      background: #cbd5e1;
+      border-radius: 4px;
+    }
+    
+    .modal-content-custom::-webkit-scrollbar-thumb:hover {
+      background: #94a3b8;
+    }
+    
     .close-modal {
       position: absolute;
       top: 12px;
@@ -99,38 +599,135 @@
       color: #888;
       cursor: pointer;
     }
+    
     @media (max-width: 600px) {
-      .dashboard-cards {
-        flex-direction: column;
-        gap: 18px;
+      .modal-content-custom {
+        padding: 18px 6px;
+        min-width: 0;
+        max-width: 98vw;
       }
-      .main-admin-content {
-        padding: 12px 2px 12px 2px;
+    }
+    
+    /* Mejoras adicionales para botones de acciones responsivos en usuarios */
+    @media (max-width: 480px) {
+      .table.user-table .btn-sm {
+        padding: 6px 4px !important;
+        font-size: 9px !important;
+        margin: 1px !important;
+        min-width: 30px !important;
+        border-radius: 4px !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        flex-direction: column !important;
+        gap: 1px !important;
+        line-height: 1 !important;
       }
-      .sidebar-admin {
+      
+      .table.user-table .btn-sm i {
+        font-size: 11px !important;
+        margin: 0 !important;
+      }
+      
+      .table.user-table .btn-sm span {
+        display: none !important;
+      }
+      
+      .table.user-table td:last-child {
+        padding: 6px 2px !important;
+        min-width: 120px !important;
+        display: flex !important;
+        flex-wrap: wrap !important;
+        justify-content: center !important;
+        align-items: center !important;
+        gap: 2px !important;
+      }
+      
+      .table.user-table td:last-child form {
+        display: inline-flex !important;
+        margin: 0 !important;
+      }
+      
+      /* Botones más compactos en pantallas muy pequeñas */
+      .table.user-table .btn-success {
+        background: #10b981 !important;
+      }
+      
+      .table.user-table .btn-primary {
+        background: #6366f1 !important;
+      }
+      
+      .table.user-table .btn-danger {
+        background: #ef4444 !important;
+      }
+      
+      .table.user-table .btn-secondary {
+        background: #6b7280 !important;
+      }
+      
+      /* Tooltip para mostrar el texto del botón en hover */
+      .table.user-table .btn-sm[title] {
+        position: relative;
+      }
+      
+      .table.user-table .btn-sm[title]:hover::after {
+        content: attr(title);
         position: absolute;
-        width: 250px;
-        height: 100vh;
-        top: 0;
-        left: -250px;
-        transition: left 0.3s;
+        bottom: 100%;
+        left: 50%;
+        transform: translateX(-50%);
+        background: #232946;
+        color: white;
+        padding: 4px 8px;
+        border-radius: 4px;
+        font-size: 10px;
+        white-space: nowrap;
+        z-index: 1000;
+        margin-bottom: 2px;
       }
-      .sidebar-admin.active {
-        left: 0;
-      }
-      .sidebar-toggle {
-        display: block;
+      
+      .table.user-table .btn-sm[title]:hover::before {
+        content: '';
         position: absolute;
-        top: 16px;
-        left: 16px;
-        background: #2980b9;
-        color: #fff;
-        border: none;
-        border-radius: 6px;
-        padding: 10px;
-        cursor: pointer;
-        z-index: 11;
-        box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        bottom: 100%;
+        left: 50%;
+        transform: translateX(-50%);
+        border: 4px solid transparent;
+        border-top-color: #232946;
+        z-index: 1000;
+      }
+    }
+    
+    /* Estilos para tablets en usuarios */
+    @media (max-width: 768px) and (min-width: 481px) {
+      .table.user-table .btn-sm {
+        padding: 7px 5px !important;
+        font-size: 10px !important;
+        margin: 2px 1px !important;
+        min-width: 32px !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        flex-direction: column !important;
+        gap: 1px !important;
+      }
+      
+      .table.user-table .btn-sm i {
+        font-size: 12px !important;
+      }
+      
+      .table.user-table .btn-sm span {
+        font-size: 8px !important;
+        line-height: 1 !important;
+      }
+      
+      .table.user-table td:last-child {
+        padding: 8px 4px !important;
+        min-width: 130px !important;
+        display: flex !important;
+        flex-wrap: wrap !important;
+        justify-content: center !important;
+        gap: 3px !important;
       }
     }
   </style>
@@ -139,16 +736,16 @@
   <button class="sidebar-toggle" id="sidebarToggle" style="display:none;"><i class="fas fa-bars"></i></button>
   <aside class="sidebar-admin" id="sidebarAdmin">
     <div class="admin-avatar">
-      <img src="<%= homeInfo && homeInfo.logoUrl ? homeInfo.logoUrl : '/img/LogoOfic.png' %>" alt="Admin Avatar">
+      <img src="<%= homeInfo && homeInfo.logoUrl ? homeInfo.logoUrl : '' %>" alt="Admin Avatar">
     </div>
     <div class="admin-name">Panel Admin</div>
     <ul id="sidebar-menu">
-      <li><a href="/admin"><i class="fas fa-tachometer-alt"></i> Inicio</a></li>
-      <li><a href="/admin/services"><i class="fas fa-tags"></i>Productos</a></li>
-      <li><a href="/admin/contact"><i class="fas fa-address-book"></i> Contactos</a></li>
-      <li><a href="/admin/galeria"><i class="fas fa-percent"></i>Ofertas</a></li>
-      <li><a href="/admin/users"><i class="fas fa-users-cog"></i> Usuarios</a></li>
-      <li><a href="/logout"><i class="fas fa-sign-out-alt"></i> Cerrar Sesión</a></li>
+      <li><a href="/admin"><i class="fas fa-tachometer-alt"></i> <span>Inicio</span></a></li>
+      <li><a href="/admin/services"><i class="fas fa-tags"></i> <span><%= homeInfo && homeInfo.TituloServicio1 ? homeInfo.TituloServicio1 : 'TituloServicio1' %></span></a></li>
+      <li><a href="/admin/contact"><i class="fas fa-address-book"></i> <span>Contactos</span></a></li>
+      <li><a href="/admin/galeria"><i class="fas fa-percent"></i> <span><%= homeInfo && homeInfo.TituloServicio2 ? homeInfo.TituloServicio2 : 'TituloServicio2' %></span></a></li>
+      <li><a href="/admin/users" class="active"><i class="fas fa-users-cog"></i> <span>Usuarios</span></a></li>
+      <li><a href="/logout"><i class="fas fa-sign-out-alt"></i> <span>Cerrar Sesión</span></a></li>
     </ul>
   </aside>
   <main class="main-admin-content">
@@ -161,15 +758,15 @@
           <form action="/admin/users/add" method="post">
             <div class="form-group">
               <label for="username">Usuario</label>
-              <input type="text" id="username" name="username" required>
+              <input type="text" id="username" name="username" required class="form-control">
             </div>
             <div class="form-group">
               <label for="password">Contraseña</label>
-              <input type="password" id="password" name="password" required>
+              <input type="password" id="password" name="password" required class="form-control">
             </div>
             <div class="form-group">
               <label for="role">Rol</label>
-              <select id="role" name="role" required>
+              <select id="role" name="role" required class="form-control">
                 <option value="admin">Administrador</option>
                 <option value="editor">Editor</option>
                 <option value="lector">Solo Lectura</option>
@@ -178,7 +775,7 @@
             </div>
             <div class="form-group">
               <label for="permissions">Permisos</label>
-              <select id="permissions" name="permissions" multiple size="4" style="height:80px;">
+              <select id="permissions" name="permissions" multiple size="4" style="height:80px;" class="form-control">
                 <option value="read">Lectura</option>
                 <option value="write">Agregar</option>
                 <option value="edit">Editar</option>
@@ -225,15 +822,15 @@
           <form id="editUserForm" method="post">
             <div class="form-group">
               <label for="edit_username">Usuario</label>
-              <input type="text" id="edit_username" name="username" required>
+              <input type="text" id="edit_username" name="username" required class="form-control">
             </div>
             <div class="form-group">
               <label for="edit_password">Contraseña (dejar en blanco para no cambiar)</label>
-              <input type="password" id="edit_password" name="password">
+              <input type="password" id="edit_password" name="password" class="form-control">
             </div>
             <div class="form-group">
               <label for="edit_role">Rol</label>
-              <select id="edit_role" name="role" required>
+              <select id="edit_role" name="role" required class="form-control">
                 <option value="admin">Administrador</option>
                 <option value="editor">Editor</option>
                 <option value="lector">Solo Lectura</option>
@@ -242,7 +839,7 @@
             </div>
             <div class="form-group">
               <label for="edit_permissions">Permisos</label>
-              <select id="edit_permissions" name="permissions" multiple size="4" style="height:80px;">
+              <select id="edit_permissions" name="permissions" multiple size="4" style="height:80px;" class="form-control">
                 <option value="read">Lectura</option>
                 <option value="write">Agregar</option>
                 <option value="edit">Editar</option>
@@ -290,7 +887,7 @@
               <th>Usuario</th>
               <th>Rol</th>
               <th>Permisos</th>
-              <th style="min-width:180px;">Acciones</th>
+              <th style="min-width:70px;width:1%;text-align:center;">Acciones</th>
             </tr>
           </thead>
           <tbody>
@@ -300,13 +897,13 @@
                 <td><%= user.role %></td>
                 <td><%= user.permissions ? user.permissions.join(', ') : '' %></td>
                 <td>
-                  <% if (user.role !== 'superadmin') { %>
-                    <button class="btn btn-primary btn-sm btn-edit-user" data-user='<%= JSON.stringify(user) %>' style="margin-right:4px;">Editar</button>
-                    <form action="/admin/users/delete/<%= user._id %>" method="post" style="display:inline;" onsubmit="return confirmDeleteUser(event)">
-                      <button type="submit" class="btn btn-danger btn-sm">Eliminar</button>
+                  <% if (user.role !== 'admin' && user.role !== 'superadmin') { %>
+                    <button class="btn btn-primary btn-sm btn-edit-user" data-user='<%= JSON.stringify(user) %>' style="margin-right:4px;"><i class="fas fa-edit"></i></button>
+                    <form action="/admin/users/delete/<%= user._id %>" method="post" style="display:inline;" class="delete-form-inline" onsubmit="return confirmDeleteUser(event)">
+                      <button type="submit" class="btn btn-danger btn-sm delete-icon-btn" title="Eliminar"><i class="fas fa-trash-alt"></i></button>
                     </form>
                   <% } else { %>
-                    <span style="color:#aaa;"><i class="fas fa-lock"></i> Protegido</span>
+                    <span style="color:#aaa;display:inline-flex;align-items:center;font-size:0.95rem;margin-left:6px;"><i class="fas fa-lock" style="margin-right:4px;"></i> Edición y eliminación protegido</span>
                   <% } %>
                 </td>
               </tr>

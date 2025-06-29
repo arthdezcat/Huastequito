@@ -5,13 +5,41 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Inicio - <%= homeInfo && homeInfo.nombreLocal ? homeInfo.nombreLocal : "Moda Hombre D'Angelo" %></title>
   <link rel="stylesheet" href="/css/styles.css">
+  <link rel="stylesheet" href="/css/footer.css">
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
   <link rel="icon" href="<%= homeInfo && homeInfo.iconUrl ? homeInfo.iconUrl : (homeInfo && homeInfo.logoUrl ? homeInfo.logoUrl : '') %>" type="image/png">
+  
+  <!-- Estilo para favicon circular -->
+  <style>
+    link[rel="icon"] {
+      border-radius: 50%;
+      -webkit-mask-image: -webkit-radial-gradient(circle, white 100%, black 100%);
+      mask-image: radial-gradient(circle, white 100%, black 100%);
+    }
+    
+    /* SVG para crear un favicon circular */
+    @media screen and (-webkit-min-device-pixel-ratio:0) {
+      head {
+        position: relative;
+      }
+      head::before {
+        position: absolute;
+        width: 0;
+        height: 0;
+        overflow: hidden;
+        z-index: -1;
+        content: "";
+        background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32"><circle cx="16" cy="16" r="16" fill="white"/></svg>');
+      }
+    }
+  </style>
   <style>
     body {
-      background: #fff;
       margin: 0;
       font-family: 'Montserrat', Arial, sans-serif;
+      position: relative;
+      z-index: 1;
+      overflow-x: hidden; /* Evitar scroll horizontal */
     }
     .hero {
       position: relative;
@@ -23,6 +51,7 @@
       justify-content: center;
       padding: 0 16px;
       box-sizing: border-box;
+      overflow: hidden; /* Evitar desbordamiento */
     }
     .hero-overlay {
       display: none;
@@ -37,11 +66,12 @@
       margin: 0 auto;
       padding: 32px 0;
       box-sizing: border-box;
+      background: transparent !important; /* Haciendo el contenedor totalmente transparente */
     }
     .hero-content h1 {
       font-size: 3rem;
       font-weight: 800;
-      margin-bottom: 18px;
+      margin-bottom: 32px;
       letter-spacing: 1px;
       text-shadow: 0 2px 12px rgba(0,0,0,0.08);
       word-break: break-word;
@@ -83,7 +113,7 @@
       background: #fff;
       border-radius: 0;
       box-shadow: none;
-      overflow: visible;
+      overflow: hidden; /* Ocultar desbordamiento */
       padding: 0;
       width: 100%;
     }
@@ -94,7 +124,7 @@
       position: relative;
       width: 100%;
       min-height: 220px;
-      overflow: visible;
+      overflow: hidden; /* Ocultar desbordamiento */
       background: #fff;
       gap: 0;
     }
@@ -112,6 +142,10 @@
       filter: blur(8px) grayscale(0.2);
       z-index: 1;
       box-sizing: border-box;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
     }
     .slide.active {
       display: flex;
@@ -139,23 +173,25 @@
     }
     .slide img {
       width: 100%;
-      height: 180px;
-      object-fit: cover;
+      height: auto; /* Cambiamos a auto para mantener la proporción */
+      max-height: 180px; /* Altura máxima en escritorio */
+      object-fit: contain; /* Cambiamos a contain para que se vea la imagen completa */
       border-radius: 8px;
       box-shadow: none;
       margin-bottom: 10px;
-      background: #f5f5f5;
+      background: linear-gradient(135deg, #00a693, #0080c7); /* Fondo verde-azul */
       max-width: 100%;
       display: block;
+      border: 2px solid rgba(0, 166, 147, 0.3);
     }
     .slide-title {
-      color: #222;
-      font-size: 1.1rem;
-      font-weight: 600;
-      margin-bottom: 0;
-      margin-top: 0;
-      text-align: center;
-      word-break: break-word;
+      color: #000 !important;
+      font-weight: 600 !important;
+      text-shadow: 0 1px 2px rgba(255,255,255,0.7) !important;
+      background-color: rgba(255,255,255,0.35) !important;
+      padding: 5px !important;
+      border-radius: 4px !important;
+      margin-top: 5px !important;
     }
     .slider-btn {
       position: absolute;
@@ -215,7 +251,7 @@
       .slide, .slide img {
         width: 180px;
         min-width: 120px;
-        max-width: 260px;
+        max-width: 220px;
         height: 120px;
       }
       .slider-btn.prev { left: -16px; }
@@ -224,20 +260,72 @@
     @media (max-width: 700px) {
       .hero-content h1, .section-title { font-size: 2rem; }
       .hero-content h2 { font-size: 1.1rem; }
-      .slider-container { max-width: 99vw; }
-      .slide, .slide img { height: 100px; width: 120px; min-width: 100px; max-width: 140px; }
-      .slide.next { transform: translateX(60%) scale(0.96); }
-      .slide.prev { transform: translateX(-120%) scale(0.96); }
-      .slide.active { transform: translateX(-50%) scale(1.04); }
+      .slider-container {
+        max-width: 90%;
+        padding: 10px 5px;
+      }
+      .slider {
+        min-height: 150px;
+      }
+      .slide, .slide img { 
+        height: auto; 
+        width: 200px; 
+        min-width: 180px; 
+        max-width: 220px; 
+      }
+      
+      /* Ocultar imágenes prev y next en móviles */
+      .slide.next, .slide.prev {
+        display: none !important;
+      }
+      
+      .slide.active {
+        opacity: 1;
+        filter: none;
+        transform: translateX(-50%) scale(1);
+      }
       .slider-btn.prev { left: -10px; }
       .slider-btn.next { right: -10px; }
+      
+      /* Responsive para contenedor de texto con logo */
+      .hero-text-container {
+        padding: 10px;
+      }
     }
     @media (max-width: 500px) {
       .hero-content h1, .section-title { font-size: 1.2rem; }
       .hero-content h2 { font-size: 1rem; }
       .hero-content p, .section-desc { font-size: 1rem; }
-      .slide, .slide img { height: 80px; width: 90vw; min-width: 0; max-width: 98vw; }
-      .slider-container { padding: 0 2px; }
+      
+      .slider-container {
+        max-width: 95%;
+        padding: 5px 2px;
+      }
+      
+      .slider {
+        min-height: 120px;
+      }
+      
+      .slide, .slide img {
+        height: auto;
+        width: 180px;
+        min-width: 160px;
+        max-width: 200px;
+      }
+      
+      /* Asegurar que solo se vea la imagen activa */
+      .slide.next, .slide.prev {
+        display: none !important;
+      }
+      
+      .slide.active {
+        transform: translateX(-50%) scale(1);
+      }
+      
+      /* Responsive para contenedor de texto con logo en pantallas pequeñas */
+      .hero-text-container {
+        padding: 8px 5px;
+      }
     }
     @media (max-width: 400px) {
       .slide img { height: 60px; border-radius: 6px; }
@@ -245,25 +333,47 @@
       .slider-btn.prev { left: 0; }
       .slider-btn.next { right: 0; }
       .hero-content, .section, .info-section { padding: 8px 2px; }
-    }
-    @media (max-width: 768px) {
-      .hero {
-        flex-direction: column;
-        padding: 10px;
-        min-height: auto;
+      
+      .slider-container { 
+        overflow: hidden; /* Ocultar desbordamiento */
+        max-width: 100vw;
       }
-
-      .hero-content h1 {
-        font-size: 1.8rem;
+      
+      .slider {
+        overflow: hidden; /* Ocultar desbordamiento del slider */
+        min-height: 80px;
       }
-
-      .hero-content p {
-        font-size: 1rem;
+      
+      /* Asegurar que solo se vea la imagen activa en pantallas muy pequeñas */
+      .slide.next, .slide.prev {
+        display: none !important;
+        opacity: 0 !important;
+        visibility: hidden !important;
       }
-
-      .slider-container {
-        max-width: 100%;
-        padding: 0 10px;
+      
+      .slide.active { 
+        transform: translateX(-50%) scale(1.0); 
+        position: relative;
+        left: 50%;
+        display: flex !important;
+      }
+      
+      /* Responsive para contenedor de texto con logo en pantallas muy pequeñas */
+      .hero-text-container {
+        padding: 15px;
+        margin-bottom: 10px;
+        min-height: 350px;
+      }
+      
+      .hero-text-container.with-logo::after {
+        position: fixed; /* Fixed para abarcar toda la pantalla */
+        top: 0;
+        left: 0;
+        width: 100vw; /* Ancho completo */
+        height: 100vh; /* Alto completo */
+        opacity: 0.18; /* Opacidad reducida para pantallas pequeñas */
+        z-index: -999; /* Z-index muy bajo para estar detrás de todo */
+        /* Sin filtros - logo en color original */
       }
     }
 
@@ -287,20 +397,72 @@
     @media (max-width: 700px) {
       .hero-content h1, .section-title { font-size: 2rem; }
       .hero-content h2 { font-size: 1.1rem; }
-      .slider-container { max-width: 99vw; }
-      .slide, .slide img { height: 100px; width: 120px; min-width: 100px; max-width: 140px; }
-      .slide.next { transform: translateX(60%) scale(0.96); }
-      .slide.prev { transform: translateX(-120%) scale(0.96); }
-      .slide.active { transform: translateX(-50%) scale(1.04); }
+      .slider-container {
+        max-width: 90%;
+        padding: 10px 5px;
+      }
+      .slider {
+        min-height: 150px;
+      }
+      .slide, .slide img { 
+        height: auto; 
+        width: 200px; 
+        min-width: 180px; 
+        max-width: 220px; 
+      }
+      
+      /* Ocultar imágenes prev y next en móviles */
+      .slide.next, .slide.prev {
+        display: none !important;
+      }
+      
+      .slide.active {
+        opacity: 1;
+        filter: none;
+        transform: translateX(-50%) scale(1);
+      }
       .slider-btn.prev { left: -10px; }
       .slider-btn.next { right: -10px; }
+      
+      /* Responsive para contenedor de texto con logo */
+      .hero-text-container {
+        padding: 10px;
+      }
     }
     @media (max-width: 500px) {
       .hero-content h1, .section-title { font-size: 1.2rem; }
       .hero-content h2 { font-size: 1rem; }
       .hero-content p, .section-desc { font-size: 1rem; }
-      .slide, .slide img { height: 80px; width: 90vw; min-width: 0; max-width: 98vw; }
-      .slider-container { padding: 0 2px; }
+      
+      .slider-container {
+        max-width: 95%;
+        padding: 5px 2px;
+      }
+      
+      .slider {
+        min-height: 120px;
+      }
+      
+      .slide, .slide img {
+        height: auto;
+        width: 180px;
+        min-width: 160px;
+        max-width: 200px;
+      }
+      
+      /* Asegurar que solo se vea la imagen activa */
+      .slide.next, .slide.prev {
+        display: none !important;
+      }
+      
+      .slide.active {
+        transform: translateX(-50%) scale(1);
+      }
+      
+      /* Responsive para contenedor de texto con logo en pantallas pequeñas */
+      .hero-text-container {
+        padding: 8px 5px;
+      }
     }
     @media (max-width: 400px) {
       .slide img { height: 60px; border-radius: 6px; }
@@ -324,183 +486,486 @@
       object-fit: cover;
     }
 
-    /* Ajuste para ocultar imágenes difuminadas en dispositivos móviles */
-    @media (max-width: 768px) {
-      .slide.next, .slide.prev {
-        display: none !important; /* Forzar ocultar imágenes próximas y anteriores */
-      }
-      .slide.active {
-        transform: translateX(-50%) scale(1); /* Mantener solo la imagen activa */
-      }
+    /* Estilo para asegurar que el footer esté encima de todo */
+    footer {
+      position: relative;
+      z-index: 10;
     }
 
-    @media (max-width: 500px) {
-      .slide.next, .slide.prev {
-        display: none !important; /* Forzar ocultar imágenes próximas y anteriores */
-      }
-      .slide.active {
-        transform: translateX(-50%) scale(1); /* Mantener solo la imagen activa */
-      }
+    /* Estilo para aplicar el fondo de HomeInfo */
+    .hero-content, .slider-container {
+      position: relative;
+      z-index: 2;
+      background-color: transparent !important; /* Contenedor principal totalmente transparente */
+    }
+    
+    /* Mejorar la visibilidad del slider */
+    .slider-container {
+      background: rgba(255, 255, 255, 0.6); /* Fondo más opaco para aspecto formal */
+      backdrop-filter: blur(4px); /* Mayor blur para efecto cristal formal */
+      border-radius: 8px; /* Bordes menos redondeados para mayor formalidad */
+      padding: 15px; /* Mayor espacio interior */
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.06); /* Sombra sutil */
+      border: 1px solid rgba(255, 255, 255, 0.3); /* Borde sutil para aspecto elegante */
+      margin-top: 10px; /* Espacio superior */
+      margin-bottom: 25px; /* Mayor espacio inferior */
+    }
+    
+    /* Estilo para el logo de fondo */
+    .logo-background {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-image: url('<%= homeInfo && homeInfo.logoUrl ? homeInfo.logoUrl : "" %>');
+      background-size: 45% auto; /* Tamaño reducido para aspecto más elegante */
+      background-repeat: no-repeat;
+      background-position: center;
+      opacity: 0.08; /* Opacidad muy sutil para aspecto formal */
+      z-index: -1;
+      pointer-events: none;
+      filter: saturate(1.1) brightness(1.05); /* Ligero ajuste para resaltar el logo */
+      transform: translateY(-20px); /* Pequeño desplazamiento para mejor composición */
+    }
+    
+    /* Fondo semi-transparente con logo para el texto principal */
+    .hero-text-container {
+      position: relative;
+      padding: 40px;
+      border-radius: 12px;
+      margin-bottom: 30px;
+      min-height: 420px; /* Ajustada la altura para mejor proporción */
+      max-width: 85%; /* Ancho más ajustado para mejor legibilidad */
+      margin-left: auto;
+      margin-right: auto;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08); /* Sombra más pronunciada para aspecto formal */
+      /* Quité overflow: hidden para que el logo pueda extenderse */
+      background: transparent !important; /* Totalmente transparente */
+    }
+    
+    .hero-text-container::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: transparent !important; /* Totalmente transparente */
+      border-radius: 12px;
+      z-index: -1;
+      backdrop-filter: none !important;
+      box-shadow: none !important;
+      border: none !important;
+    }
+    
+    .hero-text-container.with-logo::after {
+      content: '';
+      position: absolute; /* Posicionamiento absoluto en el contenedor */
+      top: 0;
+      left: 0;
+      width: 100%; /* Ancho del contenedor padre */
+      height: 100%; /* Alto del contenedor padre */
+      background-image: url('<%= homeInfo && homeInfo.logoUrl ? homeInfo.logoUrl : "" %>');
+      background-size: 65% auto; /* Tamaño ajustado para aspecto más formal */
+      background-repeat: no-repeat;
+      background-position: center;
+      opacity: 1.50; /* Opacidad reducida para un aspecto más sutil y formal */
+      z-index: -2; /* Z-index bajo para estar detrás del contenido */
+      pointer-events: none;
+      filter: saturate(1.2) contrast(1.1); /* Ligero ajuste para mejorar la definición del logo */
+      transform: scale(1.1); /* Ligero escalado para mayor elegancia */
+    }
+    
+    .hero-text-container h1,
+    .hero-text-container h2,
+    .hero-text-container p,
+    .hero-text-container .slider-container {
+      position: relative;
+      z-index: 1;
+    }
+    
+    .hero-text-container h1 {
+      font-size: 2.8rem;
+      font-weight: 700;
+      color: #1a1a1a;
+      margin-bottom: 25px;
+      letter-spacing: 0.5px;
+      text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+    }
+    
+    .hero-text-container h2 {
+      font-size: 1.6rem;
+      font-weight: 500;
+      color: #333;
+      line-height: 1.4;
+      margin-bottom: 20px;
+      letter-spacing: 0.3px;
+    }
+    
+    .hero-text-container p {
+      font-size: 1.1rem;
+      line-height: 1.6;
+      color: #444;
+      margin-bottom: 25px;
+      max-width: 90%;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    
+    /* Estilo para los títulos fuera del contenedor hero-text-container */
+    .hero-content > h1 {
+      transition: transform 0.2s, box-shadow 0.2s; /* Animación suave */
+      text-shadow: 0 2px 6px rgba(255,255,255,0.7); /* Sombra de texto para mayor legibilidad */
+      color: #000;
+      background-color: rgba(255,255,255,0.15); /* Fondo semitransparente */
+      padding: 10px 15px;
+      border-radius: 8px;
+      backdrop-filter: blur(3px); /* Efecto de desenfoque detrás del texto */
+      display: inline-block;
+    }
+    
+    .hero-content > h1:hover {
+      transform: translateY(-2px); /* Elevación sutil al pasar el ratón */
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12); /* Sombra más pronunciada */
+      background-color: rgba(255,255,255,0.25); /* Fondo más visible al pasar el ratón */
+    }
+    
+    /* Estilo para los títulos de servicios */
+    .servicio-titulo {
+      font-size: 2.2rem;
+      font-weight: 700;
+      color: #000;
+      text-shadow: 0 2px 8px rgba(255,255,255,0.9);
+      background-color: rgba(255,255,255,0.25);
+      padding: 12px 20px;
+      border-radius: 10px;
+      margin: 20px 0;
+      display: inline-block;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+      backdrop-filter: blur(5px);
+      border: 1px solid rgba(255,255,255,0.4);
+      letter-spacing: 1px;
+    }
+    
+    /* Estilo adicional para mejorar la legibilidad general */
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      text-align: center;
+      color: #000;
+      text-shadow: 0 1px 2px rgba(255,255,255,0.5);
+    }
+    
+    /* Mejorar la visibilidad de las imágenes */
+    .slide img {
+      border: 3px solid rgba(255,255,255,0.7) !important;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.2) !important;
+    }
+
+    /* Mejoras para slider de fondo */
+    body.has-bg-slider .logo-background {
+      z-index: -1; /* Por encima del slider de fondo que tiene z-index -2 */
+    }
+    
+    /* Estilos para el slider de fondo */
+    #bg-slider div {
+      transition: opacity 2.5s ease-in-out !important; /* Forzar transición suave */
+    }
+    
+    /* Estilos mejorados para el slider de fondo */
+    body.has-bg-slider::before {
+      content: '';
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.1); /* Ligero oscurecimiento para mejor contraste */
+      z-index: -1;
+      pointer-events: none;
+    }
+    
+    /* Mejorar visualmente el contenido sobre el slider */
+    body.background-slider-active .logo-background {
+      z-index: -1 !important; /* Asegurar que el logo esté siempre por encima del slider */
+      opacity: 0.12 !important; /* Reducir la opacidad para no interferir con el slider */
     }
   </style>
 </head>
-<body>
+<body style="<% if (homeInfo && homeInfo.colorFondo) { %>background:<%= homeInfo.colorFondo %>;<% } else if (homeInfo && homeInfo.fondoUrl) { %>background-image:url('<%= homeInfo.fondoUrl %>');background-size:cover;background-position:center;<% } else if (homeInfo && homeInfo.fondoFileUrl) { %>background-image:url('<%= homeInfo.fondoFileUrl %>');background-size:cover;background-position:center;<% } else if (homeInfo && homeInfo.fondoInicio) { %>background-image:url('<%= homeInfo.fondoInicio %>');background-size:cover;background-position:center;<% } %>;transition: background 3s ease-in-out;">
+  <!-- Estilos adicionales para mejorar la visibilidad del slider -->
+  <style>
+    /* Estilos mejorados para el slider de fondo */
+    body.has-bg-slider::before {
+      content: '';
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.1); /* Ligero oscurecimiento para mejor contraste */
+      z-index: -1;
+      pointer-events: none;
+    }
+    
+    /* Mejorar visualmente el contenido sobre el slider */
+    body.background-slider-active .logo-background {
+      z-index: -1 !important; /* Asegurar que el logo esté siempre por encima del slider */
+      opacity: 0.12 !important; /* Reducir la opacidad para no interferir con el slider */
+    }
+  </style>
+  
+  <!-- Script común para el slider de fondo (ya no necesario para fondos específicos) -->
+  
+  <!-- Para imagen de fondo específica del inicio, asegurar que se cargue correctamente -->
+  <% if (homeInfo && homeInfo.fondoInicio) { %>
+  <script>
+    window.addEventListener('load', function() {
+      document.body.style.backgroundImage = 'url(<%= homeInfo.fondoInicio %>)';
+      document.body.style.backgroundSize = 'cover';
+      document.body.style.backgroundPosition = 'center';
+    });
+  </script>
+  <% } else if (homeInfo && homeInfo.fondoFileUrl) { %>
+  <script>
+    window.addEventListener('load', function() {
+      document.body.style.backgroundImage = 'url(<%= homeInfo.fondoFileUrl %>)';
+      document.body.style.backgroundSize = 'cover';
+      document.body.style.backgroundPosition = 'center';
+    });
+  </script>
+  <% } %>
   <%- include('../partials/header') %>
-  <div class="hero">
-    <div class="hero-overlay"></div>
+  <% if (homeInfo && homeInfo.logoUrl) { %>
+  <div class="logo-background"></div>
+  <% } %>
     <div class="hero-content">
-      <h1><%= homeInfo && homeInfo.nombreLocal ? homeInfo.nombreLocal : 'Bienvenido a nuestra tienda' %></h1>
-      <% if (homeInfo && homeInfo.slogan) { %>
-        <h2 style="font-weight:400;margin-bottom:18px;"> <%= homeInfo.slogan %> </h2>
-      <% } %>
-      <% if (homeInfo && homeInfo.descripcion) { %>
-        <p style="max-width:600px;margin:0 auto 18px auto;font-size:1.1rem;color:#444;"> <%= homeInfo.descripcion %> </p>
-      <% } %>
-      <h1>Tienda</h1>
-      <div style="height: 34px;"></div>
-      <% if (sliderImages && sliderImages.length > 0) { %>
-        <div class="slider-container">
-          <button class="slider-btn prev" onclick="moveSlide(-1)">&#10094;</button>
-          <div class="slider" id="slider">
-        <% sliderImages.forEach(function(img, idx) { %>
-          <div class="slide<%= idx === 0 ? ' active' : '' %>" data-index="<%= idx %>">
-        <img src="<%= img.image %>" alt="<%= img.title %>" data-id="<%= img.id %>" />
-        <div class="slide-title"><%= img.title || '' %></div>
+      <div class="hero-text-container <% if (homeInfo && homeInfo.logoUrl) { %>with-logo<% } %>">
+        <!-- <h1 style="text-shadow: 0 1px 4px rgba(255,255,255,0.8); color: #000; font-weight: 700;"><%= homeInfo && homeInfo.nombreLocal ? homeInfo.nombreLocal : 'Bienvenido a nuestra tienda' %></h1> -->
+        <% if (homeInfo && homeInfo.slogan) { %>
+          <h2 style="font-weight:500;margin-bottom:18px;text-shadow: 0 1px 2px rgba(255,255,255,0.6);color:#111; background-color: rgba(255,255,255,0.15);padding: 10px 18px; border-radius: 8px; backdrop-filter: blur(4px); display: inline-block; max-width: 100%; box-sizing: border-box;"> <%= homeInfo.slogan %> </h2>
+        <% } %>
+        <% if (homeInfo && homeInfo.descripcion) { %>
+          <p style="max-width:600px;margin:0 auto 18px auto;font-size:1.2rem;color:#222;text-shadow: 0 1px 1px rgba(255,255,255,0.7);background-color: rgba(255,255,255,0.15);padding: 10px;border-radius: 8px;backdrop-filter: blur(5px);"> <%= homeInfo.descripcion %> </p>
+        <% } %>
+           </div>
+        <h1 class="servicio-titulo"><%= homeInfo && homeInfo.TituloServicio1 ? homeInfo.TituloServicio1 : 'TituloServicio1' %></h1>
+        <% if (sliderImages && sliderImages.length > 0) { %>
+          <div class="slider-container">
+            <button class="slider-btn prev" onclick="moveSlide(-1)">&#10094;</button>
+            <div class="slider" id="slider">
+          <% sliderImages.forEach(function(img, idx) { %>
+            <div class="slide<%= idx === 0 ? ' active' : '' %>" data-index="<%= idx %>">
+              <img src="<%= img.image %>" alt="<%= img.title %>" onclick="goToServiceDetail('<%= img.image %>')" style="cursor: pointer;" />
+              <div class="slide-title"><%= img.title || '' %></div>
+            </div>
+          <% }); %>
+            </div>
+            <button class="slider-btn next" onclick="moveSlide(1)">&#10095;</button>
+            <div class="slider-dots" id="slider-dots"></div>
           </div>
-        <% }); %>
+          <script>
+            let currentSlide = 0;
+            const slides = document.querySelectorAll('#slider .slide');
+            const sliderDots = document.getElementById('slider-dots');
+            
+            function goToServiceDetail(imageUrl) {
+              // Redirigir y pasar la URL de la imagen como parámetro para poder resaltarla en services.ejs
+              window.location.href = '/services?highlight=' + encodeURIComponent(imageUrl);
+            }
+            
+            function isMobile() {
+              return window.innerWidth <= 700;
+            }
+            
+            function showSlide(n) {
+              slides.forEach((slide, i) => {
+                slide.classList.remove('active', 'next', 'prev');
+                slide.style.display = 'none';
+              });
+              
+              if (isMobile()) {
+                // En móviles, solo mostrar la imagen activa
+                slides[n].classList.add('active');
+                slides[n].style.display = 'flex';
+                
+                // Ajustar el tamaño y posición para asegurar visibilidad completa
+                slides[n].style.transform = 'translateX(-50%) scale(1)';
+                const slideImg = slides[n].querySelector('img');
+                if (slideImg) {
+                  slideImg.style.height = 'auto';
+                  slideImg.style.maxHeight = '160px';
+                  slideImg.style.objectFit = 'contain';
+                }
+              } else {
+                // En desktop, mostrar prev, active y next
+                const prevIdx = (n - 1 + slides.length) % slides.length;
+                const nextIdx = (n + 1) % slides.length;
+                
+                slides[prevIdx].classList.add('prev');
+                slides[prevIdx].style.display = 'flex';
+                slides[n].classList.add('active');
+                slides[n].style.display = 'flex';
+                slides[nextIdx].classList.add('next');
+                slides[nextIdx].style.display = 'flex';
+                
+                // Ajustar el tamaño y posición para desktop
+                const activeImg = slides[n].querySelector('img');
+                if (activeImg) {
+                  activeImg.style.height = 'auto';
+                  activeImg.style.maxHeight = '180px';
+                  activeImg.style.objectFit = 'contain';
+                }
+              }
+              
+              Array.from(sliderDots.children).forEach((dot, i) => {
+                dot.classList.toggle('active', i === n);
+              });
+            }
+            
+            function moveSlide(dir) {
+              currentSlide += dir;
+              if (currentSlide < 0) currentSlide = slides.length - 1;
+              if (currentSlide >= slides.length) currentSlide = 0;
+              showSlide(currentSlide);
+            }
+            
+            function goToSlide(idx) {
+              currentSlide = idx;
+              showSlide(currentSlide);
+            }
+            
+            // Crear dots
+            sliderDots.innerHTML = '';
+            slides.forEach((_, i) => {
+              const dot = document.createElement('div');
+              dot.className = 'slider-dot' + (i === 0 ? ' active' : '');
+              dot.onclick = () => goToSlide(i);
+              sliderDots.appendChild(dot);
+            });
+            
+            // Reajustar cuando cambie el tamaño de ventana
+            window.addEventListener('resize', () => {
+              showSlide(currentSlide);
+            });
+            
+            showSlide(currentSlide);
+            setInterval(() => moveSlide(1), 4000);
+          </script>
+        <% } %>
+        <div style="height:32px;"></div>
+        <h1 class="servicio-titulo"><%= homeInfo && homeInfo.TituloServicio2 ? homeInfo.TituloServicio2 : 'TituloServicio2' %></h1>
+        <% if (galeriaImages && galeriaImages.length > 0) { %>
+          <div class="slider-container">
+            <button class="slider-btn prev" onclick="moveGaleriaSlide(-1)">&#10094;</button>
+            <div class="slider" id="slider-ofertas">
+          <% galeriaImages.forEach(function(img, idx) { %>
+            <div class="slide<%= idx === 0 ? ' active' : '' %>" data-index="<%= idx %>">
+              <img src="<%= img.image %>" alt="<%= img.title %>" onclick="goToGaleriaDetail('<%= img.image %>')" style="cursor: pointer;" />
+              <div class="slide-title"><%= img.title || '' %></div>
+            </div>
+          <% }); %>
+            </div>
+            <button class="slider-btn next" onclick="moveGaleriaSlide(1)">&#10095;</button>
+            <div class="slider-dots" id="slider-computadoras-dots"></div>
           </div>
-          <button class="slider-btn next" onclick="moveSlide(1)">&#10095;</button>
-          <div class="slider-dots" id="slider-dots"></div>
-        </div>
-        <script>
-          let currentSlide = 0;
-          const slides = document.querySelectorAll('#slider .slide');
-          const sliderDots = document.getElementById('slider-dots');
-          function showSlide(n) {
-        slides.forEach((slide, i) => {
-          slide.classList.remove('active', 'next', 'prev');
-          slide.style.display = 'none';
-        });
-        // Mostrar solo prev, active y next
-        const prevIdx = (n - 1 + slides.length) % slides.length;
-        const nextIdx = (n + 1) % slides.length;
-        slides[prevIdx].classList.add('prev');
-        slides[prevIdx].style.display = 'flex';
-        slides[n].classList.add('active');
-        slides[n].style.display = 'flex';
-        slides[nextIdx].classList.add('next');
-        slides[nextIdx].style.display = 'flex';
-        Array.from(sliderDots.children).forEach((dot, i) => {
-          dot.classList.toggle('active', i === n);
-        });
-          }
-          function moveSlide(dir) {
-        currentSlide += dir;
-        if (currentSlide < 0) currentSlide = slides.length - 1;
-        if (currentSlide >= slides.length) currentSlide = 0;
-        showSlide(currentSlide);
-          }
-          function goToSlide(idx) {
-        currentSlide = idx;
-        showSlide(currentSlide);
-          }
-          // Crear dots
-          sliderDots.innerHTML = '';
-          slides.forEach((_, i) => {
-        const dot = document.createElement('div');
-        dot.className = 'slider-dot' + (i === 0 ? ' active' : '');
-        dot.onclick = () => goToSlide(i);
-        sliderDots.appendChild(dot);
-          });
-          showSlide(currentSlide);
-          setInterval(() => moveSlide(1), 4000);
-        </script>
-      <% } %>
-      <div style="height:32px;"></div>
-      <h1>Ofertas</h1>
-      <div style="height: 34px;"></div>
-      <% if (galeriaImages && galeriaImages.length > 0) { %>
-        <div class="slider-container">
-          <button class="slider-btn prev" onclick="moveGaleriaSlide(-1)">&#10094;</button>
-          <div class="slider" id="slider-ofertas">
-        <% galeriaImages.forEach(function(img, idx) { %>
-          <div class="slide<%= idx === 0 ? ' active' : '' %>" data-index="<%= idx %>">
-        <img src="<%= img.image %>" alt="<%= img.title %>" data-id="<%= img._id %>" />
-        <div class="slide-title"><%= img.title || '' %></div>
-          </div>
-        <% }); %>
-          </div>
-          <button class="slider-btn next" onclick="moveGaleriaSlide(1)">&#10095;</button>
-          <div class="slider-dots" id="slider-ofertas-dots"></div>
-        </div>
-        <script>
-          let currentGaleriaSlide = 0;
-          const galeriaSlides = document.querySelectorAll('#slider-ofertas .slide');
-          const galeriaDots = document.getElementById('slider-ofertas-dots');
-          function showGaleriaSlide(n) {
-        galeriaSlides.forEach((slide, i) => {
-          slide.classList.remove('active', 'next', 'prev');
-          slide.style.display = 'none';
-        });
-        // Mostrar solo prev, active y next
-        const prevIdx = (n - 1 + galeriaSlides.length) % galeriaSlides.length;
-        const nextIdx = (n + 1) % galeriaSlides.length;
-        galeriaSlides[prevIdx].classList.add('prev');
-        galeriaSlides[prevIdx].style.display = 'flex';
-        galeriaSlides[n].classList.add('active');
-        galeriaSlides[n].style.display = 'flex';
-        galeriaSlides[nextIdx].classList.add('next');
-        galeriaSlides[nextIdx].style.display = 'flex';
-        Array.from(galeriaDots.children).forEach((dot, i) => {
-          dot.classList.toggle('active', i === n);
-        });
-          }
-          function moveGaleriaSlide(dir) {
-        currentGaleriaSlide += dir;
-        if (currentGaleriaSlide < 0) currentGaleriaSlide = galeriaSlides.length - 1;
-        if (currentGaleriaSlide >= galeriaSlides.length) currentGaleriaSlide = 0;
-        showGaleriaSlide(currentGaleriaSlide);
-          }
-          function goToGaleriaSlide(idx) {
-        currentGaleriaSlide = idx;
-        showGaleriaSlide(currentGaleriaSlide);
-          }
-          // Crear dots
-          galeriaDots.innerHTML = '';
-          galeriaSlides.forEach((_, i) => {
-        const dot = document.createElement('div');
-        dot.className = 'slider-dot' + (i === 0 ? ' active' : '' );
-        dot.onclick = () => goToGaleriaSlide(i);
-        galeriaDots.appendChild(dot);
-          });
-          showGaleriaSlide(currentGaleriaSlide);
-          setInterval(() => moveGaleriaSlide(1), 4000);
-        </script>
-      <% } %>
-    </div>
+          <script>
+            let currentGaleriaSlide = 0;
+            const galeriaSlides = document.querySelectorAll('#slider-ofertas .slide');
+            const galeriaDots = document.getElementById('slider-computadoras-dots');
+            
+            function goToGaleriaDetail(imageUrl) {
+              // Redirigir y pasar la URL de la imagen como parámetro para poder resaltarla en galeri.ejs
+              window.location.href = '/galeria?highlight=' + encodeURIComponent(imageUrl);
+            }
+            
+            function isMobileGaleria() {
+              return window.innerWidth <= 700;
+            }
+            
+            function showGaleriaSlide(n) {
+              galeriaSlides.forEach((slide, i) => {
+                slide.classList.remove('active', 'next', 'prev');
+                slide.style.display = 'none';
+              });
+              
+              if (isMobileGaleria()) {
+                // En móviles, solo mostrar la imagen activa
+                galeriaSlides[n].classList.add('active');
+                galeriaSlides[n].style.display = 'flex';
+                
+                // Ajustar el tamaño y posición para asegurar visibilidad completa en móvil
+                galeriaSlides[n].style.transform = 'translateX(-50%) scale(1)';
+                const slideImg = galeriaSlides[n].querySelector('img');
+                if (slideImg) {
+                  slideImg.style.height = 'auto';
+                  slideImg.style.maxHeight = '160px';
+                  slideImg.style.objectFit = 'contain';
+                }
+              } else {
+                // En desktop, mostrar prev, active y next
+                const prevIdx = (n - 1 + galeriaSlides.length) % galeriaSlides.length;
+                const nextIdx = (n + 1) % galeriaSlides.length;
+                
+                galeriaSlides[prevIdx].classList.add('prev');
+                galeriaSlides[prevIdx].style.display = 'flex';
+                galeriaSlides[n].classList.add('active');
+                galeriaSlides[n].style.display = 'flex';
+                galeriaSlides[nextIdx].classList.add('next');
+                galeriaSlides[nextIdx].style.display = 'flex';
+                
+                // Ajustar el tamaño y posición para desktop
+                const activeImg = galeriaSlides[n].querySelector('img');
+                if (activeImg) {
+                  activeImg.style.height = 'auto';
+                  activeImg.style.maxHeight = '180px';
+                  activeImg.style.objectFit = 'contain';
+                }
+              }
+              
+              Array.from(galeriaDots.children).forEach((dot, i) => {
+                dot.classList.toggle('active', i === n);
+              });
+            }
+            
+            function moveGaleriaSlide(dir) {
+              currentGaleriaSlide += dir;
+              if (currentGaleriaSlide < 0) currentGaleriaSlide = galeriaSlides.length - 1;
+              if (currentGaleriaSlide >= galeriaSlides.length) currentGaleriaSlide = 0;
+              showGaleriaSlide(currentGaleriaSlide);
+            }
+            
+            function goToGaleriaSlide(idx) {
+              currentGaleriaSlide = idx;
+              showGaleriaSlide(currentGaleriaSlide);
+            }
+            
+            // Crear dots
+            galeriaDots.innerHTML = '';
+            galeriaSlides.forEach((_, i) => {
+              const dot = document.createElement('div');
+              dot.className = 'slider-dot' + (i === 0 ? ' active' : '');
+              dot.onclick = () => goToGaleriaSlide(i);
+              galeriaDots.appendChild(dot);
+            });
+            
+            // Reajustar cuando cambie el tamaño de ventana
+            window.addEventListener('resize', () => {
+              showGaleriaSlide(currentGaleriaSlide);
+            });
+            
+            showGaleriaSlide(currentGaleriaSlide);
+            setInterval(() => moveGaleriaSlide(1), 4000);
+          </script>
+        <% } %>
   </div>
+  <%- include('../partials/footer') %>
   <!--
   <div class="sidebar-social">
     <a href="#"><i class="fab fa-facebook-f"></i></a>
     <a href="#"><i class="fab fa-twitter"></i></a>
     <a href="#"><i class="fab fa-instagram"></i></a>
   </div>-->
-  <%- include('../partials/footer') %>
-  <script>
-  // Agregar evento de clic a las imágenes del slider
-  document.querySelectorAll('.slider img').forEach((img, idx) => {
-    img.addEventListener('click', () => {
-      const isOferta = img.closest('#slider-ofertas');
-      const isTienda = img.closest('#slider');
-      const imageId = img.getAttribute('data-id');
-
-      if (isOferta) {
-        window.location.href = `/galeria?imageId=${imageId}`; // Redirige a la ruta correcta
-      } else if (isTienda) {
-        window.location.href = `/services?imageId=${imageId}`; // Redirige a la vista de tienda
-      }
-    });
-  });
-</script>
 </body>
 </html>

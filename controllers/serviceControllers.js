@@ -1,19 +1,12 @@
-const Service = require('../models/Service');
+const ServicePrincipali = require('../models/Service');
 const path = require('path');
-const { cloudinary } = require('../middlewares/uploadImage');
+const { cloudinary } = require('../middlewares/cloudinary');
 
 // Obtener todos los servicios
 exports.getServices = async (req, res) => {
   try {
-    const services = await Service.find();
-
-    // Asegurar que todas las imágenes tengan un atributo data-id, incluso si son URLs externas
-    const servicesConIds = services.map(service => ({
-      ...service._doc,
-      dataId: service._id.toString(),
-    }));
-
-    res.render('pages/services', { services: servicesConIds, homeInfo: res.locals.homeInfo });
+    const celulares = await ServicePrincipali.find();
+    res.render('pages/services', { services: celulares, homeInfo: res.locals.homeInfo });
   } catch (error) {
     console.error(error);
     res.status(500).send('Error al obtener los servicios');
@@ -24,23 +17,26 @@ exports.getServices = async (req, res) => {
 exports.addService = async (req, res) => {
   try {
     let image = req.body.image;
-    if (req.file) {
-      const result = await cloudinary.uploader.upload(req.file.path);
-      image = result.secure_url;
+    if (req.file && req.file.path) {
+      image = req.file.path; // URL de Cloudinary
     }
-    const { title, description, price, cantidad, colores, tallas } = req.body;
-    const coloresArray = colores ? colores.split(',').map(c => c.trim()) : [];
-    const tallasArray = tallas ? tallas.split(',').map(t => t.trim()) : [];
-    const newService = new Service({
+    const { title, description, price, cantidadDisponible, colores, tallas, garantia } = req.body;
+    
+    // Procesar colores y tallas (convertir strings separados por coma en arrays)
+    const coloresArray = colores ? colores.split(',').map(color => color.trim()).filter(color => color) : [];
+    const tallasArray = tallas ? tallas.split(',').map(talla => talla.trim()).filter(talla => talla) : [];
+    
+    const newCelular = new ServicePrincipali({
       title,
       description,
-      price,
-      image,
-      cantidad,
+      price: price || undefined,
+      cantidadDisponible: cantidadDisponible || undefined,
       colores: coloresArray,
-      tallas: tallasArray
+      tallas: tallasArray,
+      garantia,
+      image
     });
-    await newService.save();
+    await newCelular.save();
     res.redirect('/admin/services');
   } catch (error) {
     console.error(error);
@@ -52,27 +48,30 @@ exports.addService = async (req, res) => {
 exports.updateService = async (req, res) => {
   try {
     const { id } = req.params;
-    const service = await Service.findById(id);
     let image = req.body.image;
-    if (req.file) {
-      if (service.image) {
-        const publicId = service.image.split('/').pop().split('.')[0];
-        await cloudinary.uploader.destroy(publicId);
+    const servicio = await ServicePrincipali.findById(id);
+    if (req.file && req.file.path) {
+      image = req.file.path;
+      if (servicio && servicio.image && servicio.image.includes('cloudinary.com')) {
+        const publicId = servicio.image.split('/').slice(-1)[0].split('.')[0];
+        await cloudinary.uploader.destroy('webservitec/' + publicId);
       }
-      const result = await cloudinary.uploader.upload(req.file.path);
-      image = result.secure_url;
     }
-    const { title, description, price, cantidad, colores, tallas } = req.body;
-    const coloresArray = colores ? colores.split(',').map(c => c.trim()) : [];
-    const tallasArray = tallas ? tallas.split(',').map(t => t.trim()) : [];
-    await Service.findByIdAndUpdate(id, {
+    const { title, description, price, cantidadDisponible, colores, tallas, garantia } = req.body;
+    
+    // Procesar colores y tallas (convertir strings separados por coma en arrays)
+    const coloresArray = colores ? colores.split(',').map(color => color.trim()).filter(color => color) : [];
+    const tallasArray = tallas ? tallas.split(',').map(talla => talla.trim()).filter(talla => talla) : [];
+    
+    await ServicePrincipali.findByIdAndUpdate(id, {
       title,
       description,
-      price,
-      image,
-      cantidad,
+      price: price || undefined,
+      cantidadDisponible: cantidadDisponible || undefined,
       colores: coloresArray,
-      tallas: tallasArray
+      tallas: tallasArray,
+      garantia,
+      image
     });
     res.redirect('/admin/services');
   } catch (error) {
@@ -85,12 +84,12 @@ exports.updateService = async (req, res) => {
 exports.deleteService = async (req, res) => {
   try {
     const { id } = req.params;
-    const service = await Service.findById(id);
-    if (service.image) {
-      const publicId = service.image.split('/').pop().split('.')[0];
-      await cloudinary.uploader.destroy(publicId);
+    const servicio = await ServicePrincipali.findById(id);
+    if (servicio && servicio.image && servicio.image.includes('cloudinary.com')) {
+      const publicId = servicio.image.split('/').slice(-1)[0].split('.')[0];
+      await cloudinary.uploader.destroy('webservitec/' + publicId);
     }
-    await Service.findByIdAndDelete(id);
+    await ServicePrincipali.findByIdAndDelete(id);
     res.redirect('/admin/services');
   } catch (error) {
     console.error(error);

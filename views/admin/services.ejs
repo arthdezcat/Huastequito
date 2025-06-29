@@ -3,16 +3,37 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Administrar Productos - Tienda de Ropa</title>
+  <title>Administrar <%= homeInfo && homeInfo.TituloServicio1 ? homeInfo.TituloServicio1 : 'TituloServicio1' %></title>
   <link rel="stylesheet" href="/css/styles.css">
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
   <link rel="icon" href="/img/administracion.png" type="image/png">
   <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      background-attachment: fixed;
+    }
+    
     body.admin-page {
       display: flex;
       min-height: 100vh;
       margin: 0;
-      background: linear-gradient(120deg, #8ec5fc 0%, #e0c3fc 100%);
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      background-attachment: fixed;
+      position: relative;
+    }
+    
+    body.admin-page::before {
+      content: '';
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(255, 255, 255, 0.05);
+      z-index: -1;
     }
     .sidebar-admin {
       width: 250px;
@@ -28,6 +49,7 @@
       top: 0;
       z-index: 10;
       box-shadow: 2px 0 12px rgba(0,0,0,0.08);
+      transition: transform 0.3s ease;
     }
     .sidebar-admin .admin-avatar {
       width: 90px;
@@ -81,7 +103,7 @@
       width: calc(100% - 250px);
       padding: 40px 32px 32px 32px;
       min-height: 100vh;
-      background: transparent;
+      background: inherit;
     }
     .dashboard-cards {
       display: flex;
@@ -139,34 +161,117 @@
     .table.product-table {
       width: 100%;
       background: #fff;
-      border-radius: 10px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+      border-radius: 12px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.1);
       overflow: hidden;
       margin-bottom: 40px;
+      border: none;
     }
     .table.product-table th, .table.product-table td {
       vertical-align: middle;
       text-align: center;
+      padding: 16px 12px;
+      border: none;
     }
     .table.product-table th {
-      background: #f5f5f5;
+      background: #f8f9fa;
       font-weight: 700;
-      color: #232946;
+      color: #2d3748;
+      font-size: 14px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      border-bottom: 2px solid #e2e8f0;
     }
-    .btn-sm { padding: 4px 16px; font-size: 15px; border-radius: 6px; font-weight: 600; }
-    .btn-success { background: #27ae60; color: #fff; border: none; }
-    .btn-primary { background: #2980b9; color: #fff; border: none; }
-    .btn-danger { background: #e74c3c; color: #fff; border: none; }
-    .btn-secondary { background: #888; color: #fff; border: none; }
-    .btn-success:hover { background: #219150; }
-    .btn-primary:hover { background: #206090; }
-    .btn-danger:hover { background: #c0392b; }
-    .btn-secondary:hover { background: #555; }
+    .table.product-table td {
+      border-bottom: 1px solid #e2e8f0;
+      font-size: 14px;
+      color: #4a5568;
+    }
+    .table.product-table tbody tr:hover {
+      background-color: #f7fafc;
+    }
+    .btn-sm { 
+      padding: 8px 12px; 
+      font-size: 12px; 
+      border-radius: 6px; 
+      font-weight: 600; 
+      min-width: 75px;
+      white-space: nowrap;
+      margin: 0 2px;
+      display: inline-block;
+      text-align: center;
+      line-height: 1.2;
+      border: none;
+      text-decoration: none;
+      transition: all 0.2s ease;
+    }
+    .btn-success { 
+      background: #10b981; 
+      color: #fff; 
+      border: none; 
+    }
+    .btn-primary { 
+      background: #6366f1; 
+      color: #fff; 
+      border: none; 
+    }
+    .btn-danger { 
+      background: #ef4444; 
+      color: #fff; 
+      border: none; 
+    }
+    .btn-secondary { 
+      background: #6b7280; 
+      color: #fff; 
+      border: none; 
+    }
+    .btn-success:hover { 
+      background: #059669; 
+      transform: translateY(-1px);
+      box-shadow: 0 2px 8px rgba(16, 185, 129, 0.3);
+    }
+    .btn-primary:hover { 
+      background: #4f46e5; 
+      transform: translateY(-1px);
+      box-shadow: 0 2px 8px rgba(99, 102, 241, 0.3);
+    }
+    .btn-danger:hover { 
+      background: #dc2626; 
+      transform: translateY(-1px);
+      box-shadow: 0 2px 8px rgba(239, 68, 68, 0.3);
+    }
+    .btn-secondary:hover { 
+      background: #4b5563; 
+      transform: translateY(-1px);
+      box-shadow: 0 2px 8px rgba(107, 114, 128, 0.3);
+    }
     .update-form-row td { padding: 0 !important; }
+    
+    /* Estilos para botones principales de registro */
+    .btn-register-primary, .btn-primary.btn-lg {
+      background: linear-gradient(135deg, #8b5cf6, #7c3aed) !important;
+      color: white !important;
+      padding: 12px 24px !important;
+      font-size: 14px !important;
+      font-weight: 600 !important;
+      border-radius: 8px !important;
+      border: none !important;
+      text-transform: uppercase !important;
+      letter-spacing: 0.5px !important;
+      transition: all 0.3s ease !important;
+      box-shadow: 0 4px 12px rgba(139, 92, 246, 0.3) !important;
+    }
+    
+    .btn-register-primary:hover, .btn-primary.btn-lg:hover {
+      background: linear-gradient(135deg, #7c3aed, #6d28d9) !important;
+      transform: translateY(-2px) !important;
+      box-shadow: 0 6px 20px rgba(139, 92, 246, 0.4) !important;
+    }
     @media (max-width: 900px) {
       .sidebar-admin {
         width: 70px;
         padding: 16px 0 0 0;
+        transform: translateX(0);
       }
       .sidebar-admin .admin-name {
         display: none;
@@ -176,46 +281,669 @@
         font-size: 0.9rem;
         justify-content: center;
       }
+      .sidebar-admin ul li a span {
+        display: none;
+      }
       .main-admin-content {
         margin-left: 70px;
         width: calc(100% - 70px);
-        padding: 24px 6px 24px 6px;
+        padding: 24px 16px;
       }
     }
+    
     @media (max-width: 600px) {
       .dashboard-cards {
         flex-direction: column;
         gap: 18px;
       }
       .main-admin-content {
-        padding: 12px 2px 12px 2px;
+        margin-left: 0;
+        width: 100%;
+        padding: 60px 12px 12px 12px;
       }
       .sidebar-admin {
-        position: absolute;
+        transform: translateX(-100%);
         width: 250px;
-        height: 100vh;
-        top: 0;
-        left: -250px;
-        transition: left 0.3s;
+        z-index: 1000;
       }
       .sidebar-admin.active {
-        left: 0;
+        transform: translateX(0);
+      }
+      .sidebar-admin ul li a {
+        padding: 16px 32px;
+        font-size: 1.1rem;
+        justify-content: flex-start;
+      }
+      .sidebar-admin ul li a span {
+        display: inline;
+      }
+      .sidebar-admin .admin-name {
+        display: block;
       }
       .sidebar-toggle {
         display: block;
-        position: absolute;
+        position: fixed;
         top: 16px;
         left: 16px;
-        background: #2980b9;
+        background: #232946;
         color: #fff;
         border: none;
-        border-radius: 6px;
-        padding: 10px;
+        border-radius: 8px;
+        padding: 12px;
         cursor: pointer;
-        z-index: 11;
-        box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        z-index: 1001;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        font-size: 1.1rem;
+        transition: all 0.3s ease;
+      }
+      .sidebar-toggle:hover {
+        background: #eebf63;
+        color: #232946;
+        transform: scale(1.05);
+      }
+      
+      /* Estilos para hacer la tabla responsiva en móvil */
+      .table.product-table {
+        font-size: 0.85rem;
+      }
+      
+      .table.product-table th:not(:first-child):not(:last-child),
+      .table.product-table td:not(:first-child):not(:last-child) {
+        display: none;
+      }
+      
+      .table.product-table th:first-child {
+        width: 55%;
+      }
+      
+      .table.product-table th:last-child {
+        width: 45%;
+        text-align: center;
+      }
+      
+      .table.product-table .btn-sm {
+        padding: 6px 8px;
+        font-size: 11px;
+        margin: 1px;
+        min-width: 65px;
+        border-radius: 4px;
+        display: inline-block;
+        white-space: nowrap;
+        line-height: 1.1;
+      }
+      
+      .table.product-table td:last-child {
+        white-space: nowrap;
+        padding: 6px 4px !important;
+        min-width: 130px;
+      }
+      
+      .modal-content-custom {
+        width: 95vw;
+        max-width: 400px;
+        margin: 20px;
+        max-height: 85vh;
       }
     }
+    /* Estilos modernos para los campos del formulario */
+    .form-group {
+      margin-bottom: 20px;
+      position: relative;
+    }
+    
+    .form-group label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 600;
+      color: #2c3e50;
+      font-size: 0.95rem;
+      transition: color 0.3s ease;
+    }
+    
+    .form-control {
+      width: 100%;
+      padding: 12px 16px;
+      border: 2px solid #e1e8ed;
+      border-radius: 12px;
+      font-size: 1rem;
+      background: #ffffff;
+      transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
+      position: relative;
+      outline: none;
+      font-family: inherit;
+    }
+    
+    .form-control:focus {
+      border-color: #4f46e5;
+      box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1), 0 4px 12px rgba(0, 0, 0, 0.08);
+      transform: translateY(-1px);
+      background: #fefefe;
+    }
+    
+    .form-control:hover:not(:focus) {
+      border-color: #c7d2fe;
+      box-shadow: 0 3px 8px rgba(0, 0, 0, 0.04);
+    }
+    
+    /* Estilos para textarea */
+    textarea.form-control {
+      min-height: 100px;
+      resize: vertical;
+      line-height: 1.6;
+    }
+    
+    textarea.form-control:focus {
+      min-height: 120px;
+    }
+    
+    /* Estilos para inputs de archivo */
+    input[type="file"] {
+      padding: 10px 14px;
+      border: 2px dashed #d1d5db;
+      border-radius: 12px;
+      background: #f9fafb;
+      color: #374151;
+      font-size: 0.9rem;
+      transition: all 0.3s ease;
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    input[type="file"]:hover {
+      border-color: #6366f1;
+      background: #f0f4ff;
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(99, 102, 241, 0.1);
+    }
+    
+    input[type="file"]:focus {
+      outline: none;
+      border-color: #4f46e5;
+      box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+    }
+    
+    /* Estilos para campos con placeholder mejorado */
+    .form-control::placeholder {
+      color: #9ca3af;
+      font-style: italic;
+      transition: opacity 0.3s ease;
+    }
+    
+    .form-control:focus::placeholder {
+      opacity: 0.6;
+      transform: translateY(-2px);
+    }
+    
+    /* Estilos para botones del formulario */
+    .btn {
+      padding: 12px 24px;
+      border: none;
+      border-radius: 12px;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+    }
+    
+    .btn:active {
+      transform: translateY(0);
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+    
+    /* Botón primario */
+    .btn-primary {
+      background: linear-gradient(135deg, #4f46e5, #7c3aed);
+      color: white;
+    }
+    
+    .btn-primary:hover {
+      background: linear-gradient(135deg, #4338ca, #6d28d9);
+    }
+    
+    /* Botón secundario */
+    .btn-secondary {
+      background: linear-gradient(135deg, #6b7280, #4b5563);
+      color: white;
+    }
+    
+    .btn-secondary:hover {
+      background: linear-gradient(135deg, #4b5563, #374151);
+    }
+    
+    /* Botón de cancelar */
+    .btn-cancel {
+      background: linear-gradient(135deg, #ef4444, #dc2626);
+      color: white;
+    }
+    
+    .btn-cancel:hover {
+      background: linear-gradient(135deg, #dc2626, #b91c1c);
+    }
+    
+    /* Estilos para botones principales de registro */
+    .btn-register-primary, .btn-primary.btn-lg {
+      background: linear-gradient(135deg, #8b5cf6, #7c3aed);
+      color: white;
+      padding: 12px 24px;
+      font-size: 14px;
+      font-weight: 600;
+      border-radius: 8px;
+      border: none;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 12px rgba(139, 92, 246, 0.3);
+    }
+    
+    .btn-register-primary:hover, .btn-primary.btn-lg:hover {
+      background: linear-gradient(135deg, #7c3aed, #6d28d9);
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(139, 92, 246, 0.4);
+    }
+    
+    /* Estilos para títulos de sección de tablas */
+    .table-section-title {
+      font-size: 24px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: #2d3748;
+      text-align: center;
+      margin-bottom: 24px;
+    }
+
+    .update-form-row td { padding: 0 !important; }
+    @media (max-width: 900px) {
+      .sidebar-admin {
+        width: 70px;
+        padding: 16px 0 0 0;
+        transform: translateX(0);
+      }
+      .sidebar-admin .admin-name {
+        display: none;
+      }
+      .sidebar-admin ul li a {
+        padding: 16px 10px;
+        font-size: 0.9rem;
+        justify-content: center;
+      }
+      .sidebar-admin ul li a span {
+        display: none;
+      }
+      .main-admin-content {
+        margin-left: 70px;
+        width: calc(100% - 70px);
+        padding: 24px 16px;
+      }
+    }
+    
+    @media (max-width: 600px) {
+      .dashboard-cards {
+        flex-direction: column;
+        gap: 18px;
+      }
+      .main-admin-content {
+        margin-left: 0;
+        width: 100%;
+        padding: 60px 12px 12px 12px;
+      }
+      .sidebar-admin {
+        transform: translateX(-100%);
+        width: 250px;
+        z-index: 1000;
+      }
+      .sidebar-admin.active {
+        transform: translateX(0);
+      }
+      .sidebar-admin ul li a {
+        padding: 16px 32px;
+        font-size: 1.1rem;
+        justify-content: flex-start;
+      }
+      .sidebar-admin ul li a span {
+        display: inline;
+      }
+      .sidebar-admin .admin-name {
+        display: block;
+      }
+      .sidebar-toggle {
+        display: block;
+        position: fixed;
+        top: 16px;
+        left: 16px;
+        background: #232946;
+        color: #fff;
+        border: none;
+        border-radius: 8px;
+        padding: 12px;
+        cursor: pointer;
+        z-index: 1001;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        font-size: 1.1rem;
+        transition: all 0.3s ease;
+      }
+      .sidebar-toggle:hover {
+        background: #eebf63;
+        color: #232946;
+        transform: scale(1.05);
+      }
+      
+      /* Estilos para hacer la tabla responsiva en móvil */
+      .table.product-table {
+        font-size: 0.85rem;
+      }
+      
+      .table.product-table th:not(:first-child):not(:last-child),
+      .table.product-table td:not(:first-child):not(:last-child) {
+        display: none;
+      }
+      
+      .table.product-table th:first-child {
+        width: 55%;
+      }
+      
+      .table.product-table th:last-child {
+        width: 45%;
+        text-align: center;
+      }
+      
+      .table.product-table .btn-sm {
+        padding: 6px 8px;
+        font-size: 11px;
+        margin: 1px;
+        min-width: 65px;
+        border-radius: 4px;
+        display: inline-block;
+        white-space: nowrap;
+        line-height: 1.1;
+      }
+      
+      .table.product-table td:last-child {
+        white-space: nowrap;
+        padding: 6px 4px !important;
+        min-width: 130px;
+      }
+      
+      .modal-content-custom {
+        width: 95vw;
+        max-width: 400px;
+        margin: 20px;
+        max-height: 85vh;
+      }
+    }
+    /* Estilos modernos para los campos del formulario */
+    .form-group {
+      margin-bottom: 20px;
+      position: relative;
+    }
+    
+    .form-group label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 600;
+      color: #2c3e50;
+      font-size: 0.95rem;
+      transition: color 0.3s ease;
+    }
+    
+    .form-control {
+      width: 100%;
+      padding: 12px 16px;
+      border: 2px solid #e1e8ed;
+      border-radius: 12px;
+      font-size: 1rem;
+      background: #ffffff;
+      transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
+      position: relative;
+      outline: none;
+      font-family: inherit;
+    }
+    
+    .form-control:focus {
+      border-color: #4f46e5;
+      box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1), 0 4px 12px rgba(0, 0, 0, 0.08);
+      transform: translateY(-1px);
+      background: #fefefe;
+    }
+    
+    .form-control:hover:not(:focus) {
+      border-color: #c7d2fe;
+      box-shadow: 0 3px 8px rgba(0, 0, 0, 0.04);
+    }
+    
+    /* Estilos para textarea */
+    textarea.form-control {
+      min-height: 100px;
+      resize: vertical;
+      line-height: 1.6;
+    }
+    
+    textarea.form-control:focus {
+      min-height: 120px;
+    }
+    
+    /* Estilos para inputs de archivo */
+    input[type="file"] {
+      padding: 10px 14px;
+      border: 2px dashed #d1d5db;
+      border-radius: 12px;
+      background: #f9fafb;
+      color: #374151;
+      font-size: 0.9rem;
+      transition: all 0.3s ease;
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    input[type="file"]:hover {
+      border-color: #6366f1;
+      background: #f0f4ff;
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(99, 102, 241, 0.1);
+    }
+    
+    input[type="file"]:focus {
+      outline: none;
+      border-color: #4f46e5;
+      box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+    }
+    
+    /* Estilos para campos con placeholder mejorado */
+    .form-control::placeholder {
+      color: #9ca3af;
+      font-style: italic;
+      transition: opacity 0.3s ease;
+    }
+    
+    .form-control:focus::placeholder {
+      opacity: 0.6;
+      transform: translateY(-2px);
+    }
+    
+    /* Estilos para botones del formulario */
+    .btn {
+      padding: 12px 24px;
+      border: none;
+      border-radius: 12px;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+    }
+    
+    .btn:active {
+      transform: translateY(0);
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+    
+    /* Botón primario */
+    .btn-primary {
+      background: linear-gradient(135deg, #4f46e5, #7c3aed);
+      color: white;
+    }
+    
+    .btn-primary:hover {
+      background: linear-gradient(135deg, #4338ca, #6d28d9);
+    }
+    
+    /* Botón secundario */
+    .btn-secondary {
+      background: linear-gradient(135deg, #6b7280, #4b5563);
+      color: white;
+    }
+    
+    .btn-secondary:hover {
+      background: linear-gradient(135deg, #4b5563, #374151);
+    }
+    
+    /* Botón de cancelar */
+    .btn-cancel {
+      background: linear-gradient(135deg, #ef4444, #dc2626);
+      color: white;
+    }
+    
+    .btn-cancel:hover {
+      background: linear-gradient(135deg, #dc2626, #b91c1c);
+    }
+    
+    /* Estilos para botones principales de registro */
+    .btn-register-primary, .btn-primary.btn-lg {
+      background: linear-gradient(135deg, #8b5cf6, #7c3aed);
+      color: white;
+      padding: 12px 24px;
+      font-size: 14px;
+      font-weight: 600;
+      border-radius: 8px;
+      border: none;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 12px rgba(139, 92, 246, 0.3);
+    }
+    
+    .btn-register-primary:hover, .btn-primary.btn-lg:hover {
+      background: linear-gradient(135deg, #7c3aed, #6d28d9);
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(139, 92, 246, 0.4);
+    }
+    
+    /* Estilos para títulos de sección de tablas */
+    .table-section-title {
+      font-size: 24px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: #2d3748;
+      text-align: center;
+      margin-bottom: 24px;
+    }
+
+    /* Estados de validación mejorados */
+    .form-control:valid:not(:placeholder-shown) {
+      border-color: #10b981;
+      background: linear-gradient(135deg, #ffffff 0%, #f0fdf4 100%);
+      box-shadow: 0 2px 4px rgba(16, 185, 129, 0.1), 0 0 0 3px rgba(16, 185, 129, 0.1);
+    }
+    
+    .form-control:invalid:not(:placeholder-shown) {
+      border-color: #ef4444;
+      background: linear-gradient(135deg, #ffffff 0%, #fef2f2 100%);
+      box-shadow: 0 2px 4px rgba(239, 68, 68, 0.1), 0 0 0 3px rgba(239, 68, 68, 0.1);
+    }
+    
+    /* Indicador visual para campos requeridos */
+    .form-group:has(input[required]) label::after,
+    .form-group:has(textarea[required]) label::after {
+      content: ' *';
+      color: #ef4444;
+      font-weight: bold;
+      margin-left: 2px;
+    }
+    
+    /* Mejores estilos para small/hints */
+    small {
+      display: block;
+      margin-top: 6px;
+      color: #6b7280;
+      font-size: 0.85rem;
+      line-height: 1.4;
+      font-style: italic;
+    }
+    
+    small i {
+      margin-right: 4px;
+      opacity: 0.7;
+    }
+    
+    /* Animación sutil en el hover de inputs */
+    .form-control:hover:not(:focus):not(:disabled) {
+      border-color: #c7d2fe;
+      box-shadow: 0 3px 8px rgba(0, 0, 0, 0.04);
+      transform: translateY(-1px);
+    }
+    
+    /* Efecto especial para textarea en focus */
+    textarea.form-control:focus {
+      min-height: 120px;
+      box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1), 0 8px 25px rgba(0, 0, 0, 0.1);
+    }
+    
+    /* Mejor estilo para los títulos de sección */
+    h3 {
+      color: #1f2937;
+      font-weight: 700;
+      margin-bottom: 24px;
+      padding-bottom: 12px;
+      border-bottom: 2px solid #e5e7eb;
+      font-size: 1.4rem;
+    }
+    
+    /* Responsive para formularios */
+    @media (max-width: 768px) {
+      .form-control {
+        padding: 14px 16px;
+        font-size: 16px; /* Evita zoom en iOS */
+      }
+      
+      .btn {
+        padding: 14px 20px;
+        font-size: 1rem;
+        width: 100%;
+        margin-bottom: 10px;
+      }
+    }
+    
+    /* Mejores modales */
     .modal-custom {
       display: none;
       position: fixed;
@@ -227,15 +955,18 @@
       background: rgba(0,0,0,0.4);
       justify-content: center;
       align-items: center;
+      backdrop-filter: blur(5px);
     }
+    
     .modal-custom.active { display: flex; }
+    
     .modal-content-custom {
       background: #fff;
       padding: 32px 24px;
       border-radius: 16px;
       box-shadow: 0 4px 24px rgba(0,0,0,0.18);
       min-width: 320px;
-      max-width: 420px;
+      max-width: 480px;
       width: 95vw;
       max-height: 90vh;
       overflow-y: auto;
@@ -244,7 +975,29 @@
       display: flex;
       flex-direction: column;
       align-items: stretch;
+      /* Mejor scroll personalizado */
+      scrollbar-width: thin;
+      scrollbar-color: #cbd5e1 #f1f5f9;
     }
+    
+    .modal-content-custom::-webkit-scrollbar {
+      width: 8px;
+    }
+    
+    .modal-content-custom::-webkit-scrollbar-track {
+      background: #f1f5f9;
+      border-radius: 4px;
+    }
+    
+    .modal-content-custom::-webkit-scrollbar-thumb {
+      background: #cbd5e1;
+      border-radius: 4px;
+    }
+    
+    .modal-content-custom::-webkit-scrollbar-thumb:hover {
+      background: #94a3b8;
+    }
+    
     .close-modal {
       position: absolute;
       top: 12px;
@@ -260,144 +1013,273 @@
         max-width: 98vw;
       }
     }
+    
+    /* Mejoras adicionales para botones de acciones responsivos */
+    @media (max-width: 480px) {
+      .table.product-table .btn-sm {
+        padding: 6px 4px !important;
+        font-size: 9px !important;
+        margin: 1px !important;
+        min-width: 30px !important;
+        border-radius: 4px !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        flex-direction: column !important;
+        gap: 1px !important;
+        line-height: 1 !important;
+      }
+      
+      .table.product-table .btn-sm i {
+        font-size: 11px !important;
+        margin: 0 !important;
+      }
+      
+      .table.product-table .btn-sm span {
+        display: none !important;
+      }
+      
+      .table.product-table td:last-child {
+        padding: 6px 2px !important;
+        min-width: 120px !important;
+        display: flex !important;
+        flex-wrap: wrap !important;
+        justify-content: center !important;
+        align-items: center !important;
+        gap: 2px !important;
+      }
+      
+      .table.product-table td:last-child form {
+        display: inline-flex !important;
+        margin: 0 !important;
+      }
+      
+      /* Botones más compactos en pantallas muy pequeñas */
+      .table.product-table .btn-success {
+        background: #10b981 !important;
+      }
+      
+      .table.product-table .btn-primary {
+        background: #6366f1 !important;
+      }
+      
+      .table.product-table .btn-danger {
+        background: #ef4444 !important;
+      }
+      
+      .table.product-table .btn-secondary {
+        background: #6b7280 !important;
+      }
+      
+      /* Tooltip para mostrar el texto del botón en hover */
+      .table.product-table .btn-sm[title] {
+        position: relative;
+      }
+      
+      .table.product-table .btn-sm[title]:hover::after {
+        content: attr(title);
+        position: absolute;
+        bottom: 100%;
+        left: 50%;
+        transform: translateX(-50%);
+        background: #232946;
+        color: white;
+        padding: 4px 8px;
+        border-radius: 4px;
+        font-size: 10px;
+        white-space: nowrap;
+        z-index: 1000;
+        margin-bottom: 2px;
+      }
+      
+      .table.product-table .btn-sm[title]:hover::before {
+        content: '';
+        position: absolute;
+        bottom: 100%;
+        left: 50%;
+        transform: translateX(-50%);
+        border: 4px solid transparent;
+        border-top-color: #232946;
+        z-index: 1000;
+      }
+    }
+    
+    /* Estilos para tablets */
+    @media (max-width: 768px) and (min-width: 481px) {
+      .table.product-table .btn-sm {
+        padding: 7px 5px !important;
+        font-size: 10px !important;
+        margin: 2px 1px !important;
+        min-width: 32px !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        flex-direction: column !important;
+        gap: 1px !important;
+      }
+      
+      .table.product-table .btn-sm i {
+        font-size: 12px !important;
+      }
+      
+      .table.product-table .btn-sm span {
+        font-size: 8px !important;
+        line-height: 1 !important;
+      }
+      
+      .table.product-table td:last-child {
+        padding: 8px 4px !important;
+        min-width: 130px !important;
+        display: flex !important;
+        flex-wrap: wrap !important;
+        justify-content: center !important;
+        gap: 3px !important;
+      }
+    }
   </style>
 </head>
 <body class="admin-page">
   <button class="sidebar-toggle" id="sidebarToggle" style="display:none;"><i class="fas fa-bars"></i></button>
   <aside class="sidebar-admin" id="sidebarAdmin">
     <div class="admin-avatar">
-      <img src="<%= homeInfo && homeInfo.logoUrl ? homeInfo.logoUrl : '/img/LogoOfic.png' %>" alt="Admin Avatar">
+      <img src="<%= homeInfo && homeInfo.logoUrl ? homeInfo.logoUrl : '' %>" alt="Admin Avatar">
     </div>
     <div class="admin-name">Panel Admin</div>
     <ul id="sidebar-menu">
-      <li><a href="/admin"><i class="fas fa-tachometer-alt"></i> Inicio</a></li>
-      <li><a href="/admin/services"><i class="fas fa-tags"></i>Productos</a></li>
-      <li><a href="/admin/contact"><i class="fas fa-address-book"></i> Contactos</a></li>
-      <li><a href="/admin/galeria"><i class="fas fa-percent"></i>Ofertas</a></li>
-      <li><a href="/admin/users"><i class="fas fa-users-cog"></i> Usuarios</a></li>
-      <li><a href="/logout"><i class="fas fa-sign-out-alt"></i> Cerrar Sesión</a></li>
+      <li><a href="/admin"><i class="fas fa-tachometer-alt"></i> <span>Inicio</span></a></li>
+      <li><a href="/admin/services" class="active"><i class="fas fa-tags"></i> <span><%= homeInfo && homeInfo.TituloServicio1 ? homeInfo.TituloServicio1 : 'TituloServicio1' %></span></a></li>
+      <li><a href="/admin/contact"><i class="fas fa-address-book"></i> <span>Contactos</span></a></li>
+      <li><a href="/admin/galeria"><i class="fas fa-percent"></i> <span><%= homeInfo && homeInfo.TituloServicio2 ? homeInfo.TituloServicio2 : 'TituloServicio2' %></span></a></li>
+      <li><a href="/admin/users"><i class="fas fa-users-cog"></i> <span>Usuarios</span></a></li>
+      <li><a href="/logout"><i class="fas fa-sign-out-alt"></i> <span>Cerrar Sesión</span></a></li>
     </ul>
   </aside>
   <main class="main-admin-content">
     <section style="max-width:900px;margin:40px auto 0 auto;">
-      <h2 style="text-align:center;margin-bottom:32px;">Administrar Productos</h2>
-      <!-- Modal de registro de producto -->
+      <h2 style="text-align:center;margin-bottom:32px;">Administrar <%= homeInfo && homeInfo.TituloServicio1 ? homeInfo.TituloServicio1 : 'TituloServicio1' %></h2>
+      <!-- Modal de registro de servicio -->
       <div id="productModal" class="modal-custom" style="display:none;">
         <div class="modal-content-custom">
           <span class="close-modal" onclick="closeProductModal()">&times;</span>
-          <h3>Registrar Nuevo Producto</h3>
+          <h3>Registrar <%= homeInfo && homeInfo.TituloServicio1 ? homeInfo.TituloServicio1 : 'TituloServicio1' %></h3>
           <form action="/admin/services/add" method="post" class="service-form-admin" enctype="multipart/form-data">
             <div class="form-group">
               <label for="title">Nombre del Producto:</label>
-              <input type="text" id="title" name="title" required>
+              <input type="text" id="title" name="title" required class="form-control" placeholder="Ej: Smartphone Galaxy S23">
             </div>
             <div class="form-group">
               <label for="description">Descripción:</label>
-              <textarea id="description" name="description" required></textarea>
+              <textarea id="description" name="description" required class="form-control" placeholder="Describe las características del producto"></textarea>
             </div>
             <div class="form-group">
               <label for="price">Precio:</label>
-              <input type="number" id="price" name="price" required>
+              <input type="number" id="price" name="price" min="0" step="0.01" class="form-control" placeholder="Ej: 299.99">
             </div>
             <div class="form-group">
-              <label for="cantidad">Cantidad disponible:</label>
-              <input type="number" id="cantidad" name="cantidad" min="0" required>
+              <label for="cantidadDisponible">Cantidad disponible:</label>
+              <input type="number" id="cantidadDisponible" name="cantidadDisponible" min="0" class="form-control" placeholder="Ej: 10">
             </div>
             <div class="form-group">
               <label for="colores">Colores (separados por coma):</label>
-              <input type="text" id="colores" name="colores" placeholder="rojo, azul, verde">
+              <input type="text" id="colores" name="colores" class="form-control" placeholder="Ej: Rojo, Azul, Negro, Blanco">
+              <small>Separar cada color con una coma. Ejemplo: Rojo, Azul, Negro</small>
             </div>
             <div class="form-group">
-              <label for="tallas">Tallas (separadas por coma):</label>
-              <input type="text" id="tallas" name="tallas" placeholder="S, M, L, XL">
+              <label for="tallas">Tallas (separadas por coma: S, M, L, XL):</label>
+              <input type="text" id="tallas" name="tallas" class="form-control" placeholder="Ej: S, M, L, XL">
+              <small>Separar cada talla con una coma. Ejemplo: S, M, L, XL</small>
             </div>
             <div class="form-group">
               <label for="image">URL de la Imagen:</label>
-              <input type="text" id="image" name="image" placeholder="http://...">
+              <input type="text" id="image" name="image" placeholder="http://..." class="form-control">
             </div>
             <div class="form-group">
               <label for="imageFile">O subir imagen:</label>
-              <input type="file" id="imageFile" name="imageFile" accept="image/*">
+              <input type="file" id="imageFile" name="imageFile" accept="image/*" class="form-control">
             </div>
             <button type="submit" class="btn btn-primary">Registrar</button>
             <button type="button" class="btn btn-secondary" onclick="closeProductModal()">Cancelar</button>
           </form>
         </div>
       </div>
-      <!-- Modal de edición de producto -->
+      <!-- Modal de edición -->
       <div id="editProductModal" class="modal-custom" style="display:none;">
         <div class="modal-content-custom">
           <span class="close-modal" onclick="closeEditProductModal()">&times;</span>
-          <h3>Editar Producto</h3>
+          <h3>Editar <%= homeInfo && homeInfo.TituloServicio1 ? homeInfo.TituloServicio1 : 'TituloServicio1' %></h3>
           <form id="editProductForm" method="post" enctype="multipart/form-data">
             <div class="form-group">
               <label for="edit_title">Nombre del Producto:</label>
-              <input type="text" id="edit_title" name="title" required>
+              <input type="text" id="edit_title" name="title" required class="form-control">
             </div>
             <div class="form-group">
               <label for="edit_description">Descripción:</label>
-              <textarea id="edit_description" name="description" required></textarea>
+              <textarea id="edit_description" name="description" required class="form-control"></textarea>
             </div>
             <div class="form-group">
               <label for="edit_price">Precio:</label>
-              <input type="number" id="edit_price" name="price" required>
+              <input type="number" id="edit_price" name="price" min="0" step="0.01" class="form-control">
             </div>
             <div class="form-group">
-              <label for="edit_cantidad">Cantidad disponible:</label>
-              <input type="number" id="edit_cantidad" name="cantidad" min="0" required>
+              <label for="edit_cantidadDisponible">Cantidad disponible:</label>
+              <input type="number" id="edit_cantidadDisponible" name="cantidadDisponible" min="0" class="form-control">
             </div>
             <div class="form-group">
               <label for="edit_colores">Colores (separados por coma):</label>
-              <input type="text" id="edit_colores" name="colores">
+              <input type="text" id="edit_colores" name="colores" class="form-control">
+              <small>Separar cada color con una coma. Ejemplo: Rojo, Azul, Negro</small>
             </div>
             <div class="form-group">
               <label for="edit_tallas">Tallas (separadas por coma):</label>
-              <input type="text" id="edit_tallas" name="tallas">
+              <input type="text" id="edit_tallas" name="tallas" class="form-control">
+              <small>Separar cada talla con una coma. Ejemplo: S, M, L, XL</small>
             </div>
             <div class="form-group">
               <label for="edit_image">URL de la Imagen:</label>
-              <input type="text" id="edit_image" name="image">
+              <input type="text" id="edit_image" name="image" class="form-control">
             </div>
             <div class="form-group">
               <label for="edit_imageFile">O subir imagen:</label>
-              <input type="file" id="edit_imageFile" name="imageFile" accept="image/*">
+              <input type="file" id="edit_imageFile" name="imageFile" accept="image/*" class="form-control">
             </div>
-            <button type="submit" class="btn btn-primary">Actualizar</button>
+            <button type="submit" class="btn btn-primary">Actualizar <%= homeInfo && homeInfo.TituloServicio1 ? homeInfo.TituloServicio1 : 'TituloServicio1' %></button>
             <button type="button" class="btn btn-secondary" onclick="closeEditProductModal()">Cancelar</button>
           </form>
         </div>
       </div>
-      <button class="btn btn-primary" style="margin-bottom:18px;" onclick="openProductModal()">Registrar Producto</button>
+      <button class="btn btn-primary" style="margin-bottom:18px;" onclick="openProductModal()">Registrar <%= homeInfo && homeInfo.TituloServicio1 ? homeInfo.TituloServicio1 : 'TituloServicio1' %></button>
       <div class="table-responsive">
         <table class="table table-striped table-hover product-table">
           <thead>
             <tr>
               <th>Nombre</th>
+              <th>Descripción</th>
               <th>Precio</th>
               <th>Cantidad</th>
               <th>Colores</th>
               <th>Tallas</th>
               <th>Imagen</th>
-              <th style="min-width:180px;">Acciones</th>
+              <th style="min-width:70px;width:1%;text-align:center;">Acciones</th>
             </tr>
           </thead>
           <tbody>
             <% services.forEach(service => { %>
               <tr>
                 <td><%= service.title %></td>
-                <td>$<%= service.price %></td>
-                <td><%= service.cantidad %></td>
-                <td><%= service.colores ? service.colores.join(', ') : '' %></td>
-                <td><%= service.tallas ? service.tallas.join(', ') : '' %></td>
+                <td><%= service.description %></td>
+                <td><%= service.price ? '$' + service.price : '-' %></td>
+                <td><%= service.cantidadDisponible || '-' %></td>
+                <td><%= service.colores && service.colores.length > 0 ? service.colores.join(', ') : '-' %></td>
+                <td><%= service.tallas && service.tallas.length > 0 ? service.tallas.join(', ') : '-' %></td>
                 <td>
                   <% if (service.image) { %>
                     <img src="<%= service.image %>" alt="<%= service.title %>" style="width:40px;height:40px;object-fit:cover;border-radius:6px;">
                   <% } %>
                 </td>
                 <td>
-                  <button class="btn btn-primary btn-sm btn-edit-product" data-product='<%= JSON.stringify(service) %>' style="margin-right:4px;">Editar</button>
-                  <form action="/admin/services/delete/<%= service._id %>" method="post" style="display:inline;" onsubmit="return confirmDelete(event)">
-                    <button type="submit" class="btn btn-danger btn-sm">Eliminar</button>
+                  <button class="btn btn-primary btn-sm btn-edit-product" data-product='<%= JSON.stringify(service) %>' style="margin-right:4px;"><i class="fas fa-edit"></i></button>
+                  <form action="/admin/services/delete/<%= service._id %>" method="post" style="display:inline;" class="delete-form-inline" onsubmit="return confirmDelete(event)">
+                    <button type="submit" class="btn btn-danger btn-sm delete-icon-btn" title="Eliminar"><i class="fas fa-trash-alt"></i></button>
                   </form>
                 </td>
               </tr>
@@ -406,115 +1288,70 @@
         </table>
       </div>
     </section>
-  </main>
-  <div id="deleteModal" class="modal-custom" style="display:none;">
-    <div class="modal-content-custom">
-      <span class="close-modal" onclick="closeDeleteModal()">&times;</span>
-      <h3>¿Estás seguro que deseas eliminar este producto?</h3>
-      <div style="display:flex;gap:16px;justify-content:center;margin-top:24px;">
-        <button class="btn btn-danger" onclick="confirmDeleteAction()">Sí, eliminar</button>
-        <button class="btn btn-secondary" onclick="closeDeleteModal()">No, cancelar</button>
+    <div id="deleteModal" class="modal-custom" style="display:none;">
+      <div class="modal-content-custom">
+        <span class="close-modal" onclick="closeDeleteModal()">&times;</span>
+        <h3>¿Estás seguro que deseas eliminar este producto?</h3>
+        <div style="display:flex;gap:16px;justify-content:center;margin-top:24px;">
+          <button class="btn btn-danger" onclick="confirmDeleteAction()">Sí, eliminar</button>
+          <button class="btn btn-secondary" onclick="closeDeleteModal()">Cancelar</button>
+        </div>
       </div>
     </div>
-  </div>
+  </main>
   <script>
-    let deleteFormRef = null;
-    function openDeleteModal(form) {
-      deleteFormRef = form;
+    let deleteFormAction = '';
+    function confirmDelete(event) {
+      event.preventDefault();
+      deleteFormAction = event.target.action;
       document.getElementById('deleteModal').style.display = 'flex';
-      document.getElementById('deleteModal').classList.add('active');
+      return false;
+    }
+    function confirmDeleteAction() {
+      if (deleteFormAction) {
+        window.location.href = deleteFormAction;
+      }
     }
     function closeDeleteModal() {
       document.getElementById('deleteModal').style.display = 'none';
-      document.getElementById('deleteModal').classList.remove('active');
-      deleteFormRef = null;
-    }
-    function confirmDeleteAction() {
-      if(deleteFormRef) deleteFormRef.submit();
-      closeDeleteModal();
+      deleteFormAction = '';
     }
     function openProductModal() {
       document.getElementById('productModal').style.display = 'flex';
-      document.getElementById('productModal').classList.add('active');
     }
     function closeProductModal() {
       document.getElementById('productModal').style.display = 'none';
-      document.getElementById('productModal').classList.remove('active');
     }
-    function openEditProductModal(product) {
-      document.getElementById('editProductForm').action = '/admin/services/update/' + product._id;
-      document.getElementById('edit_title').value = product.title;
-      document.getElementById('edit_description').value = product.description;
-      document.getElementById('edit_price').value = product.price;
-      document.getElementById('edit_cantidad').value = product.cantidad;
-      document.getElementById('edit_colores').value = (product.colores || []).join(', ');
-      document.getElementById('edit_tallas').value = (product.tallas || []).join(', ');
-      document.getElementById('edit_image').value = product.image || '';
-      document.getElementById('edit_imageFile').value = '';
+    function openEditProductModal() {
       document.getElementById('editProductModal').style.display = 'flex';
-      document.getElementById('editProductModal').classList.add('active');
     }
     function closeEditProductModal() {
       document.getElementById('editProductModal').style.display = 'none';
-      document.getElementById('editProductModal').classList.remove('active');
     }
-    function confirmDelete(e) {
-      if (!confirm('¿Estás seguro de que deseas eliminar este producto?')) {
-        e.preventDefault();
-        return false;
-      }
-      return true;
-    }
-    // Script para marcar solo la pestaña activa
-    document.addEventListener('DOMContentLoaded', function() {
-      const menu = document.getElementById('sidebar-menu');
-      if(menu) {
-        const links = menu.querySelectorAll('a');
-        const current = window.location.pathname;
-        links.forEach(link => {
-          if(link.getAttribute('href') && current.startsWith(link.getAttribute('href')) && link.getAttribute('href') !== '/logout') {
-            links.forEach(l => l.classList.remove('active'));
-            link.classList.add('active');
-          }
-        });
-      }
-    });
-    // Interceptar todos los formularios de eliminar
-    window.addEventListener('DOMContentLoaded',()=>{
-      document.querySelectorAll('form[action^="/admin/services/delete/"]').forEach(form => {
-        form.onsubmit = function(e) {
-          e.preventDefault();
-          openDeleteModal(form);
-          return false;
-        };
+    document.querySelectorAll('.btn-edit-product').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const productData = JSON.parse(btn.getAttribute('data-product'));
+        document.getElementById('edit_title').value = productData.title || '';
+        document.getElementById('edit_description').value = productData.description || '';
+        document.getElementById('edit_price').value = productData.price || '';
+        document.getElementById('edit_cantidadDisponible').value = productData.cantidadDisponible || '';
+        document.getElementById('edit_colores').value = Array.isArray(productData.colores) ? productData.colores.join(', ') : (productData.colores || '');
+        document.getElementById('edit_tallas').value = Array.isArray(productData.tallas) ? productData.tallas.join(', ') : (productData.tallas || '');
+        document.getElementById('edit_image').value = productData.image || '';
+        document.getElementById('editProductForm').action = `/admin/services/edit/${productData._id}`;
+        openEditProductModal();
       });
     });
-    document.addEventListener('DOMContentLoaded', function() {
+    document.getElementById('sidebarToggle').addEventListener('click', function() {
+      const sidebar = document.getElementById('sidebarAdmin');
+      sidebar.classList.toggle('active');
+    });
+    document.addEventListener('click', function(event) {
       const sidebar = document.getElementById('sidebarAdmin');
       const toggle = document.getElementById('sidebarToggle');
-      function checkSidebar() {
-        if(window.innerWidth <= 600) {
-          toggle.style.display = 'block';
-          sidebar.classList.remove('active');
-        } else {
-          toggle.style.display = 'none';
-          sidebar.classList.remove('active');
-        }
+      if (!sidebar.contains(event.target) && !toggle.contains(event.target)) {
+        sidebar.classList.remove('active');
       }
-      toggle.onclick = function() {
-        sidebar.classList.toggle('active');
-      };
-      window.addEventListener('resize', checkSidebar);
-      checkSidebar();
-    });
-    // Reemplaza el botón Editar en la tabla para abrir el modal
-    window.addEventListener('DOMContentLoaded',()=>{
-      document.querySelectorAll('.btn-edit-product').forEach(btn => {
-        btn.onclick = function() {
-          const product = JSON.parse(this.dataset.product);
-          openEditProductModal(product);
-        };
-      });
     });
   </script>
 </body>

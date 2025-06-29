@@ -6,8 +6,9 @@ const galeriaController = require('../controllers/galeriControllers');
 const homeInfoController = require('../controllers/homeInfoController');
 const homeInfoPublic = require('../controllers/homeInfoPublic');
 const authMiddleware = require('../middlewares/authMiddleware');
-const { upload } = require('../middlewares/uploadImage');
+const upload = require('../middlewares/uploadImage');
 const userAdminController = require('../controllers/userAdminController');
+const multer = require('multer');
 
 // Proteger rutas del panel de administración
 router.use(authMiddleware.isAuthenticated, homeInfoPublic.getHomeInfoPublic);
@@ -43,14 +44,17 @@ router.post('/contact/update/:id', upload.single('iconFile'), contactController.
 router.get('/homeinfo', homeInfoController.getHomeInfo);
 router.post('/homeinfo', upload.fields([
   { name: 'logoFile', maxCount: 1 },
-  { name: 'iconFile', maxCount: 1 }
+  { name: 'iconFile', maxCount: 1 },
+  { name: 'fondoFile', maxCount: 1 },
+  { name: 'fondoInicio', maxCount: 1 },
+  { name: 'fondoServicios', maxCount: 1 },
+  { name: 'fondoGaleria', maxCount: 1 },
+  { name: 'fondoContacto', maxCount: 1 }
 ]), homeInfoController.updateHomeInfo);
 
 // Rutas para gestión de usuarios administradores
 router.get('/users', userAdminController.getUsers);
 router.post('/users/add', userAdminController.createUser);
 router.post('/users/delete/:id', userAdminController.deleteUser);
-// Ruta para actualizar usuarios administradores
-router.post('/users/update/:id', userAdminController.updateUser);
 
 module.exports = router;

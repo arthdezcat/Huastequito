@@ -1,5 +1,7 @@
 const Contact = require('../models/Contact');
-const { cloudinary } = require('../middlewares/uploadImage');
+const sharp = require('sharp');
+const path = require('path');
+const { cloudinary } = require('../middlewares/cloudinary');
 
 
 // Obtener todos los servicios
@@ -17,11 +19,11 @@ exports.getContact = async (req, res) => {
 exports.addContact = async (req, res) => {
   try {
     let { name, email, telefono, facebookUrl, extraUrl, footer, iconColor, iconUrl } = req.body;
-    let iconFile = req.file ? req.file.filename : undefined;
-    if (req.file) {
-      const result = await cloudinary.uploader.upload(req.file.path, { folder: 'contacts' });
-      iconFile = result.secure_url;
+    // Si se subió archivo, usar la URL de Cloudinary
+    if (req.file && req.file.path) {
+      iconUrl = req.file.path;
     }
+    // Generar emailUrl y whatsappUrl automáticamente
     const emailUrl = email ? `mailto:${email}` : '';
     const telefonoNum = telefono ? telefono.replace(/\D/g, '') : '';
     const whatsappUrl = telefonoNum ? `https://wa.me/${telefonoNum}` : '';
@@ -35,8 +37,7 @@ exports.addContact = async (req, res) => {
       extraUrl,
       footer,
       iconColor,
-      iconUrl,
-      iconFile
+      iconUrl
     });
     await newContact.save();
     res.redirect('/admin/contact');
@@ -50,17 +51,16 @@ exports.addContact = async (req, res) => {
 exports.updateContact = async (req, res) => {
   try {
     const { id } = req.params;
-    const contact = await Contact.findById(id);
     let { name, email, telefono, facebookUrl, extraUrl, footer, iconColor, iconUrl } = req.body;
-    let iconFile = req.file ? req.file.filename : undefined;
-    if (req.file) {
-      if (contact.iconFile) {
-        const publicId = contact.iconFile.split('/').pop().split('.')[0];
-        await cloudinary.uploader.destroy(publicId);
+    const contacto = await Contact.findById(id);
+    if (req.file && req.file.path) {
+      if (contacto && contacto.iconUrl && contacto.iconUrl.includes('cloudinary.com')) {
+        const publicId = contacto.iconUrl.split('/').slice(-1)[0].split('.')[0];
+        await cloudinary.uploader.destroy('webservitec/' + publicId);
       }
-      const result = await cloudinary.uploader.upload(req.file.path, { folder: 'contacts' });
-      iconFile = result.secure_url;
+      iconUrl = req.file.path;
     }
+    // Generar emailUrl y whatsappUrl automáticamente
     const emailUrl = email ? `mailto:${email}` : '';
     const telefonoNum = telefono ? telefono.replace(/\D/g, '') : '';
     const whatsappUrl = telefonoNum ? `https://wa.me/${telefonoNum}` : '';
@@ -74,8 +74,7 @@ exports.updateContact = async (req, res) => {
       extraUrl,
       footer,
       iconColor,
-      iconUrl,
-      iconFile
+      iconUrl
     };
     await Contact.findByIdAndUpdate(id, updateData);
     res.redirect('/admin/contact');
@@ -85,19 +84,19 @@ exports.updateContact = async (req, res) => {
   }
 };
 
-// Eliminar un servicio
+// Eliminar un contacto
 exports.deleteContact = async (req, res) => {
   try {
     const { id } = req.params;
-    const contact = await Contact.findById(id);
-    if (contact.iconFile) {
-      const publicId = contact.iconFile.split('/').pop().split('.')[0];
-      await cloudinary.uploader.destroy(publicId);
+    const contacto = await Contact.findById(id);
+    if (contacto && contacto.iconUrl && contacto.iconUrl.includes('cloudinary.com')) {
+      const publicId = contacto.iconUrl.split('/').slice(-1)[0].split('.')[0];
+      await cloudinary.uploader.destroy('webservitec/' + publicId);
     }
     await Contact.findByIdAndDelete(id);
     res.redirect('/admin/contact');
   } catch (error) {
     console.error(error);
-    res.status(500).send('Error al eliminar el servicio');
+    res.status(500).send('Error al eliminar el contacto');
   }
 };

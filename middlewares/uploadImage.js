@@ -1,32 +1,16 @@
-const cloudinary = require('cloudinary').v2;
 const multer = require('multer');
 const { CloudinaryStorage } = require('multer-storage-cloudinary');
+const { cloudinary } = require('./cloudinary');
 
-// Configuración de Cloudinary
-cloudinary.config({
-  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
-  api_key: process.env.CLOUDINARY_API_KEY,
-  api_secret: process.env.CLOUDINARY_API_SECRET,
-});
-
-// Configuración de almacenamiento para Cloudinary
 const storage = new CloudinaryStorage({
   cloudinary: cloudinary,
   params: {
-    folder: 'uploads', // Carpeta en Cloudinary
-    allowed_formats: ['jpg', 'png', 'jpeg'],
-  },
+    folder: 'webservitec', // Puedes cambiar el nombre de la carpeta
+    allowed_formats: ['jpg', 'jpeg', 'png', 'gif'],
+    transformation: [{ width: 800, height: 800, crop: 'limit' }]
+  }
 });
 
-const fileFilter = (req, file, cb) => {
-  // Aceptar solo imágenes
-  if (file.mimetype.startsWith('image/')) {
-    cb(null, true);
-  } else {
-    cb(new Error('Solo se permiten imágenes'), false);
-  }
-};
+const upload = multer({ storage: storage });
 
-const upload = multer({ storage, fileFilter });
-
-module.exports = { upload, cloudinary };
+module.exports = upload;

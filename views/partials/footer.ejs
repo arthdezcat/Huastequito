@@ -1,18 +1,116 @@
-<footer>
-  <ul class="footer-icons">
-    <% if (contact && contact[0]) { %>
-      <li>
-        <a href="<%= contact[0].emailUrl %>"><i class="fas fa-envelope"></i></a>
-      </li>
-      <li>
-        <a href="<%= contact[0].facebookUrl %>" target="_blank"><i class="fab fa-facebook"></i></a>
-      </li>
-      <li>
-        <a href="<%= contact[0].whatsappUrl %>" target="_blank"><i class="fab fa-whatsapp"></i></a>
-      </li>
-    <% } else { %>
-      <li>No contact information available</li>
-    <% } %>
-  </ul>
-  <p style="margin-top:12px;font-size:15px;color:#b48e5c;">&copy; <%= contact && contact[0] ? contact[0].footer : 'Moda Hombre D\'Angelo' %></p>
+<footer class="tech-footer adaptive-footer">
+  <div class="footer-separator">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 60" preserveAspectRatio="none" class="separator-svg">
+      <path class="separator-path-1" d="M0,0L48,5.3C96,11,192,21,288,32C384,43,480,53,576,48C672,43,768,21,864,16C960,11,1056,21,1152,26.7C1248,32,1344,32,1392,32L1440,32L1440,60L1392,60C1344,60,1248,60,1152,60C1056,60,960,60,864,60C768,60,672,60,576,60C480,60,384,60,288,60C192,60,96,60,48,60L0,60Z"></path>
+      <path class="separator-path-2" d="M0,16L48,21.3C96,27,192,37,288,42.7C384,48,480,48,576,48C672,48,768,48,864,42.7C960,37,1056,27,1152,21.3C1248,16,1344,16,1392,16L1440,16L1440,60L1392,60C1344,60,1248,60,1152,60C1056,60,960,60,864,60C768,60,672,60,576,60C480,60,384,60,288,60C192,60,96,60,48,60L0,60Z"></path>
+    </svg>
+  </div>
+  
+  <div class="footer-container">
+    <div class="footer-content">
+      <div class="social-section">
+        <% if (contact && contact[0]) { %>
+          <a href="<%= contact[0].emailUrl %>" class="social-icon email" title="Email">
+            <i class="fas fa-envelope"></i>
+          </a>
+          <a href="<%= contact[0].facebookUrl %>" target="_blank" class="social-icon facebook" title="Facebook">
+            <i class="fab fa-facebook-f"></i>
+          </a>
+          <a href="<%= contact[0].whatsappUrl %>" target="_blank" class="social-icon whatsapp" title="WhatsApp">
+            <i class="fab fa-whatsapp"></i>
+          </a>
+        <% } else { %>
+          <div class="no-contact">No contact information available</div>
+        <% } %>
+      </div>
+      
+      <div class="copyright-section">
+        <div class="copyright-line"></div>
+        <p class="copyright">
+          &copy; <%= new Date().getFullYear() %> <%= contact && contact[0] ? contact[0].footer : 'Moda Hombre D\'Angelo' %>
+        </p>
+        <div class="copyright-line"></div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Función para detectar si el fondo es oscuro o claro
+    function adaptFooterColors() {
+      // Obtener el color de fondo
+      const body = document.body;
+      const bodyStyle = window.getComputedStyle(body);
+      let bgColor = bodyStyle.backgroundColor;
+      let isDarkBg = false;
+      
+      // Si el color de fondo es transparente o una imagen
+      if (bgColor === 'rgba(0, 0, 0, 0)' || bgColor === 'transparent') {
+        // Si hay una imagen de fondo, asumimos que es oscura (caso común)
+        if (body.style.backgroundImage && body.style.backgroundImage !== 'none') {
+          isDarkBg = true;
+        } else {
+          // De lo contrario, usar el fondo del elemento padre
+          const parentBg = window.getComputedStyle(document.documentElement).backgroundColor;
+          bgColor = parentBg;
+        }
+      }
+      
+      // Extraer valores RGB del color de fondo
+      let r = 255, g = 255, b = 255;
+      if (!isDarkBg && bgColor.startsWith('rgb')) {
+        const rgbValues = bgColor.match(/\d+/g);
+        if (rgbValues && rgbValues.length >= 3) {
+          r = parseInt(rgbValues[0]);
+          g = parseInt(rgbValues[1]);
+          b = parseInt(rgbValues[2]);
+        }
+      }
+      
+      // Calcular el brillo percibido (fórmula de ITU-R BT.709)
+      const brightness = (r * 0.2126 + g * 0.7152 + b * 0.0722) / 255;
+      
+      // Determinar si el fondo es oscuro o claro
+      isDarkBg = isDarkBg || brightness < 0.5;
+      
+      // Aplicar la clase adecuada al footer
+      const footer = document.querySelector('.adaptive-footer');
+      if (footer) {
+        if (isDarkBg) {
+          footer.classList.add('dark-bg');
+          footer.classList.remove('light-bg');
+        } else {
+          footer.classList.add('light-bg');
+          footer.classList.remove('dark-bg');
+        }
+      }
+    }
+    
+    // Ejecutar al cargar la página y cada vez que cambie el fondo
+    document.addEventListener('DOMContentLoaded', adaptFooterColors);
+    
+    // Si hay un cambio de fondo dinámico, detectarlo
+    const observer = new MutationObserver(mutations => {
+      mutations.forEach(mutation => {
+        if (mutation.type === 'attributes' && 
+            (mutation.attributeName === 'style' || 
+             mutation.attributeName === 'class')) {
+          adaptFooterColors();
+        }
+      });
+    });
+    
+    // Observar cambios en el estilo del body
+    observer.observe(document.body, { 
+      attributes: true, 
+      attributeFilter: ['style', 'class'] 
+    });
+    
+    // Adaptar colores en caso de cambio de fondo dinámico
+    if (window.fondoImgs) {
+      setInterval(adaptFooterColors, 6100); // Un poco después del cambio de fondo
+    }
+    
+    // Ejecutar inmediatamente
+    adaptFooterColors();
+  </script>
 </footer>

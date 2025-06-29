@@ -1,14 +1,17 @@
 const mongoose = require('mongoose');
 
 const ofertaSchema = new mongoose.Schema({  
-  title: { type: String, required: true },
-  description: { type: String, required: true },
-  image: { type: String, required: true },
-  tipo: { type: String, required: true }, // semanal, mensual, descuento, 2x1, etc.
-  fechaInicio: { type: Date },
-  fechaFin: { type: Date },
-  porcentaje: { type: Number }, // porcentaje de descuento si aplica
-  especial: { type: String }, // para ofertas como 2x1, 3x2, etc.
+  title: { type: String, required: true }, // Nombre de la Oferta
+  description: { type: String, required: true }, // Descripción
+  tipoOferta: { type: String }, // Tipo de Oferta
+  ofertaEspecial: { type: String }, // Oferta Especial (ej: 2x1, 3x2, etc)
+  fechaInicio: { type: Date }, // Fecha de Inicio
+  fechaFin: { type: Date }, // Fecha de Fin
+  porcentajeDescuento: { type: Number }, // Porcentaje de Descuento (%)
+  image: { type: String, required: true }, // URL de la Imagen
+  // Campos anteriores mantenidos para compatibilidad
+  price: { type: Number }, 
+  garantia: { type: String }
 });
 
-module.exports = mongoose.model('Oferta', ofertaSchema);
+module.exports = mongoose.model('ServiceSecundary', ofertaSchema);

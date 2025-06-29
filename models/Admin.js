@@ -29,9 +29,4 @@ adminSchema.methods.comparePassword = function (password) {
   return bcrypt.compare(password, this.password);
 };
 
-// Método estático para encriptar contraseñas
-adminSchema.statics.hashPassword = async function (password) {
-  return bcrypt.hash(password, 10);
-};
-
 module.exports = mongoose.model('Admin', adminSchema);

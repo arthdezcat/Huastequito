@@ -3,11 +3,15 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Contacto - <%= homeInfo && homeInfo.nombreLocal ? homeInfo.nombreLocal : "Moda Hombre D'Angelo" %></title>
+  <title>Contacto - <%= homeInfo && homeInfo.nombreLocal ? homeInfo.nombreLocal : "Titulo" %></title>
   <link rel="stylesheet" href="/css/styles.css">
+  <link rel="stylesheet" href="/css/footer.css">
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
-  <link rel="icon" href="<%= homeInfo && homeInfo.iconUrl ? homeInfo.iconUrl : '/img/LogoOfic.png' %>" type="image/png">
+  <link rel="icon" href="<%= homeInfo && homeInfo.iconUrl ? homeInfo.iconUrl : '' %>" type="image/png">
   <style>
+    body {
+      background: #fff;
+    }
 
     .contact-section {
       max-width: 1100px;
@@ -29,12 +33,25 @@
       gap: 32px;
     }
 
+    /* Estilo especial para cuando hay un solo contacto */
+    .contacts-container.single-contact {
+      grid-template-columns: minmax(260px, 500px);
+      justify-content: center;
+    }
+
     .card-producto {
       background: #fff;
       border-radius: 12px;
       box-shadow: 0 2px 12px rgba(0,0,0,0.1);
       padding: 16px;
       text-align: center;
+    }
+
+    /* Ajustes para tarjeta única */
+    .single-contact .card-producto {
+      width: auto;
+      max-width: 500px;
+      margin: 0 auto;
     }
 
     .card-producto img {
@@ -79,7 +96,7 @@
     }
 
     .contact-links a {
-      color: #b48e5c;
+      color: #1a1816;
       font-size: 1.4rem;
       transition: color 0.2s;
     }
@@ -110,7 +127,23 @@
     }
 
     .sidebar-social a:hover {
-      color: #b48e5c;
+      color: #1f1e1d;
+    }
+
+    /* Logo y fondo semi-transparente para el contenido */
+    .logo-background {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-image: url('<%= homeInfo && homeInfo.logoUrl ? homeInfo.logoUrl : "" %>');
+      background-size: contain;
+      background-repeat: no-repeat;
+      background-position: center;
+      opacity: 0.15;
+      z-index: -1;
+      pointer-events: none;
     }
 
     /* RESPONSIVE UNIVERSAL PARA TODAS LAS VISTAS */
@@ -155,16 +188,23 @@
       .slider-btn.next { right: 0; }
       .hero-content, .section, .info-section { padding: 8px 2px; }
     }
-    @media (max-width: 768px) {
-      .contact-section {
-        padding: 10px;
-      }
 
-      .contact-title {
-        font-size: 1.8rem;
-      }
+    /* Mejoras para slider de fondo */
+    body.has-bg-slider .logo-background {
+      z-index: -1; /* Por encima del slider de fondo que tiene z-index -2 */
     }
-
+    
+    /* Estilos para el slider de fondo */
+    #bg-slider div {
+      transition: opacity 2.5s ease-in-out !important; /* Forzar transición suave */
+    }
+    
+    /* Indicadores más visibles */
+    #bg-indicators {
+      padding: 8px 15px !important;
+      background: rgba(0, 0, 0, 0.6) !important;
+    }
+    
     /* Ajuste para textos largos y desbordes */
     .hero-content, .section, .info-section {
       word-break: break-word;
@@ -178,13 +218,64 @@
       display: block;
       object-fit: cover;
     }
+
   </style>
 </head>
-<body>
+<body style="<% if (homeInfo && homeInfo.colorFondo) { %>background:<%= homeInfo.colorFondo %>;<% } else if (homeInfo && homeInfo.fondoUrl) { %>background-image:url('<%= homeInfo.fondoUrl %>');background-size:cover;background-position:center;<% } else if (homeInfo && homeInfo.fondoFileUrl) { %>background-image:url('<%= homeInfo.fondoFileUrl %>');background-size:cover;background-position:center;<% } else if (homeInfo && homeInfo.fondoContacto) { %>background-image:url('<%= homeInfo.fondoContacto %>');background-size:cover;background-position:center;<% } %>;transition: background 3s ease-in-out;">
+  <!-- Estilos adicionales para mejorar la visibilidad del slider -->
+  <style>
+    /* Estilos mejorados para el slider de fondo */
+    body.has-bg-slider::before {
+      content: '';
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.1); /* Ligero oscurecimiento para mejor contraste */
+      z-index: -1;
+      pointer-events: none;
+    }
+    
+    /* Mejorar visualmente el contenido sobre el slider */
+    body.background-slider-active .logo-background {
+      z-index: -1 !important; /* Asegurar que el logo esté siempre por encima del slider */
+      opacity: 0.12 !important; /* Reducir la opacidad para no interferir con el slider */
+    }
+  </style>
+  
+  <!-- Script común para el slider de fondo (ya no necesario para fondos específicos) -->
+  
+  <!-- Para imagen de fondo específica de contacto, asegurar que se cargue correctamente -->
+  <% if (homeInfo && homeInfo.fondoContacto) { %>
+  <script>
+    window.addEventListener('load', function() {
+      document.body.style.backgroundImage = 'url(<%= homeInfo.fondoContacto %>)';
+      document.body.style.backgroundSize = 'cover';
+      document.body.style.backgroundPosition = 'center';
+    });
+  </script>
+  <% } else if (homeInfo && homeInfo.fondoFileUrl) { %>
+  <script>
+    window.addEventListener('load', function() {
+      document.body.style.backgroundImage = 'url(<%= homeInfo.fondoFileUrl %>)';
+      document.body.style.backgroundSize = 'cover';
+      document.body.style.backgroundPosition = 'center';
+    });
+  </script>
+  <% } %>
   <%- include('../partials/header') %>
+  <% if (homeInfo && homeInfo.logoUrl) { %>
+  <div class="logo-background"></div>
+  <% } %>
   <section class="contact-section">
     <h2 class="contact-title">Contactos</h2>
-    <div class="contacts-container">
+    <% if (homeInfo && homeInfo.descripcionContacto) { %>
+    <div class="section-description" style="text-align: center; margin-bottom: 32px; font-size: 1.1rem; color: #555; max-width: 800px; margin-left: auto; margin-right: auto;">
+      <%= homeInfo.descripcionContacto %>
+    </div>
+    <% } %>
+    <div class="contacts-container <%= contact.length === 1 ? 'single-contact' : '' %>">
       <% contact.forEach(contact => { %>
       <div class="card-producto">
         <% if (contact.iconFile) { %>
@@ -228,18 +319,25 @@
         </div>
         <div class="contact-links">
         <% if (contact.emailUrl) { %>
-          <a href="<%= contact.emailUrl %>" title="Enviar correo"><i class="fas fa-envelope"></i></a>
+          <a href="<%= contact.emailUrl %>" class="social-icon email" title="Email">
+            <i class="fas fa-envelope"></i>
+          </a>
         <% } %>
         <% if (contact.facebookUrl) { %>
-          <a href="<%= contact.facebookUrl %>" target="_blank" title="Facebook"><i class="fab fa-facebook"></i></a>
+          <a href="<%= contact.facebookUrl %>" target="_blank" class="social-icon facebook" title="Facebook">
+            <i class="fab fa-facebook-f"></i>
+          </a>
         <% } %>
         <% if (contact.whatsappUrl) { %>
-          <a href="<%= contact.whatsappUrl %>" target="_blank" title="WhatsApp"><i class="fab fa-whatsapp"></i></a>
+          <a href="<%= contact.whatsappUrl %>" target="_blank" class="social-icon whatsapp" title="WhatsApp">
+            <i class="fab fa-whatsapp"></i>
+          </a>
         <% } %>
         </div>
       </div>
       <% }); %>
     </div>
+    <%- include('../partials/footer') %>
   </section>
   <!--
   <div class="sidebar-social">
@@ -247,6 +345,6 @@
     <a href="#"><i class="fab fa-twitter"></i></a>
     <a href="#"><i class="fab fa-instagram"></i></a>
   </div>-->
-  <%- include('../partials/footer') %>
+ 
 </body>
 </html>

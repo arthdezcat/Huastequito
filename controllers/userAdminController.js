@@ -27,18 +27,3 @@ exports.deleteUser = async (req, res) => {
     res.status(500).send('Error al eliminar usuario: ' + error.message);
   }
 };
-
-// Actualizar usuario administrador
-exports.updateUser = async (req, res) => {
-  const { username, password, role, permissions } = req.body;
-  try {
-    const updateData = { username, role, permissions };
-    if (password) {
-      updateData.password = await Admin.hashPassword(password); // Encriptar la nueva contraseña
-    }
-    await Admin.findByIdAndUpdate(req.params.id, updateData);
-    res.redirect('/admin/users');
-  } catch (error) {
-    res.status(500).send('Error al actualizar usuario: ' + error.message);
-  }
-};

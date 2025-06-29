@@ -169,155 +169,162 @@ form {
   outline: none;
 }
 
-/* Responsive */
-@media (max-width: 900px) {
-  .navbar {
-    flex-direction: column;
-    align-items: flex-start;
-    padding: 12px 8px;
-  }
-  .nav-list {
-    gap: 12px;
-  }
-  .sidebar-admin {
-    width: 70px !important;
-    padding: 16px 0 0 0;
-    position: fixed;
-    left: 0;
-    top: 0;
-    z-index: 1001;
-    transition: width 0.3s;
-  }
-  .sidebar-admin .admin-name {
-    display: none;
-  }
-  .sidebar-admin ul li a {
-    padding: 16px 10px;
-    font-size: 0.9rem;
-    justify-content: center;
-  }
-  .main-admin-content {
-    margin-left: 70px;
-    width: calc(100% - 70px);
-    padding: 24px 6px 24px 6px;
-  }
-  .table-responsive, .table {
-    width: 100%;
-    overflow-x: auto;
-    display: block;
-  }
-  .table th, .table td {
-    font-size: 0.95rem;
-    padding: 8px 6px;
-    white-space: nowrap;
-  }
-  .admin-container, .admin-container-servi, .admin-container-galeris, .admin-container-contact {
-    flex-direction: column;
-    gap: 18px;
-    padding: 0 4px;
-  }
-  .dashboard-cards {
-    flex-direction: column;
-    gap: 18px;
-  }
-  .add-service, .manage-services, .add-gallery, .manage-gallery, .add-contact, .manage-contact {
-    min-width: 0;
-    width: 100%;
-    margin: 0 0 12px 0;
-  }
-}
-@media (max-width: 600px) {
-  .card-producto img {
-    max-width: 100%;
-    height: 120px;
-    max-height: 120px;
-  }
-  .navbar {
-    padding: 8px 2px;
-  }
-  form {
-    padding: 18px 8px;
-  }
-  .sidebar-admin {
-    width: 0 !important;
-    min-width: 0;
-    padding: 0;
-    overflow: hidden;
-    transition: width 0.3s;
-  }
-  .sidebar-admin.active {
-    width: 220px !important;
-    min-width: 220px;
-    padding: 32px 0 0 0;
-    overflow: visible;
-  }
-  .main-admin-content {
-    margin-left: 0 !important;
-    width: 100% !important;
-    padding: 12px 2px 12px 2px;
-  }
-  .sidebar-toggle {
-    display: block;
-    position: fixed;
-    top: 18px;
-    left: 18px;
-    z-index: 1100;
-    background: #232946;
-    color: #fff;
-    border: none;
-    border-radius: 50%;
-    width: 44px;
-    height: 44px;
-    font-size: 2rem;
-    cursor: pointer;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-  }
-  .table th, .table td {
-    font-size: 0.85rem;
-    padding: 6px 2px;
-  }
-  .table-responsive, .table {
-    width: 100vw;
-    min-width: 320px;
-    overflow-x: auto;
-    display: block;
-  }
-  .dashboard-cards {
-    flex-direction: column;
-    gap: 12px;
-  }
-  .admin-container, .admin-container-servi, .admin-container-galeris, .admin-container-contact {
-    flex-direction: column;
-    gap: 10px;
-    padding: 0 2px;
-  }
-  .add-service, .manage-services, .add-gallery, .manage-gallery, .add-contact, .manage-contact {
-    min-width: 0;
-    width: 100%;
-    margin: 0 0 8px 0;
-  }
-}
-.sidebar-toggle {
-  display: none;
+/* Estilos específicos para ofertas (galería) */
+.oferta-especial {
+  background: linear-gradient(135deg, #ff4444 0%, #ff6b6b 100%) !important;
+  color: white !important;
+  padding: 6px 12px !important;
+  border-radius: 8px !important;
+  margin: 8px 0 !important;
+  font-weight: bold !important;
+  text-align: center !important;
+  box-shadow: 0 2px 8px rgba(255, 68, 68, 0.3);
+  animation: pulse 2s infinite;
 }
 
-/* Ajustes para que las imágenes de fondo sean responsivas */
-body.services-page,
-body.galeri-page,
-body.contact-page,
-body.welcome-page {
-  background-size: cover;
-  background-position: center;
-  background-attachment: fixed;
+.descuento {
+  background: linear-gradient(135deg, #28a745 0%, #34ce57 100%) !important;
+  color: white !important;
+  padding: 6px 12px !important;
+  border-radius: 8px !important;
+  margin: 8px 0 !important;
+  font-weight: bold !important;
+  text-align: center !important;
+  box-shadow: 0 2px 8px rgba(40, 167, 69, 0.3);
 }
 
+.fechas {
+  background: #f8f9fa;
+  border-left: 4px solid #17a2b8;
+  padding: 8px 12px;
+  border-radius: 4px;
+  margin: 8px 0;
+  font-size: 0.9rem;
+}
+
+/* Estilos específicos para productos (servicios) */
+.cantidad {
+  padding: 4px 8px;
+  border-radius: 6px;
+  font-weight: 600;
+  text-align: center;
+  margin: 6px 0;
+}
+
+.cantidad[style*="#28a745"] {
+  background-color: rgba(40, 167, 69, 0.1);
+  border: 1px solid #28a745;
+}
+
+.cantidad[style*="#dc3545"] {
+  background-color: rgba(220, 53, 69, 0.1);
+  border: 1px solid #dc3545;
+}
+
+.colores, .tallas {
+  margin: 8px 0;
+}
+
+.colores span, .tallas span {
+  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%) !important;
+  border: 1px solid #dee2e6 !important;
+  padding: 4px 8px !important;
+  border-radius: 6px !important;
+  font-size: 0.8rem !important;
+  margin: 2px !important;
+  display: inline-block !important;
+  transition: all 0.2s ease;
+}
+
+.colores span:hover, .tallas span:hover {
+  background: linear-gradient(135deg, #e9ecef 0%, #dee2e6 100%) !important;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.tallas span {
+  background: linear-gradient(135deg, #e9ecef 0%, #ced4da 100%) !important;
+  border: 1px solid #ced4da !important;
+  font-weight: 600 !important;
+}
+
+/* Animación para ofertas especiales */
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+/* Responsive para los nuevos elementos */
 @media (max-width: 768px) {
-  body.services-page,
-  body.galeri-page,
-  body.contact-page,
-  body.welcome-page {
-    background-attachment: scroll;
+  .oferta-especial, .descuento {
+    font-size: 0.9rem;
+    padding: 4px 8px !important;
   }
+  
+  .fechas {
+    font-size: 0.8rem;
+    padding: 6px 8px;
+  }
+  
+  .colores span, .tallas span {
+    font-size: 0.7rem !important;
+    padding: 2px 6px !important;
+    margin: 1px !important;
+  }
+}
+
+/* Mejorar tablas admin con nuevos campos */
+.offer-table, .product-table {
+  font-size: 0.9rem;
+}
+
+.offer-table th, .product-table th {
+  font-size: 0.85rem;
+  font-weight: 700;
+  text-align: center;
+  vertical-align: middle;
+}
+
+.offer-table td, .product-table td {
+  vertical-align: middle;
+  text-align: center;
+  max-width: 150px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.offer-table td:nth-child(2), .product-table td:nth-child(2) {
+  max-width: 200px;
+}
+
+/* Mejoras para formularios con nuevos campos */
+.form-group input[type="date"] {
+  padding: 12px 16px;
+  border: 2px solid #e1e8ed;
+  border-radius: 12px;
+  font-size: 1rem;
+  background: #ffffff;
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+.form-group input[type="date"]:focus {
+  border-color: #4f46e5;
+  box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+}
+
+.form-group small {
+  color: #6b7280;
+  font-size: 0.85rem;
+  margin-top: 4px;
+  display: block;
 }
 
 /* Reset some default browser styles */
@@ -876,6 +883,36 @@ textarea {
 .delete-btn:hover {
   background-color: #c0392b;
 }
+.delete-icon-btn {
+  background: #e74c3c;
+  color: #fff;
+  border: none;
+  border-radius: 50%;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.1rem;
+  padding: 0;
+  transition: background 0.2s, color 0.2s, box-shadow 0.2s;
+  box-shadow: 0 2px 6px rgba(231,76,60,0.08);
+}
+.delete-icon-btn i {
+  pointer-events: none;
+}
+.delete-icon-btn:hover {
+  background: #c0392b;
+  color: #fff;
+  box-shadow: 0 4px 12px rgba(231,76,60,0.18);
+}
+@media (max-width: 600px) {
+  .delete-icon-btn {
+    width: 28px;
+    height: 28px;
+    font-size: 1rem;
+  }
+}
 
 /* Admin Container */
 .admin-container-galeris {
@@ -1265,46 +1302,44 @@ footer p {
     margin: 2px 0;
   }
 }
-
-/* Reglas generales para diseño responsivo */
-body {
-    margin: 0;
-    padding: 0;
-    font-family: Arial, sans-serif;
-    box-sizing: border-box;
+.delete-form-inline {
+  display: inline-block !important;
+  margin: 0;
+  padding: 0;
+  vertical-align: middle;
+  width: auto;
+  height: auto;
 }
-
-/* Ajustes para dispositivos móviles */
-@media (max-width: 768px) {
-    header {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-    }
-
-    nav ul {
-        display: flex;
-        flex-direction: column;
-        padding: 0;
-    }
-
-    nav ul li {
-        margin: 10px 0;
-    }
-
-    .content {
-        padding: 10px;
-    }
-
-    .gallery img {
-        width: 100%;
-        height: auto;
-    }
-
-    footer {
-        text-align: center;
-        padding: 10px;
-    }
+.btn-edit-product,
+.btn-edit-offer,
+.btn-edit-contact,
+.btn-edit-user {
+  min-width: 36px;
+  width: 36px;
+  height: 36px;
+  padding: 0;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+.btn-edit-product i,
+.btn-edit-offer i,
+.btn-edit-contact i,
+.btn-edit-user i {
+  margin: 0;
+}
+.table th[style*="Acciones"],
+.table td:last-child {
+  padding-left: 4px !important;
+  padding-right: 4px !important;
+  text-align: center;
+  width: 1%;
+  min-width: 70px;
+  max-width: 90px;
+  white-space: nowrap;
 }
 
 

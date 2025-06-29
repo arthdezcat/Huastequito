@@ -3,12 +3,37 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Tienda - <%= homeInfo && homeInfo.nombreLocal ? homeInfo.nombreLocal : "Moda Hombre D'Angelo" %></title>
+  <title><%= homeInfo && homeInfo.TituloServicio1 ? homeInfo.TituloServicio1 : 'TituloServicio1' %> - <%= homeInfo && homeInfo.nombreLocal ? homeInfo.nombreLocal : "Titulo" %></title>
   <link rel="stylesheet" href="/css/styles.css">
+  <link rel="stylesheet" href="/css/footer.css">
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
-  <link rel="icon" href="<%= homeInfo && homeInfo.iconUrl ? homeInfo.iconUrl : '/img/LogoOfic.png' %>" type="image/png">
+  <link rel="icon" href="<%= homeInfo && homeInfo.iconUrl ? homeInfo.iconUrl : '' %>" type="image/png">
+  
+  <!-- Estilo para favicon circular -->
   <style>
+    link[rel="icon"] {
+      border-radius: 50%;
+      -webkit-mask-image: -webkit-radial-gradient(circle, white 100%, black 100%);
+      mask-image: radial-gradient(circle, white 100%, black 100%);
+    }
     
+    /* SVG para crear un favicon circular */
+    @media screen and (-webkit-min-device-pixel-ratio:0) {
+      head {
+        position: relative;
+      }
+      head::before {
+        position: absolute;
+        width: 0;
+        height: 0;
+        overflow: hidden;
+        z-index: -1;
+        content: "";
+        background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32"><circle cx="16" cy="16" r="16" fill="white"/></svg>');
+      }
+    }
+  </style>
+  <style>
     .tienda-section {
       max-width: 1100px;
       margin: 48px auto 0 auto;
@@ -67,6 +92,45 @@
       cursor: pointer;
     }
 
+    /* Logo y fondo semi-transparente para el contenido */
+    .logo-background {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-image: url('<%= homeInfo && homeInfo.logoUrl ? homeInfo.logoUrl : "" %>');
+      background-size: contain;
+      background-repeat: no-repeat;
+      background-position: center;
+      opacity: 0.15;
+      z-index: -1;
+      pointer-events: none;
+    }
+    
+    /* Ajuste para slider de imágenes y logo de fondo */
+    body.has-bg-slider .logo-background {
+      z-index: -1; /* Por encima del slider de fondo que tiene z-index -2 */
+    }
+    
+    /* Estilos para el slider de fondo */
+    #bg-slider div {
+      transition: opacity 2.5s ease-in-out !important; /* Forzar transición suave */
+    }
+    
+    /* Indicadores más visibles */
+    #bg-indicators {
+      padding: 8px 15px !important;
+      background: rgba(0, 0, 0, 0.6) !important;
+    }
+    
+    /* Ajustar z-index cuando hay slider de imágenes de fondo */
+    <% if (homeInfo && homeInfo.fondoFiles && homeInfo.fondoFiles.length >= 4) { %>
+    .logo-background {
+      z-index: -1;
+    }
+    <% } %>
+
     /* RESPONSIVE UNIVERSAL PARA TODAS LAS VISTAS */
     @media (max-width: 900px) {
       .hero-content, .slider-container, .section, .info-section {
@@ -109,15 +173,6 @@
       .slider-btn.next { right: 0; }
       .hero-content, .section, .info-section { padding: 8px 2px; }
     }
-    @media (max-width: 768px) {
-      .tienda-section {
-        padding: 10px;
-      }
-
-      .tienda-title {
-        font-size: 1.8rem;
-      }
-    }
 
     /* Ajuste para textos largos y desbordes */
     .hero-content, .section, .info-section {
@@ -134,23 +189,110 @@
     }
   </style>
 </head>
-<body>
+<body style="<% if (homeInfo && homeInfo.colorFondo) { %>background:<%= homeInfo.colorFondo %>;<% } else if (homeInfo && homeInfo.fondoUrl) { %>background-image:url('<%= homeInfo.fondoUrl %>');background-size:cover;background-position:center;<% } else if (homeInfo && homeInfo.fondoFileUrl) { %>background-image:url('<%= homeInfo.fondoFileUrl %>');background-size:cover;background-position:center;<% } else if (homeInfo && homeInfo.fondoServicios) { %>background-image:url('<%= homeInfo.fondoServicios %>');background-size:cover;background-position:center;<% } %>;transition: background 3s ease-in-out;">
+  <!-- Estilos adicionales para mejorar la visibilidad del slider -->
+  <style>
+    /* Estilos mejorados para el slider de fondo */
+    body.has-bg-slider::before {
+      content: '';
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.1); /* Ligero oscurecimiento para mejor contraste */
+      z-index: -1;
+      pointer-events: none;
+    }
+    
+    /* Mejorar visualmente el contenido sobre el slider */
+    body.background-slider-active .logo-background {
+      z-index: -1 !important; /* Asegurar que el logo esté siempre por encima del slider */
+      opacity: 0.12 !important; /* Reducir la opacidad para no interferir con el slider */
+    }
+  </style>
+  
+  <!-- Script común para el slider de fondo (ya no necesario para fondos específicos) -->
+  
+  <!-- Para imagen de fondo específica de servicios, asegurar que se cargue correctamente -->
+  <% if (homeInfo && homeInfo.fondoServicios) { %>
+  <script>
+    window.addEventListener('load', function() {
+      document.body.style.backgroundImage = 'url(<%= homeInfo.fondoServicios %>)';
+      document.body.style.backgroundSize = 'cover';
+      document.body.style.backgroundPosition = 'center';
+    });
+  </script>
+  <% } else if (homeInfo && homeInfo.fondoFileUrl) { %>
+  <script>
+    window.addEventListener('load', function() {
+      document.body.style.backgroundImage = 'url(<%= homeInfo.fondoFileUrl %>)';
+      document.body.style.backgroundSize = 'cover';
+      document.body.style.backgroundPosition = 'center';
+    });
+  </script>
+  <% } %>
   <%- include('../partials/header') %>
+  <% if (homeInfo && homeInfo.logoUrl) { %>
+  <div class="logo-background"></div>
+  <% } %>
   <section class="tienda-section">
-    <h2 class="tienda-title">Tienda</h2>
+    <h2 class="tienda-title"><%= homeInfo && homeInfo.TituloServicio1 ? homeInfo.TituloServicio1 : 'TituloServicio1' %></h2>
+    <% if (homeInfo && homeInfo.descripcionServicios) { %>
+    <div class="section-description" style="text-align: center; margin-bottom: 32px; font-size: 1.1rem; color: #555; max-width: 800px; margin-left: auto; margin-right: auto;">
+      <%= homeInfo.descripcionServicios %>
+    </div>
+    <% } %>
     <div class="tienda-grid">
       <% services.forEach(service => { %>
         <div class="card-producto">
-          <img src="<%= service.image %>" alt="<%= service.title %>" class="producto-img card-img-modal" data-id="<%= service._id %>" onclick="openImgModal(this)">
+          <img src="<%= service.image %>" alt="<%= service.title %>" class="producto-img card-img-modal" onclick="openImgModal(this)">
           <div class="nombre"><%= service.title %></div>
-          <div class="precio">$<%= service.price %></div>
           <div class="descripcion"><%= service.description %></div>
-          <div class="descripcion">Cantidad disponible: <%= service.cantidad %></div>
-          <div class="descripcion">Colores: <%= service.colores ? service.colores.join(', ') : '' %></div>
-          <div class="descripcion">Tallas: <%= service.tallas ? service.tallas.join(', ') : '' %></div>
+          
+          <% if (service.price) { %>
+            <div class="precio">Precio: $<%= service.price %></div>
+          <% } %>
+          
+          <% if (service.cantidadDisponible) { %>
+            <div class="cantidad" style="font-size: 0.9rem; color: <%= service.cantidadDisponible > 0 ? '#28a745' : '#dc3545' %>; margin: 4px 0;">
+              <strong>Disponible:</strong> <%= service.cantidadDisponible %> unidades
+            </div>
+          <% } %>
+          
+          <% if (service.colores && service.colores.length > 0) { %>
+            <div class="colores" style="margin: 8px 0;">
+              <strong>Colores:</strong>
+              <div style="display: flex; flex-wrap: wrap; gap: 4px; margin-top: 4px;">
+                <% service.colores.forEach(color => { %>
+                  <span style="background: #f8f9fa; border: 1px solid #dee2e6; padding: 2px 6px; border-radius: 4px; font-size: 0.8rem;">
+                    <%= color %>
+                  </span>
+                <% }); %>
+              </div>
+            </div>
+          <% } %>
+          
+          <% if (service.tallas && service.tallas.length > 0) { %>
+            <div class="tallas" style="margin: 8px 0;">
+              <strong>Tallas:</strong>
+              <div style="display: flex; flex-wrap: wrap; gap: 4px; margin-top: 4px;">
+                <% service.tallas.forEach(talla => { %>
+                  <span style="background: #e9ecef; border: 1px solid #ced4da; padding: 2px 6px; border-radius: 4px; font-size: 0.8rem; font-weight: 600;">
+                    <%= talla %>
+                  </span>
+                <% }); %>
+              </div>
+            </div>
+          <% } %>
+          
+          <% if (service.garantia) { %>
+            <div class="descripcion"><strong>Garantía:</strong> <%= service.garantia %></div>
+          <% } %>
         </div>
       <% }); %>
     </div>
+    <%- include('../partials/footer') %>
   </section>
   <!-- Modal para imagen -->
   <div class="img-modal" id="imgModal" onclick="closeImgModal(event)">
@@ -170,19 +312,78 @@
       document.getElementById('imgModalImg').src = '';
     }
   }
-
-  // Obtener el parámetro imageId de la URL
-  const urlParams = new URLSearchParams(window.location.search);
-  const imageId = urlParams.get('imageId');
-
-  if (imageId) {
-    // Buscar la imagen correspondiente y hacer scroll hacia ella
-    const targetImage = document.querySelector(`.producto-img[data-id='${imageId}']`);
-    if (targetImage) {
-      targetImage.scrollIntoView({ behavior: 'smooth', block: 'center' });
-      targetImage.style.border = '2px solid red'; // Resaltar la imagen
+  
+  // Función para resaltar una imagen específica cuando se viene desde el slider
+  document.addEventListener('DOMContentLoaded', function() {
+    // Obtener parámetro highlight de la URL
+    const urlParams = new URLSearchParams(window.location.search);
+    const highlightImage = urlParams.get('highlight');
+    
+    if (highlightImage) {
+      // Buscar la imagen correspondiente
+      const images = document.querySelectorAll('.producto-img');
+      images.forEach(img => {
+        if (img.src === highlightImage) {
+          // Obtener el contenedor padre (card-producto) que contiene la imagen y texto
+          const cardProducto = img.closest('.card-producto');
+          
+          // Resaltar la imagen
+          img.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          
+          // Resaltar tanto la imagen como el contenedor
+          img.style.boxShadow = '0 0 20px 8px rgba(255,0,0,0.7)';
+          img.style.border = '3px solid #000';
+          img.style.transition = 'all 0.5s ease';
+          
+          // Resaltar el texto también
+          if (cardProducto) {
+            // Guardar los estilos originales para restaurarlos después
+            const originalBackgroundColor = cardProducto.style.backgroundColor;
+            const originalColor = cardProducto.style.color;              // Aplicar nuevos estilos destacados - solo al contorno
+              cardProducto.style.border = '4px solid #ff3333';
+              cardProducto.style.padding = '15px';
+              cardProducto.style.borderRadius = '8px';
+              cardProducto.style.transition = 'all 0.5s ease';
+              cardProducto.style.boxShadow = '0 0 15px rgba(255,0,0,0.6)';
+              
+              // Mantener un estilo más sutil para el texto
+              // El título sí lo resaltamos para que destaque
+              const nombreElement = cardProducto.querySelector('.nombre');
+              if (nombreElement) {
+                nombreElement.style.color = '#ff3333';
+                nombreElement.style.fontWeight = 'bold';
+                nombreElement.style.fontSize = '1.2em';
+                nombreElement.style.textShadow = '0 0 1px rgba(0,0,0,0.3)';
+              }
+          }
+          
+          // Mostrar la imagen en el modal después de un breve retraso
+          setTimeout(() => {
+            openImgModal(img);
+          }, 800);
+          
+          // Quitar el efecto de resaltado después de un tiempo
+          setTimeout(() => {
+            img.style.boxShadow = '';
+            img.style.border = '';              if (cardProducto) {
+                // Restaurar estilos originales con una transición suave
+                cardProducto.style.border = '';
+                cardProducto.style.boxShadow = '';
+                
+                // Restaurar título
+                const nombreElement = cardProducto.querySelector('.nombre');
+                if (nombreElement) {
+                  nombreElement.style.color = '';
+                  nombreElement.style.fontWeight = '';
+                  nombreElement.style.fontSize = '';
+                  nombreElement.style.textShadow = '';
+                }
+              }
+          }, 5000); // Aumentar el tiempo para que el usuario pueda ver mejor el efecto
+        }
+      });
     }
-  }
+  });
   </script>
   <!--
   <div class="sidebar-social">
@@ -190,6 +391,6 @@
     <a href="#"><i class="fab fa-twitter"></i></a>
     <a href="#"><i class="fab fa-instagram"></i></a>
   </div>--> 
-  <%- include('../partials/footer') %>
+ 
 </body>
 </html>
