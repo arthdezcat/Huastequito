@@ -1309,7 +1309,12 @@
     }
     function confirmDeleteAction() {
       if (deleteFormAction) {
-        window.location.href = deleteFormAction;
+        // Crear un formulario temporal para enviar POST
+        const form = document.createElement('form');
+        form.method = 'POST';
+        form.action = deleteFormAction;
+        document.body.appendChild(form);
+        form.submit();
       }
     }
     function closeDeleteModal() {
@@ -1338,7 +1343,7 @@
         document.getElementById('edit_colores').value = Array.isArray(productData.colores) ? productData.colores.join(', ') : (productData.colores || '');
         document.getElementById('edit_tallas').value = Array.isArray(productData.tallas) ? productData.tallas.join(', ') : (productData.tallas || '');
         document.getElementById('edit_image').value = productData.image || '';
-        document.getElementById('editProductForm').action = `/admin/services/edit/${productData._id}`;
+        document.getElementById('editProductForm').action = `/admin/services/update/${productData._id}`;
         openEditProductModal();
       });
     });
