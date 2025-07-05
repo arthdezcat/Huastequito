@@ -165,6 +165,333 @@
       display: block;
       object-fit: cover;
     }
+
+    /* Estilos para el botón de apartado */
+    .add-to-cart-btn {
+      background: #28a745;
+      color: white;
+      border: none;
+      padding: 12px 24px;
+      border-radius: 6px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s;
+      width: 100%;
+      font-size: 1rem;
+    }
+
+    .add-to-cart-btn:hover {
+      background: #218838;
+      transform: translateY(-2px);
+    }
+
+    /* Modal para agregar al carrito */
+    .add-to-cart-modal {
+      display: none;
+      position: fixed;
+      z-index: 1000;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.8);
+    }
+
+    .add-to-cart-modal.active {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .add-to-cart-content {
+      background: white;
+      padding: 24px;
+      border-radius: 12px;
+      max-width: 400px;
+      width: 90%;
+      max-height: 80vh;
+      overflow-y: auto;
+    }
+
+    .add-to-cart-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+      border-bottom: 2px solid #e9ecef;
+      padding-bottom: 10px;
+    }
+
+    .add-to-cart-title {
+      font-size: 1.3rem;
+      font-weight: bold;
+      color: #333;
+    }
+
+    .add-to-cart-close {
+      background: none;
+      border: none;
+      font-size: 1.5rem;
+      cursor: pointer;
+      color: #666;
+    }
+
+    .add-to-cart-close:hover {
+      color: #333;
+    }
+
+    .form-group {
+      margin-bottom: 16px;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 6px;
+      font-weight: 600;
+      color: #333;
+    }
+
+    .form-group input,
+    .form-group select {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ddd;
+      border-radius: 6px;
+      font-size: 1rem;
+    }
+
+    .form-group select {
+      background: white;
+    }
+
+    .add-to-cart-actions {
+      display: flex;
+      gap: 16px;
+      margin-top: 24px;
+    }
+
+    .btn-cancel {
+      background: linear-gradient(135deg, #6c757d 0%, #5a6268 100%);
+      color: white;
+      border: none;
+      padding: 14px 28px;
+      border-radius: 8px;
+      cursor: pointer;
+      flex: 1;
+      font-weight: 600;
+      font-size: 0.95rem;
+      transition: all 0.3s ease;
+      box-shadow: 0 2px 8px rgba(108, 117, 125, 0.3);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .btn-add {
+      background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+      color: white;
+      border: none;
+      padding: 14px 28px;
+      border-radius: 8px;
+      cursor: pointer;
+      flex: 1;
+      font-weight: 600;
+      font-size: 0.95rem;
+      transition: all 0.3s ease;
+      box-shadow: 0 2px 8px rgba(40, 167, 69, 0.3);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .btn-cancel:hover {
+      background: linear-gradient(135deg, #5a6268 0%, #495057 100%);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(108, 117, 125, 0.4);
+    }
+
+    .btn-add:hover {
+      background: linear-gradient(135deg, #20c997 0%, #17a2b8 100%);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(40, 167, 69, 0.4);
+    }
+
+    .btn-cancel:active {
+      transform: translateY(0);
+      box-shadow: 0 2px 4px rgba(108, 117, 125, 0.3);
+    }
+
+    .btn-add:active {
+      transform: translateY(0);
+      box-shadow: 0 2px 4px rgba(40, 167, 69, 0.3);
+    }
+
+    /* Efecto de brillo en los botones */
+    .btn-cancel::before,
+    .btn-add::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+      transition: left 0.5s;
+    }
+
+    .btn-cancel:hover::before,
+    .btn-add:hover::before {
+      left: 100%;
+    }
+
+    /* Estilos para notificaciones toast profesionales */
+    .toast-container {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      z-index: 9999;
+      pointer-events: none;
+    }
+
+    .toast {
+      background: white;
+      border-radius: 8px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+      margin-bottom: 10px;
+      padding: 16px 20px;
+      min-width: 300px;
+      max-width: 400px;
+      transform: translateX(100%);
+      transition: all 0.3s ease;
+      pointer-events: auto;
+      border-left: 4px solid #28a745;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .toast.show {
+      transform: translateX(0);
+    }
+
+    .toast.success {
+      border-left-color: #28a745;
+    }
+
+    .toast.error {
+      border-left-color: #dc3545;
+    }
+
+    .toast.warning {
+      border-left-color: #ffc107;
+    }
+
+    .toast.info {
+      border-left-color: #17a2b8;
+    }
+
+    .toast-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 8px;
+    }
+
+    .toast-title {
+      font-weight: 600;
+      font-size: 1rem;
+      color: #333;
+      margin: 0;
+    }
+
+    .toast-close {
+      background: none;
+      border: none;
+      font-size: 1.2rem;
+      cursor: pointer;
+      color: #999;
+      padding: 0;
+      width: 20px;
+      height: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .toast-close:hover {
+      color: #333;
+    }
+
+    .toast-message {
+      color: #666;
+      font-size: 0.9rem;
+      line-height: 1.4;
+      margin: 0;
+    }
+
+    .toast-icon {
+      margin-right: 8px;
+      font-size: 1.1rem;
+    }
+
+    .toast.success .toast-icon {
+      color: #28a745;
+    }
+
+    .toast.error .toast-icon {
+      color: #dc3545;
+    }
+
+    .toast.warning .toast-icon {
+      color: #ffc107;
+    }
+
+    .toast.info .toast-icon {
+      color: #17a2b8;
+    }
+
+    /* Animación de entrada y salida */
+    @keyframes slideInRight {
+      from {
+        transform: translateX(100%);
+        opacity: 0;
+      }
+      to {
+        transform: translateX(0);
+        opacity: 1;
+      }
+    }
+
+    @keyframes slideOutRight {
+      from {
+        transform: translateX(0);
+        opacity: 1;
+      }
+      to {
+        transform: translateX(100%);
+        opacity: 0;
+      }
+    }
+
+    .toast.animate-in {
+      animation: slideInRight 0.3s ease forwards;
+    }
+
+    .toast.animate-out {
+      animation: slideOutRight 0.3s ease forwards;
+    }
+
+    /* Responsive para notificaciones */
+    @media (max-width: 768px) {
+      .toast-container {
+        top: 10px;
+        right: 10px;
+        left: 10px;
+      }
+      
+      .toast {
+        min-width: auto;
+        max-width: none;
+        width: 100%;
+      }
+    }
   </style>
 </head>
 <body style="<% if (homeInfo && homeInfo.colorFondo) { %>background:<%= homeInfo.colorFondo %>;<% } else if (homeInfo && homeInfo.fondoUrl) { %>background-image:url('<%= homeInfo.fondoUrl %>');background-size:cover;background-position:center;<% } else if (homeInfo && homeInfo.fondoFileUrl) { %>background-image:url('<%= homeInfo.fondoFileUrl %>');background-size:cover;background-position:center;<% } else if (homeInfo && homeInfo.fondoGaleria) { %>background-image:url('<%= homeInfo.fondoGaleria %>');background-size:cover;background-position:center;<% } %>;transition: background 3s ease-in-out;">
@@ -217,9 +544,7 @@
   <section class="otros-section">
     <h2 class="otros-title"><%= homeInfo && homeInfo.TituloServicio2 ? homeInfo.TituloServicio2 : 'TituloServicio2' %></h2>
     <% if (homeInfo && homeInfo.descripcionGaleria) { %>
-    <div class="section-description" style="text-align: center; margin-bottom: 32px; font-size: 1.1rem; color: #555; max-width: 800px; margin-left: auto; margin-right: auto;">
-      <%= homeInfo.descripcionGaleria %>
-    </div>
+    <div class="section-description" style="text-align: center; margin-bottom: 24px; font-size: 1.15rem; color: #1a1a1a; text-shadow: 0 1px 8px #fff, 0 1px 1px #0002; font-weight: 500;"> <%= homeInfo.descripcionGaleria %> </div>
     <% } %>
     <div class="otros-grid">
       <% galeria.forEach(oferta => { %>
@@ -255,17 +580,82 @@
             </div>
           <% } %>
           
-          <% if (oferta.price) { %>
-            <div class="precio">Precio: $<%= oferta.price %></div>
+          <% if (oferta.precioOriginal || oferta.price) { %>
+            <div class="precios-container" style="margin: 12px 0; padding: 12px; background: #f8f9fa; border-radius: 8px; border: 1px solid #e9ecef;">
+              <% if (oferta.precioOriginal) { %>
+                <div class="precio-original" style="color: #6c757d; font-size: 0.9rem; margin-bottom: 4px;">
+                  <i class="fas fa-tag"></i> Precio original: $<%= oferta.precioOriginal.toFixed(2) %> por unidad
+                </div>
+              <% } %>
+              
+              <% if (oferta.ofertaEspecial && oferta.price) { %>
+                <div class="oferta-especial-precio" style="color: #ff6b35; font-weight: bold; font-size: 1.1rem; margin: 8px 0;">
+                  <i class="fas fa-gift"></i> Oferta <%= oferta.ofertaEspecial %>: $<%= oferta.price.toFixed(2) %> total
+                </div>
+                <% 
+                  // Calcular cuántos productos obtiene por el precio
+                  const ofertaMatch = oferta.ofertaEspecial.match(/(\d+)x(\d+)/);
+                  if (ofertaMatch) {
+                    const cantidadOferta = parseInt(ofertaMatch[1]);
+                    const cantidadPaga = parseInt(ofertaMatch[2]);
+                    const precioPorUnidad = oferta.price / cantidadOferta;
+                %>
+                <div class="precio-por-unidad" style="color: #28a745; font-size: 0.9rem; font-style: italic;">
+                  <i class="fas fa-calculator"></i> Equivale a $<%= precioPorUnidad.toFixed(2) %> por unidad
+                </div>
+                <% } %>
+              <% } else if (oferta.price && oferta.porcentajeDescuento) { %>
+                <div class="precio-oferta" style="color: #28a745; font-weight: bold; font-size: 1.1rem;">
+                  <i class="fas fa-dollar-sign"></i> Precio con <%= oferta.porcentajeDescuento %>% descuento: $<%= oferta.price.toFixed(2) %>
+                </div>
+              <% } else if (oferta.price) { %>
+                <div class="precio-oferta" style="color: #28a745; font-weight: bold; font-size: 1.1rem;">
+                  <i class="fas fa-dollar-sign"></i> Precio: $<%= oferta.price.toFixed(2) %>
+                </div>
+              <% } %>
+              
+              <% if (oferta.precioOriginal && oferta.price && oferta.precioOriginal > oferta.price) { %>
+                <% 
+                  let ahorro = 0;
+                  if (oferta.ofertaEspecial) {
+                    // Para ofertas especiales, calcular el ahorro por la cantidad de la oferta
+                    const ofertaMatch = oferta.ofertaEspecial.match(/(\d+)x(\d+)/);
+                    if (ofertaMatch) {
+                      const cantidadOferta = parseInt(ofertaMatch[1]);
+                      const cantidadPaga = parseInt(ofertaMatch[2]);
+                      const precioNormal = oferta.precioOriginal * cantidadOferta;
+                      ahorro = precioNormal - oferta.price;
+                    }
+                  } else {
+                    // Para descuentos normales
+                    ahorro = oferta.precioOriginal - oferta.price;
+                  }
+                %>
+                <div class="ahorro" style="color: #dc3545; font-weight: bold; font-size: 0.9rem; margin-top: 4px;">
+                  <i class="fas fa-piggy-bank"></i> ¡Ahorras $<%= ahorro.toFixed(2) %>!
+                </div>
+              <% } %>
+            </div>
           <% } %>
           <% if (oferta.garantia) { %>
             <div class="descripcion"><strong>Garantía:</strong> <%= oferta.garantia %></div>
           <% } %>
+          
+          <!-- Botón de apartado -->
+          <div class="add-to-cart-section" style="margin-top: 16px;">
+            <button class="add-to-cart-btn" onclick="showAddToCartModal('<%= oferta._id %>', 'galeria', '<%= oferta.title %>', [], [])">
+              <i class="fas fa-shopping-cart"></i> Apartar Oferta
+            </button>
+          </div>
         </div>
       <% }); %>
     </div>
     <%- include('../partials/footer') %>
   </section>
+  
+  <!-- Contenedor de notificaciones toast -->
+  <div class="toast-container" id="toastContainer"></div>
+  
   <!-- Modal para imagen -->
   <div class="img-modal" id="imgModal" onclick="closeImgModal(event)">
     <button class="img-modal-close" onclick="closeImgModal(event)">&times;</button>
@@ -361,6 +751,160 @@
       }
     });
   </script>
+  <!-- Modal para agregar al carrito -->
+  <div class="add-to-cart-modal" id="addToCartModal">
+    <div class="add-to-cart-content">
+      <div class="add-to-cart-header">
+        <h3 class="add-to-cart-title">Apartar Oferta</h3>
+        <button class="add-to-cart-close" onclick="closeAddToCartModal()">&times;</button>
+      </div>
+      
+      <form id="addToCartForm">
+        <input type="hidden" id="productId" name="productId">
+        <input type="hidden" id="productType" name="productType">
+        
+        <div class="form-group">
+          <label for="cantidad">Cantidad:</label>
+          <input type="number" id="cantidad" name="cantidad" value="1" min="1" required>
+        </div>
+        
+        <div class="add-to-cart-actions">
+          <button type="button" class="btn-cancel" onclick="closeAddToCartModal()">Cancelar</button>
+          <button type="submit" class="btn-add">Agregar al Carrito</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    // Variables globales para el modal
+    let currentProductId = '';
+    let currentProductType = '';
+    let currentProductTitle = '';
+
+    // Función para mostrar el modal de agregar al carrito
+    function showAddToCartModal(productId, productType, productTitle, colors, tallas) {
+      currentProductId = productId;
+      currentProductType = productType;
+      currentProductTitle = productTitle;
+
+      // Actualizar el título del modal
+      document.querySelector('.add-to-cart-title').textContent = `Apartar: ${productTitle}`;
+
+      // Configurar campos ocultos
+      document.getElementById('productId').value = productId;
+      document.getElementById('productType').value = productType;
+
+      // Mostrar modal
+      document.getElementById('addToCartModal').classList.add('active');
+    }
+
+    // Función para cerrar el modal
+    function closeAddToCartModal() {
+      document.getElementById('addToCartModal').classList.remove('active');
+      document.getElementById('addToCartForm').reset();
+    }
+
+    // Función para mostrar notificaciones toast
+    function showToast(type, title, message, duration = 4000) {
+      const container = document.getElementById('toastContainer');
+      const toast = document.createElement('div');
+      toast.className = `toast ${type}`;
+      
+      const icon = type === 'success' ? 'fas fa-check-circle' :
+                   type === 'error' ? 'fas fa-exclamation-circle' :
+                   type === 'warning' ? 'fas fa-exclamation-triangle' :
+                   'fas fa-info-circle';
+      
+      toast.innerHTML = `
+        <div class="toast-header">
+          <h4 class="toast-title">
+            <i class="toast-icon ${icon}"></i>
+            ${title}
+          </h4>
+          <button class="toast-close" onclick="this.parentElement.parentElement.remove()">&times;</button>
+        </div>
+        <p class="toast-message">${message}</p>
+      `;
+      
+      container.appendChild(toast);
+      
+      // Animar entrada
+      setTimeout(() => {
+        toast.classList.add('show');
+      }, 100);
+      
+      // Auto-remover después del tiempo especificado
+      setTimeout(() => {
+        toast.classList.add('animate-out');
+        setTimeout(() => {
+          if (toast.parentElement) {
+            toast.remove();
+          }
+        }, 300);
+      }, duration);
+    }
+
+    // Manejar envío del formulario
+    document.getElementById('addToCartForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      
+      const formData = new FormData(this);
+      const data = {
+        productId: formData.get('productId'),
+        productType: formData.get('productType'),
+        cantidad: parseInt(formData.get('cantidad')),
+        colorSeleccionado: '',
+        tallaSeleccionada: ''
+      };
+
+      // Enviar al servidor
+      fetch('/cart/add', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data)
+      })
+      .then(response => response.json())
+      .then(result => {
+        if (result.success) {
+          showToast('success', '¡Éxito!', 'Oferta agregada al carrito exitosamente');
+          closeAddToCartModal();
+          
+          // Actualizar contador del carrito en el header
+          const cartCount = document.getElementById('cart-count');
+          if (cartCount) {
+            cartCount.textContent = result.cartCount;
+            if (result.cartCount > 0) {
+              cartCount.style.display = 'flex';
+            } else {
+              cartCount.style.display = 'none';
+            }
+          }
+          
+          // Recargar la página para asegurar que el contador se actualice correctamente
+          setTimeout(() => {
+            window.location.reload();
+          }, 2000);
+        } else {
+          showToast('error', 'Error', result.message || 'Error al agregar al carrito');
+        }
+      })
+      .catch(error => {
+        console.error('Error:', error);
+        showToast('error', 'Error', 'Error de conexión al agregar al carrito');
+      });
+    });
+
+    // Cerrar modal al hacer clic fuera de él
+    document.getElementById('addToCartModal').addEventListener('click', function(e) {
+      if (e.target === this) {
+        closeAddToCartModal();
+      }
+    });
+  </script>
+  
   <!--<div class="sidebar-social">
     <a href="#"><i class="fab fa-facebook-f"></i></a>
     <a href="#"><i class="fab fa-twitter"></i></a>

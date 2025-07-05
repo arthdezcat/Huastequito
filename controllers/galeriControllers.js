@@ -33,7 +33,27 @@ exports.addGaleria = async (req, res) => {
     if (req.file && req.file.path) {
       image = req.file.path; // URL de Cloudinary
     }
-    const { title, description, tipoOferta, ofertaEspecial, fechaInicio, fechaFin, porcentajeDescuento, price, garantia } = req.body;
+    const { title, description, tipoOferta, ofertaEspecial, fechaInicio, fechaFin, porcentajeDescuento, precioOriginal, garantia } = req.body;
+    
+    // Calcular precio con oferta aplicada
+    let precioConOferta = parseFloat(precioOriginal) || 0;
+    
+    // Si hay porcentaje de descuento y es mayor a 0, se aplica SOLO el descuento
+    if (porcentajeDescuento && parseFloat(porcentajeDescuento) > 0) {
+      const descuento = parseFloat(porcentajeDescuento) / 100;
+      precioConOferta = precioConOferta * (1 - descuento);
+    } else if (ofertaEspecial) {
+      // Si NO hay porcentaje de descuento pero sí oferta especial, se aplica SOLO la oferta especial
+      const ofertaMatch = ofertaEspecial.match(/(\d+)x(\d+)/);
+      if (ofertaMatch) {
+        const cantidadOferta = parseInt(ofertaMatch[1]);
+        const cantidadPaga = parseInt(ofertaMatch[2]);
+        if (cantidadOferta > cantidadPaga) {
+          // El precio final es el precio por la cantidad que paga
+          precioConOferta = precioConOferta * cantidadPaga;
+        }
+      }
+    }
     
     const newComputadora = new ServiceSecundary({
       title,
@@ -43,7 +63,8 @@ exports.addGaleria = async (req, res) => {
       fechaInicio: fechaInicio || undefined,
       fechaFin: fechaFin || undefined,
       porcentajeDescuento: porcentajeDescuento || undefined,
-      price: price || undefined,
+      precioOriginal: parseFloat(precioOriginal) || 0,
+      price: precioConOferta, // Precio con oferta aplicada
       garantia,
       image
     });
@@ -68,7 +89,27 @@ exports.updateGaleria = async (req, res) => {
         await cloudinary.uploader.destroy('webservitec/' + publicId);
       }
     }
-    const { title, description, tipoOferta, ofertaEspecial, fechaInicio, fechaFin, porcentajeDescuento, price, garantia } = req.body;
+    const { title, description, tipoOferta, ofertaEspecial, fechaInicio, fechaFin, porcentajeDescuento, precioOriginal, garantia } = req.body;
+    
+    // Calcular precio con oferta aplicada
+    let precioConOferta = parseFloat(precioOriginal) || 0;
+    
+    // Si hay porcentaje de descuento y es mayor a 0, se aplica SOLO el descuento
+    if (porcentajeDescuento && parseFloat(porcentajeDescuento) > 0) {
+      const descuento = parseFloat(porcentajeDescuento) / 100;
+      precioConOferta = precioConOferta * (1 - descuento);
+    } else if (ofertaEspecial) {
+      // Si NO hay porcentaje de descuento pero sí oferta especial, se aplica SOLO la oferta especial
+      const ofertaMatch = ofertaEspecial.match(/(\d+)x(\d+)/);
+      if (ofertaMatch) {
+        const cantidadOferta = parseInt(ofertaMatch[1]);
+        const cantidadPaga = parseInt(ofertaMatch[2]);
+        if (cantidadOferta > cantidadPaga) {
+          // El precio final es el precio por la cantidad que paga
+          precioConOferta = precioConOferta * cantidadPaga;
+        }
+      }
+    }
     
     await ServiceSecundary.findByIdAndUpdate(id, {
       title,
@@ -78,7 +119,8 @@ exports.updateGaleria = async (req, res) => {
       fechaInicio: fechaInicio || undefined,
       fechaFin: fechaFin || undefined,
       porcentajeDescuento: porcentajeDescuento || undefined,
-      price: price || undefined,
+      precioOriginal: parseFloat(precioOriginal) || 0,
+      price: precioConOferta, // Precio con oferta aplicada
       garantia,
       image
     });

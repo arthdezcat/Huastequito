@@ -862,6 +862,308 @@
         gap: 3px !important;
       }
     }
+
+    /* Responsive para controles de selección */
+    @media (max-width: 768px) {
+      .selection-controls {
+        flex-direction: column;
+        gap: 12px;
+        text-align: center;
+      }
+      
+      .selection-controls-left,
+      .selection-controls-right {
+        width: 100%;
+        justify-content: center;
+      }
+      
+      .selection-actions {
+        justify-content: center;
+      }
+    }
+
+    /* Estilos responsivos para tablas de administración */
+    .table-responsive {
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      margin-bottom: 1rem;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .table-responsive::-webkit-scrollbar {
+      height: 8px;
+    }
+
+    .table-responsive::-webkit-scrollbar-track {
+      background: #f1f1f1;
+      border-radius: 4px;
+    }
+
+    .table-responsive::-webkit-scrollbar-thumb {
+      background: #c1c1c1;
+      border-radius: 4px;
+    }
+
+    .table-responsive::-webkit-scrollbar-thumb:hover {
+      background: #a8a8a8;
+    }
+
+    .table {
+      margin-bottom: 0;
+      width: 100%;
+      table-layout: fixed;
+    }
+
+    .table th,
+    .table td {
+      vertical-align: middle;
+      padding: 12px 8px;
+      border-bottom: 1px solid #dee2e6;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .table th {
+      background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+      font-weight: 600;
+      color: #495057;
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+
+    .table tbody tr:hover {
+      background-color: rgba(0, 123, 255, 0.05);
+    }
+
+    /* Estilos para botones de acción */
+    .btn-edit-offer,
+    .delete-icon-btn {
+      min-width: 36px;
+      height: 36px;
+      padding: 6px 8px;
+      border-radius: 6px;
+      font-size: 0.9rem;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.3s ease;
+      margin: 2px;
+    }
+
+    .btn-edit-offer:hover,
+    .delete-icon-btn:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    }
+
+    /* Responsive para dispositivos móviles */
+    @media (max-width: 768px) {
+      .main-admin-content {
+        padding: 20px 12px;
+      }
+
+      .table-responsive {
+        margin: 0 -12px 1rem -12px;
+        border-radius: 0;
+      }
+
+      .table {
+        min-width: 900px; /* Aumentar el ancho mínimo en móviles */
+        font-size: 0.85rem;
+      }
+
+      .table th,
+      .table td {
+        padding: 8px 6px;
+        font-size: 0.85rem;
+      }
+
+      /* Hacer los botones más grandes en móviles */
+      .btn-edit-offer,
+      .delete-icon-btn {
+        min-width: 40px;
+        height: 40px;
+        font-size: 1rem;
+        margin: 3px;
+      }
+
+      /* Ajustar el tamaño de las imágenes en móviles */
+      .table td img {
+        width: 35px !important;
+        height: 35px !important;
+      }
+
+      /* Ocultar columnas menos importantes en móviles muy pequeños */
+      @media (max-width: 480px) {
+        .table th:nth-child(3),
+        .table td:nth-child(3),
+        .table th:nth-child(5),
+        .table td:nth-child(5),
+        .table th:nth-child(6),
+        .table td:nth-child(6) {
+          display: none;
+        }
+      }
+    }
+
+    /* Responsive para tablets */
+    @media (min-width: 769px) and (max-width: 1024px) {
+      .table {
+        min-width: 850px;
+      }
+
+      .table th,
+      .table td {
+        padding: 10px 8px;
+        font-size: 0.9rem;
+      }
+    }
+
+    /* Mejoras para pantallas grandes */
+    @media (min-width: 1025px) {
+      .table-responsive {
+        border-radius: 12px;
+        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+      }
+
+      .table th,
+      .table td {
+        padding: 14px 12px;
+      }
+    }
+
+    /* Indicador de scroll horizontal */
+    .table-responsive::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      right: 0;
+      width: 20px;
+      height: 20px;
+      background: linear-gradient(45deg, transparent 30%, rgba(0,0,0,0.1) 50%, transparent 70%);
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+
+    .table-responsive:hover::after {
+      opacity: 1;
+    }
+
+    /* Estilos responsivos adicionales para sidebar y navegación */
+    @media (max-width: 768px) {
+      .sidebar-admin {
+        transform: translateX(-100%);
+        width: 280px;
+        z-index: 1000;
+        transition: transform 0.3s ease;
+      }
+
+      .sidebar-admin.active {
+        transform: translateX(0);
+      }
+
+      .main-admin-content {
+        margin-left: 0;
+        width: 100%;
+        padding: 20px 12px;
+      }
+
+      .sidebar-toggle {
+        display: block !important;
+        position: fixed;
+        top: 16px;
+        left: 16px;
+        background: #232946;
+        color: #fff;
+        border: none;
+        border-radius: 8px;
+        padding: 12px;
+        cursor: pointer;
+        z-index: 1001;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        font-size: 1.1rem;
+        transition: all 0.3s ease;
+      }
+
+      .sidebar-toggle:hover {
+        background: #eebf63;
+        color: #232946;
+        transform: scale(1.05);
+      }
+
+      /* Mejorar la experiencia de los modales en móviles */
+      .modal-content-custom {
+        width: 95vw;
+        max-width: 400px;
+        margin: 20px;
+        max-height: 85vh;
+        overflow-y: auto;
+      }
+
+      /* Ajustar formularios en móviles */
+      .form-group {
+        margin-bottom: 16px;
+      }
+
+      .form-control {
+        font-size: 16px; /* Evitar zoom en iOS */
+        padding: 12px 14px;
+      }
+
+      /* Mejorar botones en móviles */
+      .btn {
+        padding: 12px 20px;
+        font-size: 1rem;
+        min-height: 44px; /* Tamaño mínimo para touch */
+      }
+    }
+
+    /* Responsive para tablets */
+    @media (min-width: 769px) and (max-width: 1024px) {
+      .sidebar-admin {
+        width: 200px;
+      }
+
+      .main-admin-content {
+        margin-left: 200px;
+        width: calc(100% - 200px);
+        padding: 30px 20px;
+      }
+
+      .sidebar-admin .admin-name {
+        font-size: 1rem;
+      }
+
+      .sidebar-admin ul li a {
+        padding: 14px 20px;
+        font-size: 1rem;
+      }
+    }
+
+    /* Mejoras para pantallas muy grandes */
+    @media (min-width: 1400px) {
+      .main-admin-content {
+        padding: 50px 40px;
+      }
+
+      .table-responsive {
+        border-radius: 16px;
+        box-shadow: 0 6px 24px rgba(0, 0, 0, 0.12);
+      }
+    }
+
+    /* Definir anchos específicos para cada columna */
+    .table th:nth-child(1), .table td:nth-child(1) { width: 15%; } /* Nombre */
+    .table th:nth-child(2), .table td:nth-child(2) { width: 20%; } /* Descripción */
+    .table th:nth-child(3), .table td:nth-child(3) { width: 12%; } /* Oferta Especial */
+    .table th:nth-child(4), .table td:nth-child(4) { width: 10%; } /* % Descuento */
+    .table th:nth-child(5), .table td:nth-child(5) { width: 12%; } /* Precio Original */
+    .table th:nth-child(6), .table td:nth-child(6) { width: 12%; } /* Precio Final */
+    .table th:nth-child(7), .table td:nth-child(7) { width: 10%; } /* Imagen */
+    .table th:nth-child(8), .table td:nth-child(8) { width: 9%; } /* Acciones */
   </style>
 </head>
 <body class="admin-page">
@@ -918,6 +1220,10 @@
               <input type="number" id="porcentajeDescuento" name="porcentajeDescuento" min="0" max="100" step="0.01" class="form-control" placeholder="Ej: 25">
             </div>
             <div class="form-group">
+              <label for="precioOriginal">Precio Unitario Original ($):</label>
+              <input type="number" id="precioOriginal" name="precioOriginal" min="0" step="0.01" class="form-control" placeholder="Ej: 300.00" required>
+            </div>
+            <div class="form-group">
               <label for="image">URL de la Imagen:</label>
               <input type="text" id="image" name="image" placeholder="http://..." class="form-control">
             </div>
@@ -965,6 +1271,10 @@
               <input type="number" id="edit_porcentajeDescuento" name="porcentajeDescuento" min="0" max="100" step="0.01" class="form-control">
             </div>
             <div class="form-group">
+              <label for="edit_precioOriginal">Precio Unitario Original ($):</label>
+              <input type="number" id="edit_precioOriginal" name="precioOriginal" min="0" step="0.01" class="form-control" required>
+            </div>
+            <div class="form-group">
               <label for="edit_image">URL de la Imagen:</label>
               <input type="text" id="edit_image" name="image" class="form-control">
             </div>
@@ -983,32 +1293,32 @@
             <tr>
               <th>Nombre</th>
               <th>Descripción</th>
-              <th>Tipo Oferta</th>
               <th>Oferta Especial</th>
-              <th>Fecha Inicio</th>
-              <th>Fecha Fin</th>
               <th>% Descuento</th>
+              <th>Precio Original</th>
+              <th>Precio Final</th>
               <th>Imagen</th>
-              <th style="min-width:70px;width:1%;text-align:center;">Acciones</th>
+              <th style="min-width:120px;width:120px;text-align:center;">Acciones</th>
             </tr>
           </thead>
           <tbody>
             <% galeria.forEach(oferta => { %>
               <tr>
-                <td><%= oferta.title %></td>
-                <td><%= oferta.description %></td>
-                <td><%= oferta.tipoOferta || '-' %></td>
+                <td style="max-width:150px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;"><%= oferta.title %></td>
+                <td style="max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;"><%= oferta.description %></td>
                 <td><%= oferta.ofertaEspecial || '-' %></td>
-                <td><%= oferta.fechaInicio ? new Date(oferta.fechaInicio).toLocaleDateString() : '-' %></td>
-                <td><%= oferta.fechaFin ? new Date(oferta.fechaFin).toLocaleDateString() : '-' %></td>
                 <td><%= oferta.porcentajeDescuento ? oferta.porcentajeDescuento + '%' : '-' %></td>
+                <td>$<%= oferta.precioOriginal ? oferta.precioOriginal.toFixed(2) : '-' %></td>
+                <td>$<%= oferta.price ? oferta.price.toFixed(2) : '-' %></td>
                 <td>
                   <% if (oferta.image) { %>
                     <img src="<%= oferta.image %>" alt="<%= oferta.title %>" style="width:40px;height:40px;object-fit:cover;border-radius:6px;">
+                  <% } else { %>
+                    <span style="color:#999;font-size:0.9rem;">Sin imagen</span>
                   <% } %>
                 </td>
-                <td>
-                  <button class="btn btn-primary btn-sm btn-edit-offer" data-offer='<%= JSON.stringify(oferta) %>' style="margin-right:4px;"><i class="fas fa-edit"></i></button>
+                <td style="text-align:center;white-space:nowrap;">
+                  <button class="btn btn-primary btn-sm btn-edit-offer" data-offer='<%= JSON.stringify(oferta) %>' style="margin-right:4px;" title="Editar"><i class="fas fa-edit"></i></button>
                   <form action="/admin/galeria/delete/<%= oferta._id %>" method="post" style="display:inline;" class="delete-form-inline" onsubmit="return confirmDelete(event)">
                     <button type="submit" class="btn btn-danger btn-sm delete-icon-btn" title="Eliminar"><i class="fas fa-trash-alt"></i></button>
                   </form>
@@ -1077,6 +1387,7 @@
         }
         
         document.getElementById('edit_porcentajeDescuento').value = offer.porcentajeDescuento || '';
+        document.getElementById('edit_precioOriginal').value = offer.precioOriginal || '';
         document.getElementById('edit_image').value = offer.image || '';
         document.getElementById('edit_imageFile').value = '';
         document.getElementById('editOfferModal').style.display = 'flex';
@@ -1144,6 +1455,58 @@
       };
       window.addEventListener('resize', checkSidebar);
       checkSidebar();
+    });
+    window.addEventListener('DOMContentLoaded',()=>{
+      // Lógica para desactivar campos en el formulario de registro
+      const ofertaEspecialInput = document.getElementById('ofertaEspecial');
+      const porcentajeDescuentoInput = document.getElementById('porcentajeDescuento');
+      if(ofertaEspecialInput && porcentajeDescuentoInput) {
+        ofertaEspecialInput.addEventListener('input', function() {
+          if(this.value.trim() !== '') {
+            porcentajeDescuentoInput.value = '';
+            porcentajeDescuentoInput.disabled = true;
+            porcentajeDescuentoInput.style.opacity = '0.5';
+          } else {
+            porcentajeDescuentoInput.disabled = false;
+            porcentajeDescuentoInput.style.opacity = '1';
+          }
+        });
+        porcentajeDescuentoInput.addEventListener('input', function() {
+          if(this.value.trim() !== '' && parseFloat(this.value) > 0) {
+            ofertaEspecialInput.value = '';
+            ofertaEspecialInput.disabled = true;
+            ofertaEspecialInput.style.opacity = '0.5';
+          } else {
+            ofertaEspecialInput.disabled = false;
+            ofertaEspecialInput.style.opacity = '1';
+          }
+        });
+      }
+      // Lógica para desactivar campos en el formulario de edición
+      const editOfertaEspecialInput = document.getElementById('edit_ofertaEspecial');
+      const editPorcentajeDescuentoInput = document.getElementById('edit_porcentajeDescuento');
+      if(editOfertaEspecialInput && editPorcentajeDescuentoInput) {
+        editOfertaEspecialInput.addEventListener('input', function() {
+          if(this.value.trim() !== '') {
+            editPorcentajeDescuentoInput.value = '';
+            editPorcentajeDescuentoInput.disabled = true;
+            editPorcentajeDescuentoInput.style.opacity = '0.5';
+          } else {
+            editPorcentajeDescuentoInput.disabled = false;
+            editPorcentajeDescuentoInput.style.opacity = '1';
+          }
+        });
+        editPorcentajeDescuentoInput.addEventListener('input', function() {
+          if(this.value.trim() !== '' && parseFloat(this.value) > 0) {
+            editOfertaEspecialInput.value = '';
+            editOfertaEspecialInput.disabled = true;
+            editOfertaEspecialInput.style.opacity = '0.5';
+          } else {
+            editOfertaEspecialInput.disabled = false;
+            editOfertaEspecialInput.style.opacity = '1';
+          }
+        });
+      }
     });
     </script>
   </main>

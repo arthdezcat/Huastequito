@@ -113,4 +113,37 @@
     // Ejecutar inmediatamente
     adaptFooterColors();
   </script>
+
+  <style>
+    .social-icon {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      background: #fff;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.10);
+      border: 1.5px solid #e9ecef;
+      font-size: 20px;
+      margin: 0 6px;
+      transition: box-shadow 0.2s, border-color 0.2s, color 0.2s, background 0.2s;
+      color: #222;
+      position: relative;
+    }
+    .social-icon.facebook { color: #1877f2; }
+    .social-icon.whatsapp { color: #25d366; }
+    .social-icon.email { color: #ea4335; }
+    .social-icon.messenger { color: #0084ff; }
+
+    .social-icon:hover {
+      box-shadow: 0 4px 16px rgba(0,0,0,0.18);
+      border-color: #b48e5c;
+      background: #f8f9fa;
+    }
+    .social-icon.facebook:hover { color: #fff; background: #1877f2; }
+    .social-icon.whatsapp:hover { color: #fff; background: #25d366; }
+    .social-icon.email:hover { color: #fff; background: #ea4335; }
+    .social-icon.messenger:hover { color: #fff; background: #0084ff; }
+  </style>
 </footer>

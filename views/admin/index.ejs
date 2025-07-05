@@ -412,6 +412,286 @@
       50% { transform: translateX(0%); }
       100% { transform: translateX(100%); }
     }
+
+    .btn-sm { 
+      padding: 8px 12px; 
+      font-size: 12px; 
+      border-radius: 6px; 
+      font-weight: 600; 
+      min-width: 75px;
+      white-space: nowrap;
+      margin: 0 2px;
+    }
+
+    /* Estilos responsivos para tablas de administración */
+    .table-responsive {
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      margin-bottom: 1rem;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .table-responsive::-webkit-scrollbar {
+      height: 8px;
+    }
+
+    .table-responsive::-webkit-scrollbar-track {
+      background: #f1f1f1;
+      border-radius: 4px;
+    }
+
+    .table-responsive::-webkit-scrollbar-thumb {
+      background: #c1c1c1;
+      border-radius: 4px;
+    }
+
+    .table-responsive::-webkit-scrollbar-thumb:hover {
+      background: #a8a8a8;
+    }
+
+    .table {
+      margin-bottom: 0;
+      min-width: 800px; /* Ancho mínimo para asegurar que todas las columnas sean visibles */
+    }
+
+    .table th,
+    .table td {
+      white-space: nowrap;
+      vertical-align: middle;
+      padding: 12px 8px;
+      border-bottom: 1px solid #dee2e6;
+    }
+
+    .table th {
+      background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+      font-weight: 600;
+      color: #495057;
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+
+    .table tbody tr:hover {
+      background-color: rgba(0, 123, 255, 0.05);
+    }
+
+    /* Estilos para botones de acción */
+    .btn-edit,
+    .btn-delete {
+      min-width: 36px;
+      height: 36px;
+      padding: 6px 8px;
+      border-radius: 6px;
+      font-size: 0.9rem;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.3s ease;
+      margin: 2px;
+    }
+
+    .btn-edit:hover,
+    .btn-delete:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    }
+
+    /* Responsive para dispositivos móviles */
+    @media (max-width: 768px) {
+      .main-admin-content {
+        padding: 20px 12px;
+      }
+
+      .table-responsive {
+        margin: 0 -12px 1rem -12px;
+        border-radius: 0;
+      }
+
+      .table {
+        min-width: 900px; /* Aumentar el ancho mínimo en móviles */
+        font-size: 0.85rem;
+      }
+
+      .table th,
+      .table td {
+        padding: 8px 6px;
+        font-size: 0.85rem;
+      }
+
+      /* Hacer los botones más grandes en móviles */
+      .btn-edit,
+      .btn-delete,
+      .btn-sm {
+        min-width: 40px;
+        height: 40px;
+        font-size: 1rem;
+        margin: 3px;
+      }
+
+      /* Ajustar el tamaño de las imágenes en móviles */
+      .table td img {
+        width: 35px !important;
+        height: 35px !important;
+      }
+
+      /* Ocultar columnas menos importantes en móviles muy pequeños */
+      @media (max-width: 480px) {
+        .table th:nth-child(3),
+        .table td:nth-child(3),
+        .table th:nth-child(4),
+        .table td:nth-child(4) {
+          display: none;
+        }
+      }
+    }
+
+    /* Responsive para tablets */
+    @media (min-width: 769px) and (max-width: 1024px) {
+      .table {
+        min-width: 850px;
+      }
+
+      .table th,
+      .table td {
+        padding: 10px 8px;
+        font-size: 0.9rem;
+      }
+    }
+
+    /* Mejoras para pantallas grandes */
+    @media (min-width: 1025px) {
+      .table-responsive {
+        border-radius: 12px;
+        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+      }
+
+      .table th,
+      .table td {
+        padding: 14px 12px;
+      }
+    }
+
+    /* Indicador de scroll horizontal */
+    .table-responsive::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      right: 0;
+      width: 20px;
+      height: 20px;
+      background: linear-gradient(45deg, transparent 30%, rgba(0,0,0,0.1) 50%, transparent 70%);
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+
+    .table-responsive:hover::after {
+      opacity: 1;
+    }
+
+    /* Estilos responsivos adicionales para sidebar y navegación */
+    @media (max-width: 768px) {
+      .sidebar-admin {
+        transform: translateX(-100%);
+        width: 280px;
+        z-index: 1000;
+        transition: transform 0.3s ease;
+      }
+
+      .sidebar-admin.active {
+        transform: translateX(0);
+      }
+
+      .main-admin-content {
+        margin-left: 0;
+        width: 100%;
+        padding: 20px 12px;
+      }
+
+      .sidebar-toggle {
+        display: block !important;
+        position: fixed;
+        top: 16px;
+        left: 16px;
+        background: #232946;
+        color: #fff;
+        border: none;
+        border-radius: 8px;
+        padding: 12px;
+        cursor: pointer;
+        z-index: 1001;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        font-size: 1.1rem;
+        transition: all 0.3s ease;
+      }
+
+      .sidebar-toggle:hover {
+        background: #eebf63;
+        color: #232946;
+        transform: scale(1.05);
+      }
+
+      /* Mejorar la experiencia de los modales en móviles */
+      .modal-content-custom {
+        width: 95vw;
+        max-width: 400px;
+        margin: 20px;
+        max-height: 85vh;
+        overflow-y: auto;
+      }
+
+      /* Ajustar formularios en móviles */
+      .form-group {
+        margin-bottom: 16px;
+      }
+
+      .form-control {
+        font-size: 16px; /* Evitar zoom en iOS */
+        padding: 12px 14px;
+      }
+
+      /* Mejorar botones en móviles */
+      .btn {
+        padding: 12px 20px;
+        font-size: 1rem;
+        min-height: 44px; /* Tamaño mínimo para touch */
+      }
+    }
+
+    /* Responsive para tablets */
+    @media (min-width: 769px) and (max-width: 1024px) {
+      .sidebar-admin {
+        width: 200px;
+      }
+
+      .main-admin-content {
+        margin-left: 200px;
+        width: calc(100% - 200px);
+        padding: 30px 20px;
+      }
+
+      .sidebar-admin .admin-name {
+        font-size: 1rem;
+      }
+
+      .sidebar-admin ul li a {
+        padding: 14px 20px;
+        font-size: 1rem;
+      }
+    }
+
+    /* Mejoras para pantallas muy grandes */
+    @media (min-width: 1400px) {
+      .main-admin-content {
+        padding: 50px 40px;
+      }
+
+      .table-responsive {
+        border-radius: 16px;
+        box-shadow: 0 6px 24px rgba(0, 0, 0, 0.12);
+      }
+    }
     </style>
 </head>
 <body class="admin-page">

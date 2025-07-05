@@ -10,8 +10,8 @@ const ofertaSchema = new mongoose.Schema({
   porcentajeDescuento: { type: Number }, // Porcentaje de Descuento (%)
   image: { type: String, required: true }, // URL de la Imagen
   // Campos anteriores mantenidos para compatibilidad
-  price: { type: Number }, 
-  garantia: { type: String }
+  price: { type: Number }, // Precio con oferta aplicada
+  precioOriginal: { type: Number }
 });
 
 module.exports = mongoose.model('ServiceSecundary', ofertaSchema);

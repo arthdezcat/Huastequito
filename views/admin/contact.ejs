@@ -296,659 +296,253 @@
         min-height: calc(100vh - 60px);
       }
     }
-    .table.contact-table {
-  width: 100%;
-  background: #fff;
-  border-radius: 12px;
-  box-shadow: 0 4px 20px rgba(0,0,0,0.1);
-  overflow: hidden;
-  margin-bottom: 40px;
-  border: none;
-}
-.table.contact-table th, .table.contact-table td {
-  vertical-align: middle;
-  text-align: center;
-  padding: 16px 12px;
-  border: none;
-}
-.table.contact-table th {
-  background: #f8f9fa;
-  font-weight: 700;
-  color: #2d3748;
-  font-size: 14px;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  border-bottom: 2px solid #e2e8f0;
-}
-.table.contact-table td {
-  border-bottom: 1px solid #e2e8f0;
-  font-size: 14px;
-  color: #4a5568;
-}
-.table.contact-table tbody tr:hover {
-  background-color: #f7fafc;
-}
-.table.contact-table td:last-child {
-  padding: 12px 8px;
-  min-width: 120px;
-}
-.btn-sm { 
-  padding: 8px 12px; 
-  font-size: 12px; 
-  border-radius: 6px; 
-  font-weight: 600; 
-  min-width: 75px;
-  white-space: nowrap;
-  margin: 0 2px;
-  display: inline-block;
-  text-align: center;
-  line-height: 1.2;
-  border: none;
-  text-decoration: none;
-  transition: all 0.2s ease;
-}
-.btn-success { 
-  background: #10b981; 
-  color: #fff; 
-  border: none; 
-}
-.btn-primary { 
-  background: #6366f1; 
-  color: #fff; 
-  border: none; 
-}
-.btn-danger { 
-  background: #ef4444; 
-  color: #fff; 
-  border: none; 
-}
-.btn-secondary { 
-  background: #6b7280; 
-  color: #fff; 
-  border: none; 
-}
-.btn-success:hover { 
-  background: #059669; 
-  transform: translateY(-1px);
-  box-shadow: 0 2px 8px rgba(16, 185, 129, 0.3);
-}
-.btn-primary:hover { 
-  background: #4f46e5; 
-  transform: translateY(-1px);
-  box-shadow: 0 2px 8px rgba(99, 102, 241, 0.3);
-}
-.btn-danger:hover { 
-  background: #dc2626; 
-  transform: translateY(-1px);
-  box-shadow: 0 2px 8px rgba(239, 68, 68, 0.3);
-}
-.btn-secondary:hover { 
-  background: #4b5563; 
-  transform: translateY(-1px);
-  box-shadow: 0 2px 8px rgba(107, 114, 128, 0.3);
-}
-.update-form-row td { padding: 0 !important; }
-/* Estilos modernos para los campos del formulario */
-    .form-group {
-      margin-bottom: 20px;
-      position: relative;
-    }
-    
-    .form-group label {
-      display: block;
-      margin-bottom: 8px;
-      font-weight: 600;
-      color: #2c3e50;
-      font-size: 0.95rem;
-      transition: color 0.3s ease;
-    }
-    
-    .form-control {
+    .table {
+      margin-bottom: 0;
       width: 100%;
-      padding: 12px 16px;
-      border: 2px solid #e1e8ed;
-      border-radius: 12px;
-      font-size: 1rem;
-      background: #ffffff;
-      transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
-      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
-      position: relative;
-      outline: none;
-      font-family: inherit;
+      table-layout: fixed;
     }
-    
-    .form-control:focus {
-      border-color: #4f46e5;
-      box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1), 0 4px 12px rgba(0, 0, 0, 0.08);
-      transform: translateY(-1px);
-      background: #fefefe;
-    }
-    
-    .form-control:hover:not(:focus) {
-      border-color: #c7d2fe;
-      box-shadow: 0 3px 8px rgba(0, 0, 0, 0.04);
-    }
-    
-    /* Estilos para textarea */
-    textarea.form-control {
-      min-height: 100px;
-      resize: vertical;
-      line-height: 1.6;
-    }
-    
-    textarea.form-control:focus {
-      min-height: 120px;
-    }
-    
-    /* Estilos para inputs de archivo */
-    input[type="file"] {
-      padding: 10px 14px;
-      border: 2px dashed #d1d5db;
-      border-radius: 12px;
-      background: #f9fafb;
-      color: #374151;
-      font-size: 0.9rem;
-      transition: all 0.3s ease;
-      cursor: pointer;
-      position: relative;
+
+    .table th,
+    .table td {
+      vertical-align: middle;
+      padding: 12px 8px;
+      border-bottom: 1px solid #dee2e6;
       overflow: hidden;
+      text-overflow: ellipsis;
     }
-    
-    input[type="file"]:hover {
-      border-color: #6366f1;
-      background: #f0f4ff;
-      transform: translateY(-1px);
-      box-shadow: 0 4px 12px rgba(99, 102, 241, 0.1);
-    }
-    
-    input[type="file"]:focus {
-      outline: none;
-      border-color: #4f46e5;
-      box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
-    }
-    
-    /* Estilos para input color */
-    input[type="color"] {
-      width: 80px;
-      height: 45px;
-      border: 2px solid #e1e8ed;
-      border-radius: 12px;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      background: none;
-      outline: none;
-    }
-    
-    input[type="color"]:hover {
-      border-color: #6366f1;
-      transform: translateY(-1px);
-      box-shadow: 0 4px 12px rgba(99, 102, 241, 0.15);
-    }
-    
-    input[type="color"]:focus {
-      border-color: #4f46e5;
-      box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
-    }
-    
-    /* Estilos para campos con placeholder mejorado */
-    .form-control::placeholder {
-      color: #9ca3af;
-      font-style: italic;
-      transition: opacity 0.3s ease;
-    }
-    
-    .form-control:focus::placeholder {
-      opacity: 0.6;
-      transform: translateY(-2px);
-    }
-    
-    /* Efecto de etiqueta flotante opcional */
-    .floating-label {
-      position: relative;
-    }
-    
-    .floating-label input.form-control {
-      padding-top: 20px;
-      padding-bottom: 8px;
-    }
-    
-    .floating-label label {
-      position: absolute;
-      left: 16px;
-      top: 16px;
-      color: #9ca3af;
-      font-size: 1rem;
-      font-weight: 400;
-      transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
-      pointer-events: none;
-      z-index: 1;
-    }
-    
-    .floating-label input.form-control:focus + label,
-    .floating-label input.form-control:not(:placeholder-shown) + label {
-      top: 4px;
-      font-size: 0.75rem;
-      color: #4f46e5;
+
+    /* Definir anchos específicos para cada columna */
+    .table th:nth-child(1), .table td:nth-child(1) { width: 25%; } /* Nombre */
+    .table th:nth-child(2), .table td:nth-child(2) { width: 35%; } /* Email */
+    .table th:nth-child(3), .table td:nth-child(3) { width: 20%; } /* Teléfono */
+    .table th:nth-child(4), .table td:nth-child(4) { width: 20%; } /* Acciones */
+    .table th {
+      background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
       font-weight: 600;
+      color: #495057;
+      position: sticky;
+      top: 0;
+      z-index: 10;
     }
-    
-    /* Animación de input válido */
-    .form-control:valid:not(:placeholder-shown) {
-      border-color: #10b981;
-      box-shadow: 0 2px 4px rgba(16, 185, 129, 0.1);
+
+    .table tbody tr:hover {
+      background-color: rgba(0, 123, 255, 0.05);
     }
-    
-    .form-control:valid:not(:placeholder-shown) + .validation-icon::after {
-      content: "✓";
-      position: absolute;
-      right: 12px;
-      top: 50%;
-      transform: translateY(-50%);
-      color: #10b981;
-      font-weight: bold;
-    }
-    
-    /* Estilos para botones del formulario */
-    .btn {
-      padding: 12px 24px;
-      border: none;
-      border-radius: 12px;
-      font-size: 1rem;
-      font-weight: 600;
-      cursor: pointer;
-      transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
-      text-decoration: none;
+
+    /* Estilos para botones de acción */
+    .btn-edit,
+    .btn-delete {
+      min-width: 36px;
+      height: 36px;
+      padding: 6px 8px;
+      border-radius: 6px;
+      font-size: 0.9rem;
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      gap: 8px;
-      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-      position: relative;
-      overflow: hidden;
-    }
-    
-    .btn:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
-    }
-    
-    .btn:active {
-      transform: translateY(0);
-      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    }
-    
-    /* Botón primario */
-    .btn-primary {
-      background: linear-gradient(135deg, #4f46e5, #7c3aed);
-      color: white;
-    }
-    
-    .btn-primary:hover {
-      background: linear-gradient(135deg, #4338ca, #6d28d9);
-    }
-    
-    /* Botón secundario */
-    .btn-secondary {
-      background: linear-gradient(135deg, #6b7280, #4b5563);
-      color: white;
-    }
-    
-    .btn-secondary:hover {
-      background: linear-gradient(135deg, #4b5563, #374151);
-    }
-    
-    /* Botón de cancelar */
-    .btn-cancel {
-      background: linear-gradient(135deg, #ef4444, #dc2626);
-      color: white;
-    }
-    
-    .btn-cancel:hover {
-      background: linear-gradient(135deg, #dc2626, #b91c1c);
-    }
-    
-    /* Efecto de ondas en botones */
-    .btn::before {
-      content: '';
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      width: 0;
-      height: 0;
-      background: rgba(255, 255, 255, 0.3);
-      border-radius: 50%;
-      transform: translate(-50%, -50%);
-      transition: width 0.6s, height 0.6s;
-    }
-    
-    .btn:active::before {
-      width: 300px;
-      height: 300px;
-    }
-    
-    /* Estilos para elementos small */
-    small {
-      display: block;
-      margin-top: 6px;
-      color: #6b7280;
-      font-size: 0.85rem;
-      line-height: 1.4;
-    }
-    
-    /* Indicadores de estado mejorados */
-    .form-success {
-      border-color: #10b981 !important;
-      background: #f0fdf4;
-    }
-    
-    .form-error {
-      border-color: #ef4444 !important;
-      background: #fef2f2;
-    }
-    
-    .form-warning {
-      border-color: #f59e0b !important;
-      background: #fffbeb;
+      transition: all 0.3s ease;
+      margin: 2px;
     }
 
-    /* Modal personalizado mejorado */
-    .modal-custom {
-      display: none;
-      position: fixed;
-      z-index: 9999;
-      left: 0;
-      top: 0;
-      width: 100vw;
-      height: 100vh;
-      background: rgba(0,0,0,0.4);
-      justify-content: center;
-      align-items: center;
-    }
-    
-    .modal-custom.active { 
-      display: flex; 
-    }
-    
-    .modal-content-custom {
-      background: #fff;
-      padding: 32px 24px;
-      border-radius: 16px;
-      box-shadow: 0 4px 24px rgba(0,0,0,0.18);
-      min-width: 320px;
-      max-width: 480px;
-      width: 95vw;
-      max-height: 90vh;
-      overflow-y: auto;
-      position: relative;
-      margin: 0 auto;
-      display: flex;
-      flex-direction: column;
-      align-items: stretch;
-      /* Mejor scroll personalizado */
-      scrollbar-width: thin;
-      scrollbar-color: #cbd5e1 #f1f5f9;
-    }
-    
-    .modal-content-custom::-webkit-scrollbar {
-      width: 8px;
-    }
-    
-    .modal-content-custom::-webkit-scrollbar-track {
-      background: #f1f5f9;
-      border-radius: 4px;
-    }
-    
-    .modal-content-custom::-webkit-scrollbar-thumb {
-      background: #cbd5e1;
-      border-radius: 4px;
-    }
-    
-    .modal-content-custom::-webkit-scrollbar-thumb:hover {
-      background: #94a3b8;
-    }
-    
-    .close-modal {
-      position: absolute;
-      top: 12px;
-      right: 18px;
-      font-size: 2rem;
-      color: #888;
-      cursor: pointer;
-      transition: color 0.3s ease;
-    }
-    
-    .close-modal:hover {
-      color: #ef4444;
-    }
-    
-    /* Efectos de transición suaves en todos los inputs */
-    .form-control,
-    input[type="file"],
-    input[type="color"],
-    textarea.form-control {
-      transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
-    }
-    
-    /* Mejores colores para las etiquetas */
-    .form-group label {
-      color: #374151;
-      font-size: 0.95rem;
-      font-weight: 600;
-      letter-spacing: 0.025em;
-    }
-    
-    /* Estados de validación mejorados */
-    .form-control:valid:not(:placeholder-shown) {
-      border-color: #10b981;
-      background: linear-gradient(135deg, #ffffff 0%, #f0fdf4 100%);
-      box-shadow: 0 2px 4px rgba(16, 185, 129, 0.1), 0 0 0 3px rgba(16, 185, 129, 0.1);
-    }
-    
-    .form-control:invalid:not(:placeholder-shown) {
-      border-color: #ef4444;
-      background: linear-gradient(135deg, #ffffff 0%, #fef2f2 100%);
-      box-shadow: 0 2px 4px rgba(239, 68, 68, 0.1), 0 0 0 3px rgba(239, 68, 68, 0.1);
-    }
-    
-    /* Indicador visual para campos requeridos */
-    .form-group:has(input[required]) label::after,
-    .form-group:has(textarea[required]) label::after {
-      content: ' *';
-      color: #ef4444;
-      font-weight: bold;
-      margin-left: 2px;
-    }
-    
-    /* Mejores estilos para small/hints */
-    small i {
-      margin-right: 4px;
-      opacity: 0.7;
-    }
-    
-    /* Animación sutil en el hover de inputs */
-    .form-control:hover:not(:focus):not(:disabled) {
-      border-color: #c7d2fe;
-      box-shadow: 0 3px 8px rgba(0, 0, 0, 0.04);
+    .btn-edit:hover,
+    .btn-delete:hover {
       transform: translateY(-1px);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
     }
-    
-    /* Mejor estilo para los títulos de sección */
-    h3 {
-      color: #1f2937;
-      font-weight: 700;
-      margin-bottom: 24px;
-      padding-bottom: 12px;
-      border-bottom: 2px solid #e5e7eb;
-      font-size: 1.4rem;
-    }
-    
-    /* Responsive para formularios */
+
+    /* Responsive para dispositivos móviles */
     @media (max-width: 768px) {
-      .form-control {
-        padding: 14px 16px;
-        font-size: 16px; /* Evita zoom en iOS */
+      .main-admin-content {
+        padding: 20px 12px;
       }
-      
+
+      .table-responsive {
+        margin: 0 -12px 1rem -12px;
+        border-radius: 0;
+      }
+
+      .table {
+        min-width: 900px; /* Aumentar el ancho mínimo en móviles */
+        font-size: 0.85rem;
+      }
+
+      .table th,
+      .table td {
+        padding: 8px 6px;
+        font-size: 0.85rem;
+      }
+
+      /* Hacer los botones más grandes en móviles */
+      .btn-edit,
+      .btn-delete,
+      .btn-sm {
+        min-width: 40px;
+        height: 40px;
+        font-size: 1rem;
+        margin: 3px;
+      }
+
+      /* Ajustar el tamaño de las imágenes en móviles */
+      .table td img {
+        width: 35px !important;
+        height: 35px !important;
+      }
+
+      /* Ocultar columnas menos importantes en móviles muy pequeños */
+      @media (max-width: 480px) {
+        .table th:nth-child(3),
+        .table td:nth-child(3),
+        .table th:nth-child(4),
+        .table td:nth-child(4) {
+          display: none;
+        }
+      }
+    }
+
+    /* Responsive para tablets */
+    @media (min-width: 769px) and (max-width: 1024px) {
+      .table {
+        min-width: 850px;
+      }
+
+      .table th,
+      .table td {
+        padding: 10px 8px;
+        font-size: 0.9rem;
+      }
+    }
+
+    /* Mejoras para pantallas grandes */
+    @media (min-width: 1025px) {
+      .table-responsive {
+        border-radius: 12px;
+        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+      }
+
+      .table th,
+      .table td {
+        padding: 14px 12px;
+      }
+    }
+
+    /* Indicador de scroll horizontal */
+    .table-responsive::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      right: 0;
+      width: 20px;
+      height: 20px;
+      background: linear-gradient(45deg, transparent 30%, rgba(0,0,0,0.1) 50%, transparent 70%);
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+
+    .table-responsive:hover::after {
+      opacity: 1;
+    }
+
+    /* Estilos responsivos adicionales para sidebar y navegación */
+    @media (max-width: 768px) {
+      .sidebar-admin {
+        transform: translateX(-100%);
+        width: 280px;
+        z-index: 1000;
+        transition: transform 0.3s ease;
+      }
+
+      .sidebar-admin.active {
+        transform: translateX(0);
+      }
+
+      .main-admin-content {
+        margin-left: 0;
+        width: 100%;
+        padding: 20px 12px;
+      }
+
+      .sidebar-toggle {
+        display: block !important;
+        position: fixed;
+        top: 16px;
+        left: 16px;
+        background: #232946;
+        color: #fff;
+        border: none;
+        border-radius: 8px;
+        padding: 12px;
+        cursor: pointer;
+        z-index: 1001;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        font-size: 1.1rem;
+        transition: all 0.3s ease;
+      }
+
+      .sidebar-toggle:hover {
+        background: #eebf63;
+        color: #232946;
+        transform: scale(1.05);
+      }
+
+      /* Mejorar la experiencia de los modales en móviles */
+      .modal-content-custom {
+        width: 95vw;
+        max-width: 400px;
+        margin: 20px;
+        max-height: 85vh;
+        overflow-y: auto;
+      }
+
+      /* Ajustar formularios en móviles */
+      .form-group {
+        margin-bottom: 16px;
+      }
+
+      .form-control {
+        font-size: 16px; /* Evitar zoom en iOS */
+        padding: 12px 14px;
+      }
+
+      /* Mejorar botones en móviles */
       .btn {
+        padding: 12px 20px;
+        font-size: 1rem;
+        min-height: 44px; /* Tamaño mínimo para touch */
+      }
+    }
+
+    /* Responsive para tablets */
+    @media (min-width: 769px) and (max-width: 1024px) {
+      .sidebar-admin {
+        width: 200px;
+      }
+
+      .main-admin-content {
+        margin-left: 200px;
+        width: calc(100% - 200px);
+        padding: 30px 20px;
+      }
+
+      .sidebar-admin .admin-name {
+        font-size: 1rem;
+      }
+
+      .sidebar-admin ul li a {
         padding: 14px 20px;
         font-size: 1rem;
-        width: 100%;
-        margin-bottom: 10px;
-      }
-      
-      .modal-content-custom {
-        padding: 18px 12px;
-        min-width: 0;
-        max-width: 98vw;
-      }
-      
-      /* Mejorar botones de tabla en tablet */
-      .table.contact-table .btn-sm {
-        padding: 8px 12px;
-        font-size: 0.85rem;
-        margin: 2px 1px;
       }
     }
-    
-    /* Estilos adicionales para mejor presentación */
-    .table-responsive {
-      background: #fff;
-      border-radius: 10px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.07);
-      overflow: hidden;
-    }
-    
-    /* Mejorar la apariencia de los iconos en botones */
-    .btn-sm i {
-      font-size: 0.9em;
-    }
-    
-    /* Estilo para forms inline en la tabla */
-    .delete-form-inline {
-      display: inline-block;
-      margin: 0;
-    }
-    
-    /* Mejoras adicionales para botones de acciones responsivos en contactos */
-    @media (max-width: 480px) {
-      .table.contact-table .btn-sm {
-        padding: 6px 4px !important;
-        font-size: 9px !important;
-        margin: 1px !important;
-        min-width: 30px !important;
-        border-radius: 4px !important;
-        display: flex !important;
-        align-items: center !important;
-        justify-content: center !important;
-        flex-direction: column !important;
-        gap: 1px !important;
-        line-height: 1 !important;
+
+    /* Mejoras para pantallas muy grandes */
+    @media (min-width: 1400px) {
+      .main-admin-content {
+        padding: 50px 40px;
       }
-      
-      .table.contact-table .btn-sm i {
-        font-size: 11px !important;
-        margin: 0 !important;
-      }
-      
-      .table.contact-table .btn-sm span {
-        display: none !important;
-      }
-      
-      .table.contact-table td:last-child {
-        padding: 6px 2px !important;
-        min-width: 120px !important;
-        display: flex !important;
-        flex-wrap: wrap !important;
-        justify-content: center !important;
-        align-items: center !important;
-        gap: 2px !important;
-      }
-      
-      .table.contact-table td:last-child form {
-        display: inline-flex !important;
-        margin: 0 !important;
-      }
-      
-      /* Botones más compactos en pantallas muy pequeñas */
-      .table.contact-table .btn-success {
-        background: #10b981 !important;
-      }
-      
-      .table.contact-table .btn-primary {
-        background: #6366f1 !important;
-      }
-      
-      .table.contact-table .btn-danger {
-        background: #ef4444 !important;
-      }
-      
-      .table.contact-table .btn-secondary {
-        background: #6b7280 !important;
-      }
-      
-      /* Tooltip para mostrar el texto del botón en hover */
-      .table.contact-table .btn-sm[title] {
-        position: relative;
-      }
-      
-      .table.contact-table .btn-sm[title]:hover::after {
-        content: attr(title);
-        position: absolute;
-        bottom: 100%;
-        left: 50%;
-        transform: translateX(-50%);
-        background: #232946;
-        color: white;
-        padding: 4px 8px;
-        border-radius: 4px;
-        font-size: 10px;
-        white-space: nowrap;
-        z-index: 1000;
-        margin-bottom: 2px;
-      }
-      
-      .table.contact-table .btn-sm[title]:hover::before {
-        content: '';
-        position: absolute;
-        bottom: 100%;
-        left: 50%;
-        transform: translateX(-50%);
-        border: 4px solid transparent;
-        border-top-color: #232946;
-        z-index: 1000;
-      }
-    }
-    
-    /* Estilos para tablets en contactos */
-    @media (max-width: 768px) and (min-width: 481px) {
-      .table.contact-table .btn-sm {
-        padding: 7px 5px !important;
-        font-size: 10px !important;
-        margin: 2px 1px !important;
-        min-width: 32px !important;
-        display: flex !important;
-        align-items: center !important;
-        justify-content: center !important;
-        flex-direction: column !important;
-        gap: 1px !important;
-      }
-      
-      .table.contact-table .btn-sm i {
-        font-size: 12px !important;
-      }
-      
-      .table.contact-table .btn-sm span {
-        font-size: 8px !important;
-        line-height: 1 !important;
-      }
-      
-      .table.contact-table td:last-child {
-        padding: 8px 4px !important;
-        min-width: 130px !important;
-        display: flex !important;
-        flex-wrap: wrap !important;
-        justify-content: center !important;
-        gap: 3px !important;
+
+      .table-responsive {
+        border-radius: 16px;
+        box-shadow: 0 6px 24px rgba(0, 0, 0, 0.12);
       }
     }
   </style>
@@ -1065,31 +659,17 @@
         <th>Nombre</th>
         <th>Email</th>
         <th>Teléfono</th>
-        <th>Facebook</th>
-        <th>Icono</th>
-        <th style="min-width:70px;width:1%;text-align:center;">Acciones</th>
+        <th style="min-width:120px;width:120px;text-align:center;">Acciones</th>
       </tr>
     </thead>
     <tbody>
       <% contact.forEach(contact => { %>
         <tr>
-          <td><%= contact.name %></td>
-          <td><%= contact.email %></td>
+          <td style="max-width:150px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;"><%= contact.name %></td>
+          <td style="max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;"><%= contact.email %></td>
           <td><%= contact.telefono %></td>
-          <td>
-            <% if (contact.facebookUrl) { %>
-              <a href="<%= contact.facebookUrl %>" target="_blank">Ver</a>
-            <% } %>
-          </td>
-          <td>
-            <% if (contact.iconUrl) { %>
-              <img src="<%= contact.iconUrl %>" alt="icono" style="width:32px;height:32px;object-fit:cover;border-radius:6px;">
-            <% } else { %>
-              <img src="/img/contactos.png" alt="icono" style="width:32px;height:32px;object-fit:cover;border-radius:6px;">
-            <% } %>
-          </td>
-          <td>
-            <button class="btn btn-primary btn-sm btn-edit-contact" data-contact='<%= JSON.stringify(contact) %>' style="margin-right:4px;"><i class="fas fa-edit"></i></button>
+          <td style="text-align:center;white-space:nowrap;">
+            <button class="btn btn-primary btn-sm btn-edit-contact" data-contact='<%= JSON.stringify(contact) %>' style="margin-right:4px;" title="Editar"><i class="fas fa-edit"></i></button>
             <form action="/admin/contact/delete/<%= contact._id %>" method="post" style="display:inline;" class="delete-form-inline" onsubmit="return confirmDelete(event)">
               <button type="submit" class="btn btn-danger btn-sm delete-icon-btn" title="Eliminar"><i class="fas fa-trash-alt"></i></button>
             </form>

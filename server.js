@@ -20,15 +20,18 @@ const app = express();
 // Configuración de sesiones
 app.use(
   session({
-    secret: process.env.KEY_SECRET, // Cambia esto por una clave segura
-    resave: false,
-    saveUninitialized: false,
+    secret: process.env.KEY_SECRET || 'mi_secreto_esta_con_tigo',
+    resave: true,
+    saveUninitialized: true,
     store: MongoStore.create({
       mongoUrl: process.env.MONGO_URI,
       collectionName: 'sessions',
     }),
     cookie: {
       maxAge: 1000 * 60 * 60 * 24, // 1 día
+      secure: false, // Cambiar a true en producción con HTTPS
+      httpOnly: true,
+      sameSite: 'lax'
     },
   })
 );
@@ -52,6 +55,10 @@ app.set('views', path.join(__dirname, 'views'));
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
+
+// Middleware para obtener información del carrito en todas las páginas
+const cartController = require('./controllers/cartController');
+app.use(cartController.getCartInfo);
 
 // Rutas públicas
 app.use('/', require('./routes/pages')); // Rutas para la página pública
